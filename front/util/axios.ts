@@ -1,56 +1,67 @@
 import axios from "axios";
 import { CommentDTO, IUserInfo, IUserLoginInfo, PostDTO } from "..";
 
+const uri =
+  typeof window === "undefined" ? process.env.NEXT_PUBLIC_API : "/api";
+
 export const login = async (userLoginInfo: IUserLoginInfo) => {
   const requestData = {
     username: userLoginInfo.email,
     password: userLoginInfo.password,
   };
-  console.log("resdata", requestData);
-  const { data } = await axios.post<IUserInfo>(`/api/auth/login`, requestData);
+  // console.log("resdata", requestData);
+  return null;
+  const { data } = await axios.post<IUserInfo>(
+    `${uri}/auth/login`,
+    requestData
+  );
   return data;
 };
 
 export const getUserInfo = async (jwt: string) => {
-  const { data } = await axios.post(`/api/auth/local`, jwt, {
+  const { data } = await axios.post(`${uri}/auth/local`, jwt, {
     headers: { Authorization: `Bearer ${jwt}` },
   });
 };
 
 export const createPost = async (postData: PostDTO) => {
   try {
-    return await axios.post(`/api/posts/create`, postData, {
+    return await axios.post(`${uri}/posts/create`, postData, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("access_token")}`,
       },
     });
   } catch (error) {
-    console.log("axios createPost", error);
+    // console.log("axios createPost", error);
+    return null;
   }
 };
 // TODO 모든 메서드 에러처리
 export const getPosts = async () => {
   try {
-    const { data } = await axios.get(`/api/posts`);
-
+    const { data } = await axios.get(`${uri}/posts`);
+    console.log(data);
     return data;
   } catch (error) {
-    console.log("axios getPosts", error);
+    console.log("error", error.message);
+    return null;
+    // console.log("axios getPosts", error);
   }
 };
 
 export const getPostBySlug = async (slug: string) => {
   try {
-    const { data } = await axios.get(`/api/posts/${encodeURI(slug)}`);
+    const { data } = await axios.get(`${uri}/posts/${encodeURI(slug)}`);
     return data;
   } catch (error) {
-    console.log("axios getPostBySlug", error);
+    // console.log("axios getPostBySlug", error);
+    return null;
   }
 };
 
 export const postDeleteBySlug = async (slug: string) => {
   try {
-    const { data } = await axios.delete(`/api/posts/${slug}`, {
+    const { data } = await axios.delete(`${uri}/posts/${slug}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("access_token")}`,
       },
@@ -58,7 +69,8 @@ export const postDeleteBySlug = async (slug: string) => {
 
     return data;
   } catch (error) {
-    console.log("axios postDelete", error);
+    // console.log("axios postDelete", error);
+    return null;
   }
 };
 
@@ -68,7 +80,7 @@ export const createCommentToPostBySlug = async (
 ) => {
   try {
     const { data } = await axios.post(
-      `/api/comments/create/${targetPostSlug}`,
+      `${uri}/comments/create/${targetPostSlug}`,
       commentBody,
       {
         headers: {
@@ -78,12 +90,14 @@ export const createCommentToPostBySlug = async (
     );
     return data;
   } catch (error) {
-    console.log("axios createCommentToPostBySlug", error);
+    // console.log("axios createCommentToPostBySlug", error);
+    return null;
   }
 };
 
 export const getAllFilesPath = async () => {
-  const { data } = await axios.get(`/api/upload`);
-  console.log(data);
+  const { data } = await axios.get(`${uri}/upload`);
+  // console.log(data);
+  return null;
   return data;
 };

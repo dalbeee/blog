@@ -16,9 +16,11 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const getPostsData: IPost[] = await getPosts();
-
   const paths = [];
-  getPostsData.map((post) => paths.push({ params: { slug: post.slug } }));
+
+  getPostsData &&
+    !!getPostsData.length &&
+    getPostsData.map((post) => paths.push({ params: { slug: post.slug } }));
 
   return {
     paths,
@@ -28,6 +30,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 const PostDetail = ({ post }: { post: IPost }) => {
   if (typeof window === "undefined") return null;
+
+  if (!post) return <div>loading</div>;
 
   return (
     <ControllerDetailPageProvider>
@@ -45,7 +49,7 @@ const PostDetail = ({ post }: { post: IPost }) => {
           {/* post controller */}
           <PostController />
           {/* comments */}
-          <Comment comments={post.comments} />
+          {post.comments && <Comment comments={post.comments} />}
         </div>
       </div>
     </ControllerDetailPageProvider>

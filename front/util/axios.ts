@@ -31,7 +31,7 @@ export const createPost = async (postData: PostDTO) => {
       },
     });
   } catch (error) {
-    // console.log("axios createPost", error);
+    console.log("axios createPost", error.message);
     return null;
   }
 };
@@ -43,17 +43,16 @@ export const getPosts = async () => {
   } catch (error) {
     console.log("error", error.message);
     return null;
-    // console.log("axios getPosts", error);
   }
 };
 
 export const getPostBySlug = async (slug: string) => {
   try {
-    const { data } = await axios.get(`${uri}/posts/${encodeURI(slug)}`);
-    return data;
+    const result = await axios.get(`${uri}/posts/${slug}`);
+    // console.log(data);
+    return result.data;
   } catch (error) {
-    // console.log("axios getPostBySlug", error);
-    return null;
+    console.log("axios getPostBySlug", error);
   }
 };
 

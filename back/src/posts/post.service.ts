@@ -78,6 +78,9 @@ export class PostsService {
 
   // TODO slug에 uuid 들어간것 수정하기
   async createPost({ username }: JwtPayload, post: PostDTO): Promise<any> {
+    // TODO check
+    const regexSelectImage = /!\[.*?\]\((.*?)\)g/;
+
     try {
       console.log(' from posts > createPost', post);
 
@@ -87,7 +90,17 @@ export class PostsService {
       newPost.user = userResult;
       // newPost.slug = helper.slugify(post.title);
       newPost.slug = uuid.v4();
-      newPost.thumbnail = '';
+
+      // get thumbnail from content
+      try {
+        const thumbnail = post.content
+          .match(/!\[.*?\]\((.*?\))/g)[0]
+          .replace(/!\[.*?\]\((.*?)\)/, '$1');
+        console.log(thumbnail);
+        newPost.thumbnail = thumbnail;
+      } catch (error) {
+        console.log(error.messsage);
+      }
       newPost.description = helper.description(post.content);
 
       return await this.postsRepository.save(newPost);

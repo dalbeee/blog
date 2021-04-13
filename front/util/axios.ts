@@ -9,8 +9,7 @@ export const login = async (userLoginInfo: IUserLoginInfo) => {
     username: userLoginInfo.email,
     password: userLoginInfo.password,
   };
-  // console.log("resdata", requestData);
-  return null;
+
   const { data } = await axios.post<IUserInfo>(
     `${uri}/auth/login`,
     requestData
@@ -40,7 +39,6 @@ export const createPost = async (postData: PostDTO) => {
 export const getPosts = async () => {
   try {
     const { data } = await axios.get(`${uri}/posts`);
-    console.log(data);
     return data;
   } catch (error) {
     console.log("error", error.message);

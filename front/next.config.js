@@ -1,16 +1,4 @@
 module.exports = {
-  async rewrites() {
-    return [
-      {
-        source: "/api/:slug*",
-        destination: "http://localhost/api/:slug*",
-      },
-      {
-        source: "/uploads/:slug*",
-        destination: "http://localhost/uploads/:slug*",
-      },
-    ];
-  },
   webpackDevMiddleware: (config) => {
     config.watchOptions = {
       poll: 1000,
@@ -18,4 +6,10 @@ module.exports = {
     };
     return config;
   },
+  images: {
+    domains: ["http://localhost"],
+  },
+  // future: {
+  //   webpack5: true,
+  // },
 };

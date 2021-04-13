@@ -1,96 +1,69 @@
-import React, { useEffect, useState } from "react";
+import React, { forwardRef, useEffect, useRef, useState } from "react";
 
-import { FilePond } from "react-filepond";
+import { FilePond, registerPlugin } from "react-filepond";
 
 import "filepond/dist/filepond.min.css";
-// import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
+import FilePondPluginFileRename from "filepond-plugin-file-rename";
 
-// // Import the Image EXIF Orientation and Image Preview plugins
-// // Note: These need to be installed separately
-// import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
-// import FilePondPluginImagePreview from "filepond-plugin-image-preview";
+registerPlugin(FilePondPluginFileRename);
 
-// Register the plugins
-// registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
-
-// Our app
-
-const UploadFilePond = () => {
-  //   const [files, setFiles] = useState([]);
+const UploadFilePond = ({}, ref) => {
   const [files, setFiles] = useState([]);
+  const [fileRename, setFileRename] = useState(null);
   useEffect(() => console.log(files), [files]);
-  //   const ref = useRef(null);
 
-  const handleInit = () => {
-    console.log("FilePond instance has initialised");
+  // const ref = useRef(null);
+
+  const onRemove = (file) => {
+    return files[0];
+    console.log(file.detail.file);
+    console.log("filedelete", file.serverId);
+    setFiles([]);
+  };
+  const onImgClick = (e) => {
+    console.log(e.target);
   };
 
-  const onRemove = (e) => {
-    console.log(e.detail.file);
-  };
   return (
-    <div className="w-full py-4">
+    <div className="w-full pt-4">
       <FilePond
-        // ref={ref}
+        ref={ref}
         files={files}
         allowMultiple={true}
         allowReorder={true}
         maxFiles={3}
         server="/api/upload"
         name="file"
-        oninit={() => handleInit()}
-        // onupdatefiles={(fileItems) => {
-        //   // Set currently active file objects to state
-        //   console.log(fileItems);
-        //   setFiles(fileItems.map((fileItem) => fileItem.file));
-        // }}
-
-        // onaddfile={(e, file) => {
-        //   console.log("onadd");
-
-        //   // if (!file) return;
-        //   let res = file.serverId;
-        //   res = res && res.replace("\\", "");
-        //   console.log(res);
-
-        //   const result = JSON.parse(res);
+        onupdatefiles={(fileItems) => {}}
+        // onremovefile={(e, file) => onRemove(file)}
+        onprocessfile={(error, file) => {
+          let result = file.serverId.replace(/\{|\}/, "").split(",");
+          let res = result.findIndex((item) => item.includes("fileName"));
+          const filename = result[res].match(/(?<=:").*?(?=")/)[0];
+          setFiles((prev) => prev.concat(filename));
+          setFileRename(filename);
+          // filename(filename);
+        }}
+        // TODO renameFunction 은 파일ㅇ 전송이 끝나기전에 호출된다 -> 서버에서 전송받은 파일 이름 바꾸기 방법?
+        // fileRenameFunction={(file) => {
+        //   const result = `${fileRename}.${file.extension}`;
         //   console.log(result);
-        // }}
-
-        // onupdatefiles={(file) => {
-        //   console.log(">>>", file);
-        //   const res = JSON.parse(file?.[0]?.serverId);
-        //   console.log(res);
-        //   setFiles(file);
-        // }}
-        // onupdatefiles={setFiles}
-        // onremovefile={onRemove}
-
-        // beforeRemoveFile={(file) => {
-        //   console.log(file.serverId); // string 에 객체가 들어있다
-        //   // item.
-        //   return new Promise((resolve, rej) => {
-        //     let result = file.serverId.replace(/\{|\}/, "").split(",");
-        //   let res = result.findIndex((item) => item.includes("filename"));
-        //   const filename = result[res].match(/(?<=:").*?(?=")/)[0];
-        //   // resolve()
-        //   });
-        // }}
-
-        // onremovefile={(e, file) => {
-        //   console.log("filedelete", file.serverId);
-        //   setFiles([]);
-        // }}
-        // onprocessfile={(error, file) => {
-        //   let result = file.serverId.replace(/\{|\}/, "").split(",");
-        //   let res = result.findIndex((item) => item.includes("filename"));
-        //   const filename = result[res].match(/(?<=:").*?(?=")/)[0];
-        //   // console.log(result, res, filename);
-        //   // file.filename = filename;
+        //   return result;
         // }}
       />
+      {/* // TODO 본문 이미지가 제대로 올라왔는지 확인. 파일 업로드 에러 잡고 삭제 */}
+      {/* {files &&
+        files?.map((file, index) => (
+          <div key={index} className="w-40 h-40">
+            <img
+              onClick={onImgClick}
+              src={`/uploads/${file}`}
+              style={{ objectFit: "cover" }}
+            />
+          </div>
+        ))} */}
     </div>
   );
 };
 
-export default UploadFilePond;
+export default forwardRef(UploadFilePond);

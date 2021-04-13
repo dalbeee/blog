@@ -5,7 +5,6 @@ import Head from "next/head";
 import { UserContextProvider } from "../store/userContext";
 
 function MyApp({ Component, pageProps }) {
-  console.log("test");
   return (
     <>
       <Head>

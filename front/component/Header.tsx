@@ -9,7 +9,9 @@ const UserModule = () => {
   const LoggedInMenu = () => (
     <div className="flex ">
       <Link href="/create">
-        <span className="mr-4 material-icons">send</span>
+        <a>
+          <span className="mr-4 material-icons">send</span>
+        </a>
       </Link>
       <button onClick={onLogout} className="material-icons">
         logout

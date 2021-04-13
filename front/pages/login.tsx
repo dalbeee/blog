@@ -11,7 +11,6 @@ const login = () => {
   const onClick = async () => {
     const requestUserInfo: IUserLoginInfo = { email: id, password };
     const result = await axiosLogin(requestUserInfo);
-
     operation.login(result);
   };
 

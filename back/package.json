@@ -1,5 +1,5 @@
 {
-  "name": "nest-blog",
+  "name": "testnest",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -14,7 +14,7 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "test": "jest --setupFiles dotenv/config --testTimeout= 30000",
+    "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
@@ -24,16 +24,12 @@
     "@nestjs/common": "^7.6.15",
     "@nestjs/core": "^7.6.15",
     "@nestjs/jwt": "^7.2.0",
-    "@nestjs/mapped-types": "*",
+    "@nestjs/mapped-types": "^0.4.1",
     "@nestjs/passport": "^7.1.5",
     "@nestjs/platform-express": "^7.6.15",
-    "@nestjs/swagger": "^4.8.0",
     "@nestjs/typeorm": "^7.1.5",
-    "@types/passport-jwt": "^3.0.5",
-    "@types/passport-local": "^1.0.33",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
-    "dotenv": "^8.2.0",
     "mysql2": "^2.2.5",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
@@ -41,12 +37,9 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^6.6.6",
-    "swagger-ui-express": "^4.1.6",
-    "typeorm": "^0.2.32",
-    "uuid": "^8.3.2"
+    "typeorm": "^0.2.32"
   },
   "devDependencies": {
-    "@compodoc/compodoc": "^1.1.11",
     "@nestjs/cli": "^7.6.0",
     "@nestjs/schematics": "^7.3.0",
     "@nestjs/testing": "^7.6.15",
@@ -55,7 +48,6 @@
     "@types/multer": "^1.4.5",
     "@types/node": "^14.14.36",
     "@types/supertest": "^2.0.10",
-    "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^4.19.0",
     "@typescript-eslint/parser": "^4.19.0",
     "eslint": "^7.22.0",
@@ -76,9 +68,6 @@
       "json",
       "ts"
     ],
-    "moduleNameMapper": {
-      "^src/(.*)$": "<rootDir>/$1"
-    },
     "rootDir": "src",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {

@@ -31,10 +31,19 @@ export const EditorComponent = forwardRef<
 const create: React.FC = (props) => {
   if (typeof window === "undefined") return null;
 
-  const ref = useRef<EditorType>();
-  const titleRef = useRef(null);
+  const titleRef = useRef(null); // title
+  const ref = useRef<EditorType>(); // tui editor
+  const fileRef = useRef(null); // from filepond
 
   const router = useRouter();
+
+  const onInsertImages = () => {
+    const files = fileRef.current?.props.files
+      .map((file) => `![${file}](uploads/${file})`)
+      .join("\n");
+
+    ref.current.getInstance().insertText(files);
+  };
 
   const [title, setTitle] = useState<null | string>(null);
 
@@ -70,7 +79,15 @@ const create: React.FC = (props) => {
         useCommandShortcut={true}
         usageStatistics={false}
       />
-      <UploadFilePond />
+      <UploadFilePond ref={fileRef} />
+      <div className="flex justify-center">
+        <button
+          onClick={onInsertImages}
+          className="w-3/5 px-2 py-1 mb-4 font-semibold text-gray-200 bg-green-400 rounded-xl"
+        >
+          본문에 이미지 추가
+        </button>
+      </div>
       <button
         onClick={onSubmit}
         className="w-full px-2 py-1 bg-gray-700 rounded-xl text-gray-50"

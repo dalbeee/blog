@@ -2,7 +2,6 @@ version: "3.9"
 
 services:
   nginx:
-    container_name: nginx
     image: nginx
     # command: bash -c "chown -R 101:101 /mnt/storage"
     volumes:
@@ -12,39 +11,37 @@ services:
       - "80:80"
 
   front:
-    container_name: front
     build:
-      context: front
+      context: ./front
       target: development
       dockerfile: Dockerfile
     ports:
-      - 3000
+      - "3000:3000"
     volumes:
       - ./front:/app
       - /app/node_modules
       - /app/.next
 
   back:
-    container_name: back
     build:
-      context: back
+      context: ./back
       dockerfile: Dockerfile
+      target: development
     ports:
       - "3003"
     volumes:
       - ./storage/uploads:/app/uploads
       - ./back:/app
-      - /app/node_modules
-      - /app/dist
+      - back:/app/node_modules
+      - back:/app/dist
     environment:
-      DB_HOST: mysql
+      DB_HOST: db
       DB_PORT: 3306
       USER: root
       PASSWORD: "secret-pw"
       DATABASE: "nest-blog"
 
   db:
-    container_name: mysql
     image: mysql:8.0.23
     command: --default-authentication-plugin=mysql_native_password
     ports:
@@ -54,3 +51,6 @@ services:
       MYSQL_DATABASE: "nest-blog"
     volumes:
       - ./storage/db:/var/lib/mysql
+
+volumes:
+  back: {}

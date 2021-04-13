@@ -964,7 +964,12 @@
   "resolved" "https://registry.npmjs.org/fast-diff/-/fast-diff-1.2.0.tgz"
   "version" "1.2.0"
 
-"filepond@^4.27.0", "filepond@>=3.7.x < 5.x":
+"filepond-plugin-file-rename@^1.1.8":
+  "integrity" "sha512-qqZe1JFvl9S/lmIjQiRIzXxRkxobE7hqqjDOFgJkBzcZAjWn/rGpUEWWc5JUDL71JqyACG8gwMFSzGr1a04IQA=="
+  "resolved" "https://registry.npmjs.org/filepond-plugin-file-rename/-/filepond-plugin-file-rename-1.1.8.tgz"
+  "version" "1.1.8"
+
+"filepond@^4.27.0", "filepond@>=1.8.x <5.x", "filepond@>=3.7.x < 5.x":
   "integrity" "sha512-Z1XUXny6BQw9RVORz/MMjyVJHcW+tXiMRxocLEAY6gY1EfpMPwLJcQhalpMnfiGax7sBqXkv3tE8sZO71Q7Hbw=="
   "resolved" "https://registry.npmjs.org/filepond/-/filepond-4.27.0.tgz"
   "version" "4.27.0"

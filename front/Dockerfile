@@ -1,10 +1,12 @@
 FROM node:alpine as development
+ENV NODE_ENV=development
 WORKDIR /app
 COPY package.json .
 RUN npm i --force
 CMD [ "npm", "run", "dev" ]
 
 FROM node:alpine as build
+ENV NODE_ENV=build
 WORKDIR /app
 COPY --from=development /app/node_modules ./node_modules
 COPY . .

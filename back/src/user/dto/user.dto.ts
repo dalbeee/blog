@@ -1,14 +1,20 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { IsString } from 'class-validator';
+import { IsString, Max, Min } from 'class-validator';
 
 export class UserDTO {
   @IsString()
+  @Min(6)
+  @Max(20)
   email: string;
 
   @IsString()
+  @Min(4)
+  @Max(20)
   username: string;
 
   @IsString()
+  @Min(6)
+  @Max(20)
   password: string;
 }
 

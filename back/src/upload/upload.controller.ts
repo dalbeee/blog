@@ -40,16 +40,17 @@ export class UploadController {
         file: Express.Multer.File,
         cb: (error: Error | null, acceptFile: boolean) => void,
       ) {
+        console.log(file.mimetype);
         if (file.mimetype.match(/\/(jpg|jpeg|png|gif)$/)) return cb(null, true);
         return cb(null, false);
       },
     }),
   )
-  uploadFile(@UploadedFile() file: Express.Multer.File) {
+  uploadFile(@UploadedFile() file: Express.Multer.File, @Req() req) {
+    console.log(req.headers);
     if (!file) {
       throw new HttpException('not supported file', 400);
     }
-    console.log('call con');
     return this.uploadService.saveFileDataToDB(file);
   }
 

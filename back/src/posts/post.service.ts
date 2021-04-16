@@ -100,6 +100,7 @@ export class PostsService {
         newPost.thumbnail = thumbnail;
       } catch (error) {
         console.log(error.messsage);
+        newPost.thumbnail = '';
       }
       newPost.description = helper.description(post.content);
 

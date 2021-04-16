@@ -21,10 +21,15 @@ export class UserService {
 
   async findByName(username: string): Promise<any> {
     try {
-      return await this.userRepository.findOne(
+      const result = await this.userRepository.findOne(
         { username },
         { relations: ['posts', 'comments'] },
       );
+
+      // TODO httpException 을 던져서 스택에서 못잡으면 500 에러를 띄운다 -> 어떻게 에러를 계속 전달?
+      // if (!result)
+      //   throw new HttpException({ target: 'id', message: 'id not found' }, 400);
+      return result;
     } catch (error) {
       console.log('error from user > findByName', error.message);
 

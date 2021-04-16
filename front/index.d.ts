@@ -13,12 +13,23 @@ export interface IPost {
   comments: [];
 }
 
-export interface IUserLoginInfo {
+export interface UserLoginDTO {
   email: string;
   password: string;
 }
 
-interface IUserInfo {
+export interface IUserLoginResult {
+  success?: IUserLoginResultSuccess;
+  error?: IUserLoginResultError;
+}
+
+interface IUserLoginResultError {
+  isError?: boolean;
+  message?: string;
+  target: string;
+}
+
+interface IUserLoginResultSuccess {
   access_token: string;
   username: string;
   email?: string;

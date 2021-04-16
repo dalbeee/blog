@@ -1,15 +1,15 @@
 import { useState } from "react";
-import { IUserLoginInfo } from "..";
+import { UserLoginDTO } from "..";
 import { useUserContext } from "../store/userContext";
 import { login as axiosLogin } from "../util/axios";
 
 const login = () => {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
-  const { operation } = useUserContext();
+  const { operation, error } = useUserContext();
 
   const onClick = async () => {
-    const requestUserInfo: IUserLoginInfo = { email: id, password };
+    const requestUserInfo: UserLoginDTO = { email: id, password };
     const result = await axiosLogin(requestUserInfo);
     operation.login(result);
   };
@@ -26,6 +26,9 @@ const login = () => {
             placeholder="ID"
           />
         </div>
+        <div className="font-semibold text-red-400">
+          {error?.target === "id" && error.message}
+        </div>
         <div className="flex items-center w-full h-16 ">
           <span className="mr-4 material-icons">vpn_key</span>
           <input
@@ -34,6 +37,9 @@ const login = () => {
             className="w-full border-gray-600 focus:border-b focus:outline-none"
             placeholder="password"
           />
+        </div>
+        <div className="font-semibold text-red-400">
+          {error?.target === "password" && error.message}
         </div>
         <button
           onClick={onClick}

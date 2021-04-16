@@ -56,7 +56,9 @@ const create: React.FC = (props) => {
       return;
     }
     const postData: PostDTO = { title, content };
-    await createPost(postData);
+    const result = await createPost(postData);
+    console.log(result);
+    if (result.error) console.log("get");
     router.push("/");
   };
 

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { IPost } from "..";
 
 const CardMain = ({ post }: { post: IPost }) => {
@@ -13,11 +13,6 @@ const CardMain = ({ post }: { post: IPost }) => {
         : post.thumbnail
       : null
   );
-  console.log(thumbnail);
-  // useEffect(() => {
-  //   const thumbnail =
-  //     post.thumbnail[0] !== "/" ? `/${post.thumbnail}` : post.thumbnail;
-  // });
 
   return (
     <Link href={`/post/${post.slug}`}>

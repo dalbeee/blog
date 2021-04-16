@@ -6,7 +6,8 @@ RUN npm i --force
 CMD [ "npm", "run", "dev" ]
 
 FROM node:alpine as build
-ENV NODE_ENV=build
+ARG NODE_ENV=build
+ENV IS_BUILD=true
 WORKDIR /app
 COPY --from=development /app/node_modules ./node_modules
 COPY . .
@@ -17,6 +18,7 @@ WORKDIR /app
 ENV NODE_ENV=production
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/.next ./.next
+COPY package.json .
 COPY public ./public
 
 CMD [ "npm", "start" ]

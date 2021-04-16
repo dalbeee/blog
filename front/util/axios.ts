@@ -1,20 +1,38 @@
-import axios from "axios";
-import { CommentDTO, IUserInfo, IUserLoginInfo, PostDTO } from "..";
+import axios, { AxiosResponse } from "axios";
+import {
+  CommentDTO,
+  IUserLoginResult,
+  IUserLoginResultError,
+  IUserLoginResultSuccess,
+  UserLoginDTO,
+  PostDTO,
+} from "..";
 
-const uri =
-  typeof window === "undefined" ? process.env.NEXT_PUBLIC_API : "/api";
+const uri = (() => {
+  if (process.env.IS_BUILD) return process.env.API_FROM_INTERNET;
+  return typeof window === "undefined" ? process.env.NEXT_PUBLIC_API : "/api";
+})();
 
-export const login = async (userLoginInfo: IUserLoginInfo) => {
+export const login = async (
+  userLoginInfo: UserLoginDTO
+): Promise<IUserLoginResult> => {
   const requestData = {
     username: userLoginInfo.email,
     password: userLoginInfo.password,
   };
 
-  const { data } = await axios.post<IUserInfo>(
-    `${uri}/auth/login`,
-    requestData
-  );
-  return data;
+  try {
+    const { data } = await axios.post<IUserLoginResultSuccess>(
+      `${uri}/auth/login`,
+      requestData
+    );
+    return { success: data };
+  } catch (error) {
+    const result: IUserLoginResultError = {
+      ...error.response.data.response,
+    };
+    return { error: result };
+  }
 };
 
 export const getUserInfo = async (jwt: string) => {
@@ -25,14 +43,17 @@ export const getUserInfo = async (jwt: string) => {
 
 export const createPost = async (postData: PostDTO) => {
   try {
-    return await axios.post(`${uri}/posts/create`, postData, {
+    const { data } = await axios.post(`${uri}/posts/create`, postData, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("access_token")}`,
       },
     });
+    console.log(data);
+    return data;
   } catch (error) {
-    console.log("axios createPost", error.message);
-    return null;
+    console.log("axios createPost", error.message, error?.statusCode);
+    const result = { status: "error" };
+    return result;
   }
 };
 // TODO 모든 메서드 에러처리

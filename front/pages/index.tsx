@@ -15,16 +15,10 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 export default function Home({ posts }: { posts: IPost[] }) {
-  if (typeof window === "undefined") return null;
-
   const { setPosts } = usePostContext();
   useEffect(() => {
     setPosts(posts);
   }, []);
 
-  return (
-    <div>
-      <Layout />
-    </div>
-  );
+  return <Layout />;
 }

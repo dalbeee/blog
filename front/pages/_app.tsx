@@ -1,7 +1,8 @@
 import Header from "../component/Header";
-import { PostContextProvider } from "../store/postContext";
 import "../styles/globals.css";
 import Head from "next/head";
+
+import { PostContextProvider } from "../store/postContext";
 import { UserContextProvider } from "../store/userContext";
 
 function MyApp({ Component, pageProps }) {
@@ -13,6 +14,7 @@ function MyApp({ Component, pageProps }) {
           rel="stylesheet"
         />
       </Head>
+
       <PostContextProvider>
         <UserContextProvider>
           <div className="flex justify-center">

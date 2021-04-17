@@ -1,4 +1,5 @@
 import { PartialType } from '@nestjs/mapped-types';
+import { Exclude } from 'class-transformer';
 import { IsString, Max, Min } from 'class-validator';
 
 export class UserDTO {

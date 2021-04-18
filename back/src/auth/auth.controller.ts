@@ -19,7 +19,6 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Request() { user }: { user: UserRO }) {
-    throw new UnauthorizedException();
     return this.authService.login(user);
   }
 

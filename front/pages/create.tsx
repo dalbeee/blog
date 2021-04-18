@@ -60,13 +60,10 @@ const create: React.FC = (props) => {
     }
     const postData: PostDTO = { title, content };
     const result = await createPost(postData);
-    console.log(result);
-    if (result.error) console.log("get");
+    logger(result);
+    if (result.error) logger("get");
     router.push("/");
   };
-
-  useEffect(() => console.log(fileRef.current?.props.files), [fileRef]);
-  // console.log("er", fileRef.current);
 
   return (
     <div className={`flex flex-col w-full  h-content min-h-content `}>

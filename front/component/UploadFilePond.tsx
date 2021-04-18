@@ -4,24 +4,25 @@ import { FilePond, registerPlugin } from "react-filepond";
 
 import "filepond/dist/filepond.min.css";
 import FilePondPluginFileRename from "filepond-plugin-file-rename";
+import { logger } from "../util/logger";
 
 registerPlugin(FilePondPluginFileRename);
 
 const UploadFilePond = ({}, ref) => {
   const [files, setFiles] = useState([]);
   const [fileRename, setFileRename] = useState(null);
-  useEffect(() => console.log(files), [files]);
+  useEffect(() => logger(files), [files]);
 
   // const ref = useRef(null);
 
   const onRemove = (file) => {
     return files[0];
-    console.log(file.detail.file);
-    console.log("filedelete", file.serverId);
+    logger(file.detail.file);
+    logger("filedelete", file.serverId);
     setFiles([]);
   };
   const onImgClick = (e) => {
-    console.log(e.target);
+    logger(e.target);
   };
 
   return (
@@ -47,7 +48,7 @@ const UploadFilePond = ({}, ref) => {
         // TODO renameFunction 은 파일ㅇ 전송이 끝나기전에 호출된다 -> 서버에서 전송받은 파일 이름 바꾸기 방법?
         // fileRenameFunction={(file) => {
         //   const result = `${fileRename}.${file.extension}`;
-        //   console.log(result);
+        //   logger(result);
         //   return result;
         // }}
       />

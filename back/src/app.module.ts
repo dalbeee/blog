@@ -15,8 +15,11 @@ import { HttpExceptionFilter } from './filter/httpException.filter';
   imports: [
     WinstonModule.forRoot({
       transports: [
-        new winston.transports.File({ filename: 'error.log', level: 'error' }),
-        new winston.transports.File({ filename: 'combined.log' }),
+        new winston.transports.File({
+          filename: '/log/error.log',
+          level: 'error',
+        }),
+        new winston.transports.File({ filename: '/log/combined.log' }),
         new winston.transports.Console({
           format: winston.format.combine(
             winston.format.simple(),

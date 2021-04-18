@@ -3,16 +3,25 @@ import { UserLoginDTO } from "..";
 import { useUserContext } from "../store/userContext";
 import { login as axiosLogin } from "../util/axios";
 import { logger } from "../util/logger";
+import { useToastContext } from "../store/toastContext";
 
 const login = () => {
+  const { operation, error } = useUserContext();
+  const { operation: toast } = useToastContext();
+
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
-  const { operation, error } = useUserContext();
 
   const onClick = async () => {
+    if (!id || !password) return;
     const requestUserInfo: UserLoginDTO = { email: id, password };
     const result = await axiosLogin(requestUserInfo);
     operation.login(result);
+    toast.push({
+      title: "알림",
+      content: "로그인에 실패하였습니다",
+      timestamp: Date.now(),
+    });
   };
 
   return (
@@ -48,6 +57,7 @@ const login = () => {
         >
           login
         </button>
+        {toast.spread()}
       </div>
     </div>
   );

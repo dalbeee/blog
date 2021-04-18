@@ -8,6 +8,7 @@ import {
 import { Request, Response } from 'express';
 
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
+import { HttpReturnType } from 'src';
 import { Logger } from 'winston';
 
 @Catch(HttpException)
@@ -21,20 +22,16 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
     const status = exception.getStatus();
-    const message = exception.message;
-    const name = exception.name;
-    const responseMessage = exception.getResponse() as Object;
+    const message = exception.getResponse();
+    this.logger.warn({ message, status });
 
-    this.logger.warn({ message: JSON.stringify(responseMessage) });
-
-    response.status(status).json({
-      statusCode: status,
+    const result: HttpReturnType = {
       response: {
         isError: true,
-        ...responseMessage,
+        message: message as string,
+        status,
       },
-      //   timestamp: new Date().toISOString(),
-      //   path: request.url,
-    });
+    };
+    response.status(status).json(result);
   }
 }

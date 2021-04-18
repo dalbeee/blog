@@ -13,10 +13,11 @@ services:
   front:
     build:
       context: ./front
+      # target: production
       target: development
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "3000"
     volumes:
       - ./front:/app
       - /app/node_modules
@@ -32,8 +33,8 @@ services:
     volumes:
       - ./storage/uploads:/app/uploads
       - ./back:/app
-      - back:/app/node_modules
-      - back:/app/dist
+      - /app/node_modules
+      - /app/dist
     environment:
       DB_HOST: db
       DB_PORT: 3306

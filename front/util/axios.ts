@@ -7,6 +7,7 @@ import {
   UserLoginDTO,
   PostDTO,
 } from "..";
+import { logger } from "./logger";
 
 const uri = (() => {
   if (process.env.IS_BUILD) return process.env.API_FROM_INTERNET;
@@ -36,9 +37,14 @@ export const login = async (
 };
 
 export const getUserInfo = async (jwt: string) => {
-  const { data } = await axios.post(`${uri}/auth/local`, jwt, {
-    headers: { Authorization: `Bearer ${jwt}` },
-  });
+  try {
+    const { data } = await axios.get(`${uri}/auth/validate`, {
+      headers: { Authorization: `Bearer ${jwt}` },
+    });
+    return data;
+  } catch (error) {
+    return { isAuthenticated: false };
+  }
 };
 
 export const createPost = async (postData: PostDTO) => {
@@ -48,10 +54,10 @@ export const createPost = async (postData: PostDTO) => {
         Authorization: `Bearer ${localStorage.getItem("access_token")}`,
       },
     });
-    console.log(data);
+    logger(data);
     return data;
   } catch (error) {
-    console.log("axios createPost", error.message, error?.statusCode);
+    logger("axios createPost", error.message, error?.statusCode);
     const result = { status: "error" };
     return result;
   }
@@ -62,7 +68,7 @@ export const getPosts = async () => {
     const { data } = await axios.get(`${uri}/posts`);
     return data;
   } catch (error) {
-    console.log("error", error.message);
+    logger("error", error.message);
     return null;
   }
 };
@@ -70,10 +76,10 @@ export const getPosts = async () => {
 export const getPostBySlug = async (slug: string) => {
   try {
     const result = await axios.get(`${uri}/posts/${slug}`);
-    // console.log(data);
+    // logger(data);
     return result.data;
   } catch (error) {
-    console.log("axios getPostBySlug", error);
+    logger("axios getPostBySlug", error);
   }
 };
 
@@ -87,7 +93,7 @@ export const postDeleteBySlug = async (slug: string) => {
 
     return data;
   } catch (error) {
-    // console.log("axios postDelete", error);
+    // logger("axios postDelete", error);
     return null;
   }
 };
@@ -108,14 +114,14 @@ export const createCommentToPostBySlug = async (
     );
     return data;
   } catch (error) {
-    // console.log("axios createCommentToPostBySlug", error);
+    // logger("axios createCommentToPostBySlug", error);
     return null;
   }
 };
 
 export const getAllFilesPath = async () => {
   const { data } = await axios.get(`${uri}/upload`);
-  // console.log(data);
+  // logger(data);
   return null;
   return data;
 };

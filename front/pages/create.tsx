@@ -1,4 +1,4 @@
-import React, { forwardRef, useRef, useState } from "react";
+import React, { forwardRef, useEffect, useRef, useState } from "react";
 import { PostDTO } from "..";
 import { createPost } from "../util/axios";
 import { useRouter } from "next/router";
@@ -11,6 +11,8 @@ import {
 
 import dynamic from "next/dynamic";
 import UploadFilePond from "../component/UploadFilePond";
+import { isAuthenticated } from "../util/authValidator";
+import { logger } from "../util/logger";
 
 const EditorWithNoSSR = dynamic<TuiEditorWithForwardedProps>(
   () =>
@@ -31,17 +33,18 @@ export const EditorComponent = forwardRef<
 const create: React.FC = (props) => {
   if (typeof window === "undefined") return null;
 
+  const router = useRouter();
+  const result = isAuthenticated();
+  if (!result) router.push("/");
+
   const titleRef = useRef(null); // title
   const ref = useRef<EditorType>(); // tui editor
   const fileRef = useRef(null); // from filepond
-
-  const router = useRouter();
 
   const onInsertImages = () => {
     const files = fileRef.current?.props.files
       .map((file) => `![${file}](uploads/${file})`)
       .join("\n");
-
     ref.current.getInstance().insertText(files);
   };
 
@@ -61,6 +64,9 @@ const create: React.FC = (props) => {
     if (result.error) console.log("get");
     router.push("/");
   };
+
+  useEffect(() => console.log(fileRef.current?.props.files), [fileRef]);
+  // console.log("er", fileRef.current);
 
   return (
     <div className={`flex flex-col w-full  h-content min-h-content `}>
@@ -85,7 +91,10 @@ const create: React.FC = (props) => {
       <div className="flex justify-center">
         <button
           onClick={onInsertImages}
-          className="w-3/5 px-2 py-1 mb-4 font-semibold text-gray-200 bg-green-400 rounded-xl"
+          className={`w-3/5 px-2 py-1 mb-4 font-semibold text-gray-200 bg-green-400 rounded-xl  
+          
+            //  ${fileRef.current?.props.files.length ? "block" : "hidden"}
+            `}
         >
           본문에 이미지 추가
         </button>

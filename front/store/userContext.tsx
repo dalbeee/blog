@@ -5,10 +5,19 @@ import {
   IUserLoginResultSuccess,
 } from "..";
 import { useRouter } from "next/router";
+import { logger } from "../util/logger";
+
+const storageKey = (() => {
+  const token = "access_token";
+  const user = "username";
+
+  return {
+    essential: [token, user],
+    optional: [],
+  };
+})();
 
 const reducer = () => {
-  // if (typeof window === "undefined") return null;
-
   const localStorageKey = "access_token";
 
   const router = useRouter();
@@ -28,20 +37,20 @@ const reducer = () => {
         target: userInfo.error.target,
         isError: true,
       });
-
-    window.localStorage.setItem(localStorageKey, userInfo.success.access_token);
-    window.localStorage.setItem("username", userInfo.success.username);
+    logger(userInfo);
+    localStorage.setItem(localStorageKey, userInfo.success.access_token);
+    localStorage.setItem("username", userInfo.success.username);
     // TODO check
-    // window.localStorage.setItem("email", userInfo.success.user.email);
+    // localStorage.setItem("email", userInfo.success.user.email);
     setUserInfo(userInfo.success);
     router.push("/");
   };
 
   const getLoginInfo = () => {
     try {
-      const access_token = window.localStorage.getItem(localStorageKey);
-      const username = window.localStorage.getItem("username");
-      // const email = window.localStorage.getItem("email");
+      const access_token = localStorage.getItem(localStorageKey);
+      const username = localStorage.getItem("username");
+      // const email = localStorage.getItem("email");
 
       const userInfo: IUserLoginResultSuccess = {
         access_token,
@@ -50,17 +59,17 @@ const reducer = () => {
       };
       setUserInfo(userInfo);
     } catch (error) {
-      window.localStorage.removeItem(localStorageKey);
-      window.localStorage.removeItem("username");
+      localStorage.removeItem(localStorageKey);
+      localStorage.removeItem("username");
 
       setUserInfo(null);
     }
   };
 
   const logout = () => {
-    window.localStorage.removeItem(localStorageKey);
-    window.localStorage.removeItem("username");
-    window.localStorage.removeItem("email");
+    localStorage.removeItem(localStorageKey);
+    localStorage.removeItem("username");
+    localStorage.removeItem("email");
     setUserInfo({} as IUserLoginResultSuccess);
     router.push("/");
   };

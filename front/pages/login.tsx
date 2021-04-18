@@ -2,6 +2,7 @@ import { useState } from "react";
 import { UserLoginDTO } from "..";
 import { useUserContext } from "../store/userContext";
 import { login as axiosLogin } from "../util/axios";
+import { logger } from "../util/logger";
 
 const login = () => {
   const [id, setId] = useState("");
@@ -27,7 +28,7 @@ const login = () => {
           />
         </div>
         <div className="font-semibold text-red-400">
-          {error?.target === "id" && error.message}
+          {error?.message?.target === "id" && error.message.message}
         </div>
         <div className="flex items-center w-full h-16 ">
           <span className="mr-4 material-icons">vpn_key</span>
@@ -39,7 +40,7 @@ const login = () => {
           />
         </div>
         <div className="font-semibold text-red-400">
-          {error?.target === "password" && error.message}
+          {error?.message?.target === "password" && error.message.message}
         </div>
         <button
           onClick={onClick}

@@ -24,9 +24,13 @@ export interface IUserLoginResult {
 }
 
 interface IUserLoginResultError {
-  isError?: boolean;
-  message?: string;
-  target: string;
+  isError: boolean;
+  message: {
+    message?: string;
+    target?: string;
+    statusCode?: number;
+  };
+  status: number;
 }
 
 interface IUserLoginResultSuccess {

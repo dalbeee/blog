@@ -34,8 +34,10 @@ const create: React.FC = (props) => {
   if (typeof window === "undefined") return null;
 
   const router = useRouter();
-  const result = isAuthenticated();
-  if (!result) router.push("/");
+  // if (!isAuthenticated()) router.push("/");
+  isAuthenticated()
+    .then()
+    .catch(() => router.push("/"));
 
   const titleRef = useRef(null); // title
   const ref = useRef<EditorType>(); // tui editor

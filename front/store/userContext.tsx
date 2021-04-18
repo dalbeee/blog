@@ -24,24 +24,19 @@ const reducer = () => {
   const [userInfo, setUserInfo] = useState<IUserLoginResultSuccess>(
     {} as IUserLoginResultSuccess
   );
-  const [error, setError] = useState<IUserLoginResultError>(null);
+  const [error, setError] = useState<IUserLoginResultError>(
+    {} as IUserLoginResultError
+  );
   useEffect(() => {
     getLoginInfo();
   }, []);
 
   const login = (userInfo: IUserLoginResult) => {
-    setError(null);
-    if (userInfo?.error)
-      return setError({
-        message: userInfo.error.message,
-        target: userInfo.error.target,
-        isError: true,
-      });
-    logger(userInfo);
+    setError({} as IUserLoginResultError);
+    if (userInfo?.error) return setError(userInfo.error);
     localStorage.setItem(localStorageKey, userInfo.success.access_token);
     localStorage.setItem("username", userInfo.success.username);
-    // TODO check
-    // localStorage.setItem("email", userInfo.success.user.email);
+
     setUserInfo(userInfo.success);
     router.push("/");
   };
@@ -50,26 +45,20 @@ const reducer = () => {
     try {
       const access_token = localStorage.getItem(localStorageKey);
       const username = localStorage.getItem("username");
-      // const email = localStorage.getItem("email");
 
       const userInfo: IUserLoginResultSuccess = {
         access_token,
         username,
-        // email,
       };
       setUserInfo(userInfo);
     } catch (error) {
-      localStorage.removeItem(localStorageKey);
-      localStorage.removeItem("username");
-
-      setUserInfo(null);
+      logout();
     }
   };
 
   const logout = () => {
     localStorage.removeItem(localStorageKey);
     localStorage.removeItem("username");
-    localStorage.removeItem("email");
     setUserInfo({} as IUserLoginResultSuccess);
     router.push("/");
   };

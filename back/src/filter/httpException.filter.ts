@@ -23,7 +23,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const request = ctx.getRequest<Request>();
     const status = exception.getStatus();
     const message = exception.getResponse();
-    this.logger.warn({ message, status });
+    this.logger.warn({ message: JSON.stringify(message), status });
 
     const result: HttpReturnType = {
       response: {

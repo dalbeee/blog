@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { usePostContext } from "../store/postContext";
 import CardMain from "./CardMain";
 
@@ -17,4 +18,4 @@ const Content = () => {
   );
 };
 
-export default Content;
+export default memo(Content);

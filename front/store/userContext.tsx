@@ -1,12 +1,12 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import {
-  IUserLoginResult,
   IUserLoginResultError,
   IUserLoginResultSuccess,
+  UserLoginDTO,
 } from "..";
 import { useRouter } from "next/router";
 import { logger } from "../util/logger";
-import { getUserInfo } from "../util/axios";
+import { getUserInfo, login as axiosLogin } from "../util/axios";
 
 const storageKey = {
   access_token: "access_token",
@@ -39,14 +39,25 @@ const reducer = () => {
     return true;
   };
 
-  const login = (userInfo: IUserLoginResult) => {
+  const login = (userInfo: UserLoginDTO): Promise<boolean> => {
     setError({} as IUserLoginResultError);
-    if (userInfo?.error) return setError(userInfo.error);
-    localStorage.setItem(localStorageKey, userInfo.success.access_token);
-    localStorage.setItem("username", userInfo.success.username);
 
-    setUserInfo(userInfo.success);
-    router.push("/");
+    const fn = async (): Promise<boolean> => {
+      const result = await axiosLogin(userInfo);
+      if (result?.error) {
+        setError(result.error);
+        return false;
+      }
+      localStorage.setItem(localStorageKey, result.success.access_token);
+      localStorage.setItem("username", result.success.username);
+      setUserInfo(result.success);
+      router.push("/");
+      return true;
+    };
+
+    const result = fn();
+    logger(result);
+    return result;
   };
 
   const getLoginInfo = () => {

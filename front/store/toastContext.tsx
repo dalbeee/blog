@@ -1,11 +1,12 @@
 import * as React from "react";
 import { createContext, useContext, useEffect, useState } from "react";
 import { Toast } from "react-bootstrap";
+// import "bootstrap/dist/css/bootstrap.min.css";
 
 interface ToastItem {
   title: string;
   content: string;
-  timestamp: number;
+  timestamp?: number;
 }
 
 type Push = (item: ToastItem) => void;
@@ -16,17 +17,18 @@ const reducer = () => {
   const [store, setStore] = useState<ToastItem[]>([]);
 
   const push: Push = (item) => {
+    item.timestamp = Date.now();
     setStore((prev) => prev.concat(item));
   };
 
   const spread: Spread = () => {
     return (
-      <div className="absolute bottom-0 w-1/2 h-40 right-4 md:w-1/3 ">
+      <>
         {!!store.length &&
           store.map((item) => {
             return <ToastComponent {...item} key={item.timestamp} />;
           })}
-      </div>
+      </>
     );
   };
 
@@ -52,21 +54,42 @@ const ToastComponent = ({ title, content, timestamp }: ToastItem) => {
 
   return (
     <>
-      <Toast
-        onClose={() => setShow(false)}
-        show={show}
-        autohide
-        delay={5000}
-        className="p-2 bg-gray-100"
-      >
+      <Toast onClose={() => setShow(false)} show={show} autohide delay={5000}>
         <Toast.Header>
-          <strong className="mr-8">{title}</strong>
+          <strong>{title}</strong>
         </Toast.Header>
-        <Toast.Body className="relative flex">
+        <Toast.Body>
           {content}
-          <small className="absolute right-0">{`${time} min ago`}</small>
+          {/* <small className="absolute right-0">{`${time} min ago`}</small> */}
         </Toast.Body>
       </Toast>
+    </>
+  );
+};
+
+export const GetToastComponent = () => {
+  const { operation } = useToastContext();
+  return (
+    <>
+      <div
+        aria-live="polite"
+        aria-atomic="true"
+        style={{
+          position: "relative",
+          minHeight: "100px",
+        }}
+      >
+        <div
+          className="fixed bottom-4 right-4"
+          // style={{
+          //   position: "fixed",
+          //   top: 0,
+          //   right: 0,
+          // }}
+        >
+          {operation.spread()}
+        </div>
+      </div>
     </>
   );
 };

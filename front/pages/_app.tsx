@@ -4,7 +4,7 @@ import Head from "next/head";
 
 import { PostContextProvider } from "../store/postContext";
 import { UserContextProvider } from "../store/userContext";
-import { ToastProvider, useToastContext } from "../store/toastContext";
+import { GetToastComponent, ToastProvider } from "../store/toastContext";
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -15,9 +15,10 @@ function MyApp({ Component, pageProps }) {
           rel="stylesheet"
         />
         <link
-          href="//cdn.muicss.com/mui-0.10.3/css/mui.min.css"
           rel="stylesheet"
-          type="text/css"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+          integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+          crossOrigin="anonymous"
         />
       </Head>
 
@@ -28,6 +29,7 @@ function MyApp({ Component, pageProps }) {
               <div className="w-full sm:w-3/5 lg:w-2/5">
                 <Header />
                 <Component {...pageProps} />
+                <GetToastComponent />
               </div>
             </div>
           </ToastProvider>

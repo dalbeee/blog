@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { memo, useCallback, useState } from "react";
 import { IPost } from "..";
 
 const CardMain = ({ post }: { post: IPost }) => {
@@ -41,4 +41,4 @@ const CardMain = ({ post }: { post: IPost }) => {
   );
 };
 
-export default CardMain;
+export default memo(CardMain);

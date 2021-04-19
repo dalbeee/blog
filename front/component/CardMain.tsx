@@ -24,6 +24,7 @@ const CardMain = ({ post }: { post: IPost }) => {
               // objectFit="cover"
               // layout="fill"
               style={{ objectFit: "cover", overflow: "hidden" }}
+              className="w-full h-full"
             />
           </div>
           <div className="bg-gray-100 h-2/5">

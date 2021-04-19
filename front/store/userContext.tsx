@@ -6,16 +6,12 @@ import {
 } from "..";
 import { useRouter } from "next/router";
 import { logger } from "../util/logger";
+import { getUserInfo } from "../util/axios";
 
-const storageKey = (() => {
-  const token = "access_token";
-  const user = "username";
-
-  return {
-    essential: [token, user],
-    optional: [],
-  };
-})();
+const storageKey = {
+  access_token: "access_token",
+  username: "username",
+};
 
 const reducer = () => {
   const localStorageKey = "access_token";
@@ -30,6 +26,18 @@ const reducer = () => {
   useEffect(() => {
     getLoginInfo();
   }, []);
+
+  const isAuthenticated = async (): Promise<boolean> => {
+    // TODO useInfo.access_token 에서 값이 초기화전에 먼저 넘어오는 문제가 있음
+
+    const access_token = localStorage.getItem(localStorageKey);
+    const { isAuthenticated } = await getUserInfo(access_token);
+    if (!isAuthenticated) {
+      operation.logout();
+      return false;
+    }
+    return true;
+  };
 
   const login = (userInfo: IUserLoginResult) => {
     setError({} as IUserLoginResultError);
@@ -63,7 +71,7 @@ const reducer = () => {
     router.push("/");
   };
 
-  const operation = { login, getLoginInfo, logout };
+  const operation = { login, getLoginInfo, logout, isAuthenticated };
   return { userInfo, error, operation };
 };
 

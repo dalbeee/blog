@@ -38,10 +38,10 @@ export const login = async (
 
 export const getUserInfo = async (jwt: string) => {
   try {
-    const { data } = await axios.get(`${uri}/auth/validate`, {
+    await axios.get(`${uri}/auth/validate`, {
       headers: { Authorization: `Bearer ${jwt}` },
     });
-    return data;
+    return { isAuthenticated: true };
   } catch (error) {
     return { isAuthenticated: false };
   }

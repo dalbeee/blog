@@ -11,8 +11,8 @@ import {
 
 import dynamic from "next/dynamic";
 import UploadFilePond from "../component/UploadFilePond";
-import { isAuthenticated } from "../util/authValidator";
 import { logger } from "../util/logger";
+import { useUserContext } from "../store/userContext";
 
 const EditorWithNoSSR = dynamic<TuiEditorWithForwardedProps>(
   () =>
@@ -31,13 +31,12 @@ export const EditorComponent = forwardRef<
 ));
 
 const create: React.FC = (props) => {
-  if (typeof window === "undefined") return null;
-
+  const { operation } = useUserContext();
   const router = useRouter();
-  // if (!isAuthenticated()) router.push("/");
-  isAuthenticated()
-    .then()
-    .catch(() => router.push("/"));
+
+  useEffect(() => {
+    operation.isAuthenticated();
+  }, []);
 
   const titleRef = useRef(null); // title
   const ref = useRef<EditorType>(); // tui editor

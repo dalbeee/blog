@@ -1,7 +1,6 @@
 import * as React from "react";
 import { createContext, useContext, useEffect, useState } from "react";
 import { Toast } from "react-bootstrap";
-// import "bootstrap/dist/css/bootstrap.min.css";
 
 interface ToastItem {
   title: string;
@@ -9,19 +8,17 @@ interface ToastItem {
   timestamp?: number;
 }
 
-type Push = (item: ToastItem) => void;
-type Spread = () => JSX.Element;
-
 type Reducer = ReturnType<typeof reducer>;
+
 const reducer = () => {
   const [store, setStore] = useState<ToastItem[]>([]);
 
-  const push: Push = (item) => {
+  const push = (item: ToastItem) => {
     item.timestamp = Date.now();
     setStore((prev) => prev.concat(item));
   };
 
-  const spread: Spread = () => {
+  const spread = () => {
     return (
       <>
         {!!store.length &&
@@ -56,12 +53,10 @@ const ToastComponent = ({ title, content, timestamp }: ToastItem) => {
     <>
       <Toast onClose={() => setShow(false)} show={show} autohide delay={5000}>
         <Toast.Header>
-          <strong>{title}</strong>
+          <strong className="mr-2">{title}</strong>
+          <small className="">{`${time} min ago`}</small>
         </Toast.Header>
-        <Toast.Body>
-          {content}
-          {/* <small className="absolute right-0">{`${time} min ago`}</small> */}
-        </Toast.Body>
+        <Toast.Body>{content}</Toast.Body>
       </Toast>
     </>
   );
@@ -79,16 +74,7 @@ export const GetToastComponent = () => {
           minHeight: "100px",
         }}
       >
-        <div
-          className="fixed bottom-4 right-4"
-          // style={{
-          //   position: "fixed",
-          //   top: 0,
-          //   right: 0,
-          // }}
-        >
-          {operation.spread()}
-        </div>
+        <div className="fixed bottom-4 right-4">{operation.spread()}</div>
       </div>
     </>
   );

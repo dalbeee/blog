@@ -56,7 +56,6 @@ const reducer = () => {
     };
 
     const result = fn();
-    logger(result);
     return result;
   };
 

@@ -13,7 +13,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   return {
     props: { post },
-    revalidate: 60,
+    revalidate: 1,
   };
 };
 

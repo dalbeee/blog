@@ -13,8 +13,8 @@ services:
   front:
     build:
       context: ./front
-      # target: production
-      target: development
+      target: production
+      # target: development
       dockerfile: Dockerfile
     ports:
       - "3000"

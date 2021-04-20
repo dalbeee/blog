@@ -1,6 +1,5 @@
 import React, { forwardRef, useEffect, useRef, useState } from "react";
 import { PostDTO } from "..";
-import { createPost } from "../util/axios";
 import { useRouter } from "next/router";
 
 import {

@@ -1,6 +1,7 @@
 FROM node:alpine as development
 ENV NODE_ENV=development
 WORKDIR /app
+COPY package-lock.json .
 COPY package.json .
 RUN npm i --force
 CMD [ "npm", "run", "dev" ]

@@ -1,6 +1,5 @@
-import React, { forwardRef } from "react";
+import React from "react";
 import { Editor, EditorProps } from "@toast-ui/react-editor";
-import dynamic from "next/dynamic";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import "codemirror/lib/codemirror.css";
 

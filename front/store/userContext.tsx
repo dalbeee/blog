@@ -6,7 +6,7 @@ import {
 } from "..";
 import { useRouter } from "next/router";
 import { logger } from "../util/logger";
-import { getUserInfo, login as axiosLogin } from "../util/axios";
+import { checkUserAuthenticated, login as axiosLogin } from "../util/axios";
 
 const storageKey = {
   access_token: "access_token",
@@ -31,7 +31,7 @@ const reducer = () => {
     // TODO useInfo.access_token 에서 값이 초기화전에 먼저 넘어오는 문제가 있음
 
     const access_token = localStorage.getItem(localStorageKey);
-    const { isAuthenticated } = await getUserInfo(access_token);
+    const { isAuthenticated } = await checkUserAuthenticated(access_token);
     if (!isAuthenticated) {
       operation.logout();
       return false;

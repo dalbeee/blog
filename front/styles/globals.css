@@ -120,8 +120,3 @@
     @apply bg-gray-100 !important;
   }
 }
-
-object {
-  display: block;
-  vertical-align: middle;
-}

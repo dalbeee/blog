@@ -14,6 +14,7 @@ import UploadFilePond from "../component/UploadFilePond";
 import { logger } from "../util/logger";
 import { useUserContext } from "../store/userContext";
 import { useToastContext } from "../store/toastContext";
+import { usePostContext } from "../store/postContext";
 
 const EditorWithNoSSR = dynamic<TuiEditorWithForwardedProps>(
   () =>
@@ -34,6 +35,7 @@ export const EditorComponent = forwardRef<
 const create: React.FC = (props) => {
   const { operation } = useUserContext();
   const { operation: toast } = useToastContext();
+  const { operation: post } = usePostContext();
   const router = useRouter();
 
   useEffect(() => {
@@ -57,18 +59,18 @@ const create: React.FC = (props) => {
   const [title, setTitle] = useState<null | string>(null);
 
   const onSubmit = async () => {
-    const content = ref.current?.getInstance().getMarkdown();
     if (!title) {
       titleRef.current.focus();
       titleRef.current.placeholder = "제목을 입력해주세요";
       titleRef.current.className = `${titleRef.current.className} border-b border-red-400 `;
       return;
     }
+
+    const content = ref.current?.getInstance().getMarkdown();
     const postData: PostDTO = { title, content };
-    const result = await createPost(postData);
+    const result = await post.createPost(postData);
     logger(result);
-    if (result.error) logger("get");
-    router.push("/");
+    result.data && router.push("/");
   };
 
   return (

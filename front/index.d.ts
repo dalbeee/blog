@@ -13,6 +13,11 @@ export interface IPost {
   comments: [];
 }
 
+export interface CustomAxiosResult {
+  data?: {};
+  isError?: boolean;
+}
+
 export interface UserLoginDTO {
   email: string;
   password: string;

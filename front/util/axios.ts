@@ -6,6 +6,7 @@ import {
   IUserLoginResultSuccess,
   UserLoginDTO,
   PostDTO,
+  CustomAxiosResult,
 } from "..";
 import { logger } from "./logger";
 
@@ -36,7 +37,7 @@ export const login = async (
   }
 };
 
-export const getUserInfo = async (jwt: string) => {
+export const checkUserAuthenticated = async (jwt: string) => {
   try {
     await axios.get(`${uri}/auth/validate`, {
       headers: { Authorization: `Bearer ${jwt}` },
@@ -47,22 +48,21 @@ export const getUserInfo = async (jwt: string) => {
   }
 };
 
-export const createPost = async (postData: PostDTO) => {
+export const createPost = async (
+  postData: PostDTO,
+  jwt: string
+): Promise<CustomAxiosResult> => {
   try {
     const { data } = await axios.post(`${uri}/posts/create`, postData, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-      },
+      headers: { Authorization: `Bearer ${jwt}` },
     });
-    logger(data);
-    return data;
+    return { data };
   } catch (error) {
     logger("axios createPost", error.message, error?.statusCode);
-    const result = { status: "error" };
-    return result;
+    return { isError: true };
   }
 };
-// TODO 모든 메서드 에러처리
+
 export const getPosts = async () => {
   try {
     const { data } = await axios.get(`${uri}/posts`);
@@ -73,25 +73,28 @@ export const getPosts = async () => {
   }
 };
 
-export const getPostBySlug = async (slug: string) => {
+export const getPostBySlug = async (
+  slug: string
+): Promise<CustomAxiosResult> => {
   try {
-    const result = await axios.get(`${uri}/posts/${slug}`);
-    // logger(data);
-    return result.data;
+    const { data } = await axios.get(`${uri}/posts/${slug}`);
+    return { ...data };
   } catch (error) {
-    logger("axios getPostBySlug", error);
+    logger("axios getPostBySlug", error.message);
+    return { isError: true };
   }
 };
 
-export const postDeleteBySlug = async (slug: string) => {
+export const deletePostBySlug = async (
+  slug: string,
+  jwt: string
+): Promise<CustomAxiosResult> => {
   try {
     const { data } = await axios.delete(`${uri}/posts/${slug}`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-      },
+      headers: { Authorization: `Bearer ${jwt}` },
     });
 
-    return data;
+    return { data };
   } catch (error) {
     // logger("axios postDelete", error);
     return null;
@@ -100,28 +103,20 @@ export const postDeleteBySlug = async (slug: string) => {
 
 export const createCommentToPostBySlug = async (
   commentBody: CommentDTO,
-  targetPostSlug: string
-) => {
+  targetPostSlug: string,
+  jwt: string
+): Promise<CustomAxiosResult> => {
   try {
     const { data } = await axios.post(
       `${uri}/comments/create/${targetPostSlug}`,
       commentBody,
       {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-        },
+        headers: { Authorization: `Bearer ${jwt}` },
       }
     );
-    return data;
+    return { data };
   } catch (error) {
-    // logger("axios createCommentToPostBySlug", error);
-    return null;
+    logger("axios createCommentToPostBySlug", error.message);
+    return { isError: true };
   }
-};
-
-export const getAllFilesPath = async () => {
-  const { data } = await axios.get(`${uri}/upload`);
-  // logger(data);
-  return null;
-  return data;
 };

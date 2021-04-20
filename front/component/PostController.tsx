@@ -1,31 +1,23 @@
 import { useRouter } from "next/router";
-import { useControllerDetailPageContext } from "../hooks/useControllerDetailPage";
-import { postDeleteBySlug } from "../util/axios";
+import { usePostContext } from "../store/postContext";
 import CommentController from "./CommentController";
 
 const PostController = () => {
   const router = useRouter();
-  const {
-    commentOperation: { toggleCommentWindowVisible },
-  } = useControllerDetailPageContext();
+  const { operation } = usePostContext();
 
   //   TODO implement update method
-  const onUpdate = async () => {};
   const onDelete = async () => {
-    await postDeleteBySlug(router.query.slug as string);
-    router.push("/");
+    const result = await operation.deletePost(router.query.slug as string);
+    !result.isError && router.push("/");
   };
 
   return (
     <div className="flex flex-col">
       <div className="flex justify-end py-4">
+        <div className="mr-4 text-gray-500"></div>
         <div className="mr-4 text-gray-500">
-          <button onClick={() => toggleCommentWindowVisible()}>
-            <span className="material-icons">rate_review</span>
-          </button>
-        </div>
-        <div className="mr-4 text-gray-500">
-          <button onClick={onUpdate}>
+          <button>
             <span className="material-icons">edit</span>
           </button>
         </div>

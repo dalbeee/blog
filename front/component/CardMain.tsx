@@ -1,12 +1,12 @@
-import Image from "next/image";
+// import Image from "next/image";
 import Link from "next/link";
-import { memo, useCallback, useState } from "react";
+import { memo, useState } from "react";
 import { IPost } from "..";
 
 const CardMain = ({ post }: { post: IPost }) => {
   if (!post) return null;
 
-  const [thumbnail, setThumbnail] = useState(
+  const [thumbnail] = useState(
     post.thumbnail
       ? post.thumbnail[0] !== "/"
         ? `/${post.thumbnail}`

@@ -22,9 +22,9 @@ function MyApp({ Component, pageProps }) {
         />
       </Head>
 
-      <PostContextProvider>
+      <ToastProvider>
         <UserContextProvider>
-          <ToastProvider>
+          <PostContextProvider>
             <div className="flex justify-center">
               <div className="w-full sm:w-3/5 lg:w-2/5">
                 <Header />
@@ -32,9 +32,9 @@ function MyApp({ Component, pageProps }) {
                 <GetToastComponent />
               </div>
             </div>
-          </ToastProvider>
+          </PostContextProvider>
         </UserContextProvider>
-      </PostContextProvider>
+      </ToastProvider>
     </>
   );
 }

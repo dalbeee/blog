@@ -35,7 +35,7 @@ export const EditorComponent = forwardRef<
 const create: React.FC = (props) => {
   const { operation } = useUserContext();
   const { operation: toast } = useToastContext();
-  const { operation: post } = usePostContext();
+  const { post } = usePostContext();
   const router = useRouter();
 
   useEffect(() => {
@@ -68,7 +68,7 @@ const create: React.FC = (props) => {
 
     const content = ref.current?.getInstance().getMarkdown();
     const postData: PostDTO = { title, content };
-    const result = await post.createPost(postData);
+    const result = await post.operation.createPost(postData);
     logger(result);
     result.data && router.push("/");
   };

@@ -120,3 +120,10 @@ export const createCommentToPostBySlug = async (
     return { isError: true };
   }
 };
+
+export const getAllFilesPath = async () => {
+  const { data } = await axios.get(`${uri}/upload`);
+  // logger(data);
+
+  return data;
+};

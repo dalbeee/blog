@@ -3,11 +3,11 @@ import { usePostContext } from "../store/postContext";
 
 const PostController = () => {
   const router = useRouter();
-  const { operation } = usePostContext();
+  const { post } = usePostContext();
 
   //   TODO implement update method
   const onDelete = async () => {
-    const result = await operation.deletePost(router.query.slug as string);
+    const result = await post.operation.deletePost(router.query.slug as string);
     !result.isError && router.push("/");
   };
 

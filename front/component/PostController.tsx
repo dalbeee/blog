@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
 import { usePostContext } from "../store/postContext";
-import CommentController from "./CommentController";
 
 const PostController = () => {
   const router = useRouter();
@@ -27,7 +26,6 @@ const PostController = () => {
           </button>
         </div>
       </div>
-      <CommentController />
     </div>
   );
 };

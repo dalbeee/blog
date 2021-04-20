@@ -1,14 +1,33 @@
-import { useState } from "react";
 import { IPost, PostDTO } from "..";
 import { deletePostBySlug, createPost as axiosCreatePost } from "../util/axios";
 import { logger } from "../util/logger";
 import { useToastContext } from "./toastContext";
 import { useUserContext } from "./userContext";
+import { cloneDeep } from "lodash";
 
-const postReducer = () => {
-  const [posts, setPosts] = useState<IPost[]>([] as IPost[]);
+const postReducer = (store) => {
+  // const [posts, setPosts] = useState<IPost[]>([] as IPost[]);
+  const { posts, setPosts } = store;
   const { operation: toast } = useToastContext();
   const { userInfo: user } = useUserContext();
+
+  const setPostOne = (post: IPost) => {
+    setPosts((prev: IPost[]) => {
+      if (!prev.length) return [post];
+
+      const targetPost = prev.filter((p) => p.slug === post.slug)[0];
+      const targetPostIndexInPosts = prev.findIndex(
+        (post) => post.id === targetPost.id
+      );
+
+      if (!targetPost || targetPostIndexInPosts === -1) return prev;
+
+      const updatedPosts = cloneDeep(prev);
+      updatedPosts[targetPostIndexInPosts] = targetPost;
+      logger("updatedpost", updatedPosts);
+      return updatedPosts;
+    });
+  };
 
   const createPost = async (post: PostDTO) => {
     const result = await axiosCreatePost(post, user.access_token);
@@ -29,7 +48,7 @@ const postReducer = () => {
     return result;
   };
   const operation = { createPost, deletePost };
-  return { posts, setPosts, operation };
+  return { setPostOne, operation };
 };
 
 export default postReducer;

@@ -1,3 +1,7 @@
+export interface Comment {
+  body: string;
+  id?: number;
+}
 export interface IPost {
   title: string;
   content: string;
@@ -10,7 +14,7 @@ export interface IPost {
   user: {
     username: string;
   };
-  comments: [];
+  comments: Comment[];
 }
 
 export interface CustomAxiosResult {

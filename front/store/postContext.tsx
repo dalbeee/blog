@@ -1,12 +1,26 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import { IPost } from "..";
+import { logger } from "../util/logger";
 import commentReducer from "./commentReducer";
 import postReducer from "./postReducer";
 
 const reducer = () => {
-  const post = postReducer();
-  const comment = commentReducer();
+  const [posts, setPosts] = useState<IPost[]>([] as IPost[]);
 
+  const store = { posts, setPosts };
+
+  const post = postReducer(store);
+  const comment = commentReducer(store);
+
+  useEffect(() => {
+    logger(store);
+  }, [store, posts]);
+
+  // post.
   const returnType = {
+    posts,
+    setPosts,
+
     ...post,
     ...comment,
   };

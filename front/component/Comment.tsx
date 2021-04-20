@@ -4,7 +4,7 @@ const CommentChild = ({ comment }: { comment: CommentDTO }) => {
   return (
     <div className="flex items-center py-2">
       <div className="p-1 mr-2 text-gray-700 bg-gray-300 rounded-lg">
-        {comment?.user.username}
+        {comment?.user?.username}
       </div>
       <div className="">{comment.body}</div>
     </div>

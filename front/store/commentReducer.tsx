@@ -39,7 +39,7 @@ const commentReducer = (store) => {
   };
 
   return {
-    commentOperation: {
+    operation: {
       createComment,
     },
   };

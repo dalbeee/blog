@@ -6,8 +6,7 @@ import { useUserContext } from "./userContext";
 import { cloneDeep } from "lodash";
 
 const postReducer = (store) => {
-  // const [posts, setPosts] = useState<IPost[]>([] as IPost[]);
-  const { posts, setPosts } = store;
+  const { setPosts } = store;
   const { operation: toast } = useToastContext();
   const { userInfo: user } = useUserContext();
 
@@ -23,8 +22,7 @@ const postReducer = (store) => {
       if (!targetPost || targetPostIndexInPosts === -1) return prev;
 
       const updatedPosts = cloneDeep(prev);
-      updatedPosts[targetPostIndexInPosts] = targetPost;
-      logger("updatedpost", updatedPosts);
+      updatedPosts[targetPostIndexInPosts] = post;
       return updatedPosts;
     });
   };
@@ -47,8 +45,9 @@ const postReducer = (store) => {
 
     return result;
   };
-  const operation = { createPost, deletePost };
-  return { setPostOne, operation };
+
+  const operation = { createPost, deletePost, setPostOne };
+  return { operation };
 };
 
 export default postReducer;

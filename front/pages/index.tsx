@@ -15,9 +15,9 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 export default function Home({ posts }: { posts: IPost[] }) {
-  const { setPosts } = usePostContext();
+  const { post } = usePostContext();
   useEffect(() => {
-    setPosts(posts);
+    post.operation.setPosts(posts);
   }, []);
 
   return <Layout />;

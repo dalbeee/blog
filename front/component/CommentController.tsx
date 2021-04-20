@@ -4,7 +4,7 @@ import { CommentDTO } from "..";
 import { usePostContext } from "../store/postContext";
 
 const CommentController = () => {
-  const { commentOperation, setPosts } = usePostContext();
+  const { comment: commentContext } = usePostContext();
 
   const [comment, setComment] = useState<CommentDTO>(null);
 
@@ -13,7 +13,7 @@ const CommentController = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    const result = await commentOperation.createComment(
+    const result = await commentContext.operation.createComment(
       comment,
       router.query.slug as string
     );

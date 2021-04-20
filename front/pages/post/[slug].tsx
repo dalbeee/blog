@@ -7,7 +7,6 @@ import CommentController from "../../component/CommentController";
 import PostController from "../../component/PostController";
 import { usePostContext } from "../../store/postContext";
 import { getPostBySlug, getPosts } from "../../util/axios";
-import { logger } from "../../util/logger";
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const post = await getPostBySlug(context.params.slug as string);
@@ -35,14 +34,16 @@ export const getStaticPaths: GetStaticPaths = async () => {
 const PostDetail = ({ post }: { post: IPost }) => {
   if (!post) return <div>loading</div>;
 
-  const { setPostOne, posts } = usePostContext();
+  const { post: postContext } = usePostContext();
   const [targetPost, setTargetPost] = useState<IPost>();
 
-  useEffect(() => setPostOne(post), []);
+  useEffect(() => postContext.operation.setPostOne(post), []);
 
   useEffect(() => {
-    setTargetPost(posts.filter((p) => p.slug === post.slug)[0]);
-  }, [posts]);
+    setTargetPost(
+      postContext.store.posts.filter((p) => p.slug === post.slug)[0]
+    );
+  }, [postContext.store.posts]);
 
   if (!targetPost) return <div>loading</div>;
 

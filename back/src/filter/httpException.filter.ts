@@ -26,11 +26,9 @@ export class HttpExceptionFilter implements ExceptionFilter {
     this.logger.warn({ message: JSON.stringify(message), status });
 
     const result: HttpReturnType = {
-      response: {
-        isError: true,
-        message: message as string,
-        status,
-      },
+      isError: true,
+      message: message as string,
+      status,
     };
     response.status(status).json(result);
   }

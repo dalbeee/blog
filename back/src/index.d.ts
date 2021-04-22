@@ -1,7 +1,5 @@
 export interface HttpReturnType {
-  response: {
-    isError: boolean;
-    message: string;
-    status: number;
-  };
+  isError: boolean;
+  message: string;
+  status: number;
 }

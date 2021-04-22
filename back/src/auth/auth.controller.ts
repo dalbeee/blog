@@ -26,7 +26,9 @@ export class AuthController {
   @Get('validate')
   async isAuthenticated(): Promise<HttpReturnType> {
     return {
-      response: { isError: false, message: 'authorized', status: 200 },
+      isError: false,
+      message: 'authorized',
+      status: 200,
     };
   }
 }

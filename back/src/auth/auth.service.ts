@@ -1,10 +1,4 @@
-import {
-  HttpException,
-  HttpStatus,
-  Inject,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserRO } from 'src/user/dto/user.dto';
 import { UserService } from 'src/user/user.service';
@@ -22,6 +16,7 @@ export class AuthService {
 
   // TODO implement db exception
   async validateUser({ username, password: pass }: UserRO): Promise<UserRO> {
+    console.log('login');
     // try {
     const user = await this.usersService.findByName(username);
     if (!user) {
@@ -46,6 +41,7 @@ export class AuthService {
   }
 
   async login(user: UserRO) {
+    console.log(user);
     const payload = { username: user.username };
 
     try {

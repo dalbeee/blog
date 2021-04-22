@@ -1,129 +1,78 @@
-import axios from "axios";
+import axios, { Method } from "axios";
 import {
   CommentDTO,
-  IUserLoginResult,
-  IUserLoginResultError,
-  IUserLoginResultSuccess,
   UserLoginDTO,
   PostDTO,
-  CustomAxiosResult,
+  IUserLoginResultSuccess,
+  IUserLoginResultError,
 } from "..";
+import { getToken } from "./auth";
 import { logger } from "./logger";
 
-const uri = (() => {
-  if (process.env.IS_BUILD) return process.env.API_FROM_INTERNET;
-  return typeof window === "undefined" ? process.env.NEXT_PUBLIC_API : "/api";
-})();
+interface CustomAxiosResult<L = any, R = any> {
+  data?: R;
+  errorData?: L;
+  isError?: boolean;
+}
 
-export const login = async (
-  userLoginInfo: UserLoginDTO
-): Promise<IUserLoginResult> => {
+const defaults = {
+  uri: (() => {
+    if (process.env.IS_BUILD) return process.env.API_FROM_INTERNET;
+    return typeof window === "undefined" ? process.env.NEXT_PUBLIC_API : "/api";
+  })(),
+  headers: {
+    Authorization: getToken() ? `Bearer ${getToken()}` : undefined,
+  },
+};
+
+const getAxiosData = async <L extends any, R extends any>(
+  method: Method,
+  api: string,
+  variables?: string | Object
+): Promise<CustomAxiosResult<L, R>> => {
+  try {
+    const { data }: { data: R } = await axios.request({
+      url: `${defaults.uri}${api}`,
+      method,
+      data: method === "get" ? variables : undefined,
+      headers: defaults.headers,
+    });
+    logger(data);
+    return { data, isError: false };
+  } catch (error) {
+    logger("error", error.message, error?.statusCode);
+    const errorData: L = error.response.data;
+    return { errorData, isError: true };
+  }
+};
+
+export const login = async (userLoginInfo: UserLoginDTO) => {
   const requestData = {
     username: userLoginInfo.email,
     password: userLoginInfo.password,
   };
 
-  try {
-    const { data } = await axios.post<IUserLoginResultSuccess>(
-      `${uri}/auth/login`,
-      requestData
-    );
-    return { success: data };
-  } catch (error) {
-    const result: IUserLoginResultError = {
-      ...error.response.data.response,
-    };
-    return { error: result };
-  }
+  return await getAxiosData<IUserLoginResultError, IUserLoginResultSuccess>(
+    "POST",
+    "/auth/login",
+    requestData
+  );
 };
 
-export const checkUserAuthenticated = async (jwt: string) => {
-  try {
-    await axios.get(`${uri}/auth/validate`, {
-      headers: { Authorization: `Bearer ${jwt}` },
-    });
-    return { isAuthenticated: true };
-  } catch (error) {
-    return { isAuthenticated: false };
-  }
-};
+export const getPosts = async () => await getAxiosData("GET", "/posts");
 
-export const createPost = async (
-  postData: PostDTO,
-  jwt: string
-): Promise<CustomAxiosResult> => {
-  try {
-    const { data } = await axios.post(`${uri}/posts/create`, postData, {
-      headers: { Authorization: `Bearer ${jwt}` },
-    });
-    return { data };
-  } catch (error) {
-    logger("axios createPost", error.message, error?.statusCode);
-    return { isError: true };
-  }
-};
+export const getAllFilesPath = async () => await getAxiosData("GET", "/upload");
 
-export const getPosts = async () => {
-  try {
-    const { data } = await axios.get(`${uri}/posts`);
-    return data;
-  } catch (error) {
-    logger("error", error.message);
-    return null;
-  }
-};
+export const checkUserAuthenticated = async () =>
+  await getAxiosData("GET", "/auth/validate");
 
-export const getPostBySlug = async (
-  slug: string
-): Promise<CustomAxiosResult> => {
-  try {
-    const { data } = await axios.get(`${uri}/posts/${slug}`);
-    return { ...data };
-  } catch (error) {
-    logger("axios getPostBySlug", error.message);
-    return { isError: true };
-  }
-};
+export const getPostBySlug = async (slug: string) =>
+  await getAxiosData("GET", `/${slug}`);
 
-export const deletePostBySlug = async (
-  slug: string,
-  jwt: string
-): Promise<CustomAxiosResult> => {
-  try {
-    const { data } = await axios.delete(`${uri}/posts/${slug}`, {
-      headers: { Authorization: `Bearer ${jwt}` },
-    });
-
-    return { data };
-  } catch (error) {
-    // logger("axios postDelete", error);
-    return null;
-  }
-};
+export const createPost = async (postData: PostDTO) =>
+  await getAxiosData("POST", "/posts/create", postData);
 
 export const createCommentToPostBySlug = async (
   commentBody: CommentDTO,
-  targetPostSlug: string,
-  jwt: string
-): Promise<CustomAxiosResult> => {
-  try {
-    const { data } = await axios.post(
-      `${uri}/comments/create/${targetPostSlug}`,
-      commentBody,
-      {
-        headers: { Authorization: `Bearer ${jwt}` },
-      }
-    );
-    return { data };
-  } catch (error) {
-    logger("axios createCommentToPostBySlug", error.message);
-    return { isError: true };
-  }
-};
-
-export const getAllFilesPath = async () => {
-  const { data } = await axios.get(`${uri}/upload`);
-  // logger(data);
-
-  return data;
-};
+  targetPostSlug: string
+) => await getAxiosData("POST", `/${targetPostSlug}`, commentBody);

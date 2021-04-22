@@ -30,9 +30,9 @@ const reducer = () => {
   const isAuthenticated = async (): Promise<boolean> => {
     // TODO useInfo.access_token 에서 값이 초기화전에 먼저 넘어오는 문제가 있음
 
-    const access_token = localStorage.getItem(localStorageKey);
-    const { isAuthenticated } = await checkUserAuthenticated(access_token);
-    if (!isAuthenticated) {
+    const { isError } = await checkUserAuthenticated();
+
+    if (!isError) {
       operation.logout();
       return false;
     }
@@ -43,14 +43,16 @@ const reducer = () => {
     setError({} as IUserLoginResultError);
 
     const fn = async (): Promise<boolean> => {
-      const result = await axiosLogin(userInfo);
-      if (result?.error) {
-        setError(result.error);
+      const { data, errorData, isError } = await axiosLogin(userInfo);
+
+      if (isError) {
+        setError(errorData);
+
         return false;
       }
-      localStorage.setItem(localStorageKey, result.success.access_token);
-      localStorage.setItem("username", result.success.username);
-      setUserInfo(result.success);
+      localStorage.setItem(localStorageKey, data.access_token);
+      localStorage.setItem("username", data.username);
+      setUserInfo(data);
       router.push("/");
       return true;
     };

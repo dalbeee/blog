@@ -17,19 +17,10 @@ export interface IPost {
   comments: Comment[];
 }
 
-export interface CustomAxiosResult {
-  data?: {};
-  isError?: boolean;
-}
-
 export interface UserLoginDTO {
-  email: string;
+  username?: string;
+  email?: string;
   password: string;
-}
-
-export interface IUserLoginResult {
-  success?: IUserLoginResultSuccess;
-  error?: IUserLoginResultError;
 }
 
 interface IUserLoginResultError {

@@ -1,8 +1,8 @@
 const loggerFactory = function () {
-  if (typeof window === "undefined") return function () {};
   if (process.env.NODE_ENV !== "development") return function () {};
-
-  const logger = console.log.bind(window.console);
+  let logger;
+  if (typeof window === "undefined") logger = console.log.bind(global.console);
+  else logger = console.log.bind(window.console);
   return logger;
 };
 

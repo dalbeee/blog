@@ -46,6 +46,7 @@ const reducer = () => {
       const { data, errorData, isError } = await axiosLogin(userInfo);
 
       if (isError) {
+        logger("context", errorData);
         setError(errorData);
 
         return false;

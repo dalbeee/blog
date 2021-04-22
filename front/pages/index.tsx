@@ -6,8 +6,7 @@ import { usePostContext } from "../store/postContext";
 import { getPosts } from "../util/axios";
 
 export const getStaticProps: GetStaticProps = async () => {
-  const posts = await getPosts();
-
+  const { data: posts } = await getPosts();
   return {
     props: { posts },
     revalidate: 1,
@@ -16,6 +15,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
 export default function Home({ posts }: { posts: IPost[] }) {
   const { post } = usePostContext();
+
   useEffect(() => {
     post.operation.setPosts(posts);
   }, []);

@@ -7,9 +7,10 @@ import CommentController from "../../component/CommentController";
 import PostController from "../../component/PostController";
 import { usePostContext } from "../../store/postContext";
 import { getPostBySlug, getPosts } from "../../util/axios";
+import { logger } from "../../util/logger";
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const post = await getPostBySlug(context.params.slug as string);
+  const { data: post } = await getPostBySlug(context.params.slug as string);
 
   return {
     props: { post },
@@ -18,8 +19,9 @@ export const getStaticProps: GetStaticProps = async (context) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const getPostsData: IPost[] = await getPosts();
+  const { data: getPostsData } = await getPosts();
   const paths = [];
+  logger(getPostsData);
 
   getPostsData &&
     !!getPostsData.length &&

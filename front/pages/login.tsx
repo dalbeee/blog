@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { UserLoginDTO } from "..";
 import { useUserContext } from "../store/userContext";
-import { logger } from "../util/logger";
 import { useToastContext } from "../store/toastContext";
 
 const login = () => {
@@ -14,7 +13,7 @@ const login = () => {
   const onClick = async () => {
     if (!id || !password) return;
 
-    const requestUserInfo: UserLoginDTO = { email: id, password };
+    const requestUserInfo: UserLoginDTO = { username: id, password };
     const result = await operation.login(requestUserInfo);
 
     result

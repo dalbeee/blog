@@ -13,8 +13,8 @@ services:
   front:
     build:
       context: ./front
-      target: production
-      # target: development
+      # target: production
+      target: development
       dockerfile: Dockerfile
     ports:
       - "3000"
@@ -22,6 +22,7 @@ services:
       - ./front:/app
       - /app/node_modules
       - /app/.next
+    command: sh -c "sleep 10; npm run dev"
 
   back:
     build:

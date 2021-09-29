@@ -6,7 +6,8 @@ import { usePostContext } from "../store/postContext";
 import { getPosts } from "../util/axios";
 
 export const getStaticProps: GetStaticProps = async () => {
-  const { data: posts } = await getPosts();
+  let { data: posts } = await getPosts();
+  if (!posts) posts = [];
   return {
     props: { posts },
     revalidate: 1,

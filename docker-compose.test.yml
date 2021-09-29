@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  nginx:
+    volumes:
+      - ./nginx/production.conf:/etc/nginx/conf.d/default.conf
+      - ./storage/uploads:/mnt/storage/uploads
+
+  front:
+    build:
+      target: production
+      context: ./front
+    env_file: ./front/.env.test
+
+  back:
+    build:
+      target: production
+      context: ./back
+    env_file: ./back/.env.test
+
+  db:
+    environment:
+      MONGO_INITDB_DATABASE: test

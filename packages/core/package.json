@@ -1,5 +1,5 @@
 {
-  "name": "@mono/core",
+  "name": "@private/core",
   "private": true,
   "version": "1.0.0",
   "description": "Common package for MonoRepo",

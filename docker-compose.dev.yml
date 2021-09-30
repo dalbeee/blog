@@ -9,7 +9,7 @@ services:
   frontend:
     build:
       target: development
-      context: ./frontend
+      context: ./packages/frontend
     volumes:
       - ./frontend:/app
       - /app/node_modules
@@ -18,7 +18,7 @@ services:
   backend:
     build:
       target: development
-      context: ./backend
+      context: ./packages/backend
     volumes:
       - ./backend:/app
       - ./storage/uploads:/app/uploads

@@ -8,8 +8,6 @@ services:
       - "80:80"
 
   frontend:
-    build:
-      context: ./frontend
     ports:
       - "3000"
     environment:

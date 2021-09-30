@@ -14,6 +14,9 @@
 
     /* Advanced Options */
     "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+
+    "rootDir": ".",
+    "paths": { "@private/core/*": ["./packages/core/*"] }
   }
 }

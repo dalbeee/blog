@@ -2,6 +2,11 @@
 /.scannerwork
 storage/*
 
+**/dist
+**/.next
+**/node_modules
+**/log
+
 # compiled output
 /dist
 /node_modules

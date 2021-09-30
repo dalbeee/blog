@@ -1,10 +1,13 @@
 {
-  "name": "root",
+  "name": "@mono/root",
   "private": true,
   "devDependencies": {
     "lerna": "^4.0.0"
   },
   "workspaces": [
     "./packages/*"
-  ]
+  ],
+  "dependencies": {
+    "axios": "^0.21.4"
+  }
 }

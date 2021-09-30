@@ -1,0 +1,14 @@
+{
+  "name": "@mono/core",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Common package for MonoRepo",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "echo \"todo\""
+  },
+  "devDependencies": {
+    "typescript": "^4.4.3"
+  }
+}

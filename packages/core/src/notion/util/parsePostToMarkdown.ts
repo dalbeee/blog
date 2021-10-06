@@ -21,17 +21,17 @@ export const parseNotionPostToMarkdown = (post: NotionBlock): any => {
       case "heading_1": {
         const subBlock = block["heading_1"].text;
         const result = parseSubBlock(subBlock);
-        return `#${result}`;
+        return `# ${result}`;
       }
       case "heading_2": {
         const subBlock = block["heading_2"].text;
         const result = parseSubBlock(subBlock);
-        return `##${result}`;
+        return `## ${result}`;
       }
       case "heading_3": {
         const subBlock = block["heading_3"].text;
         const result = parseSubBlock(subBlock);
-        return `###${result}`;
+        return `### ${result}`;
       }
       case "paragraph": {
         const subBlock = block["paragraph"].text;

@@ -9,12 +9,13 @@ export interface IPost {
   id: number;
   thumbnail: string;
   slug: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
   user: {
     username: string;
   };
   comments: Comment[];
+  url?: null | string;
 }
 
 export interface UserLoginDTO {

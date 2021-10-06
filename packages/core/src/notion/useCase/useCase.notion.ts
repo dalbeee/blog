@@ -19,6 +19,8 @@ export class NotionUseCase {
         id: result.id,
         title: result.properties.이름.title?.[0]?.plain_text,
         url: result.url,
+        createdAt: result.created_time,
+        updatedAt: result.last_edited_time,
       }));
     };
 

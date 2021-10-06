@@ -18,6 +18,7 @@ export class NotionUseCase {
       return query.results.map((result) => ({
         id: result.id,
         title: result.properties.이름.title?.[0]?.plain_text,
+        url: result.url,
       }));
     };
 

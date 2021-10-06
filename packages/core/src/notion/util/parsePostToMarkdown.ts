@@ -41,7 +41,7 @@ export const parseNotionPostToMarkdown = (post: NotionBlock): any => {
       case "code": {
         const subBlock = block["code"].text;
         const result = parseSubBlock(subBlock);
-        return `\`\`\`${result}\`\`\``;
+        return `\`\`\`\n${result}\n\`\`\``;
       }
       case "image": {
         const subBlock = block["image"];

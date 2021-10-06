@@ -28,6 +28,7 @@ export interface DatabaseQueryResult {
       }>;
     };
   };
+  url: null | string;
 }
 
 export interface NotionPages {

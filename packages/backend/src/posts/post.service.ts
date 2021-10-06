@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/user/User.entity';
-import * as helper from 'src/utils';
+import * as helper from '@src/src/share/utils';
 import { QueryFailedError, Repository } from 'typeorm';
 import { PostDTO } from './dto/post.dto';
 import { Post } from './Post.entity';

@@ -6,6 +6,7 @@ storage/*
 **/.next
 **/node_modules
 **/log
+**/tsconfig.tsbuildinfo
 
 # compiled output
 /dist

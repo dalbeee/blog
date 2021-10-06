@@ -3,15 +3,11 @@ import { JwtService } from '@nestjs/jwt';
 import { UserRO } from 'src/user/dto/user.dto';
 import { UserService } from 'src/user/user.service';
 
-import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
-import { Logger } from 'winston';
-
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UserService,
     private jwtService: JwtService,
-    @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
   ) {}
 
   // TODO implement db exception

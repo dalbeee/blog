@@ -12,7 +12,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { UploadService } from './upload.service';
 import { v4 as uuidv4 } from 'uuid';
-
+import { Multer } from 'multer';
 @Controller('upload')
 export class UploadController {
   constructor(private readonly uploadService: UploadService) {}
@@ -37,7 +37,7 @@ export class UploadController {
       //
       fileFilter(
         req: Express.Request,
-        file: Express.Multer.File,
+        file: Multer.File,
         cb: (error: Error | null, acceptFile: boolean) => void,
       ) {
         console.log(file.mimetype);
@@ -46,7 +46,7 @@ export class UploadController {
       },
     }),
   )
-  uploadFile(@UploadedFile() file: Express.Multer.File, @Req() req) {
+  uploadFile(@UploadedFile() file: Multer.File, @Req() req) {
     console.log(req.headers);
     if (!file) {
       throw new HttpException('not supported file', 400);

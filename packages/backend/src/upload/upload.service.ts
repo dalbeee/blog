@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Upload } from './upload.entity';
+import { Multer } from 'multer';
 
 @Injectable()
 export class UploadService {
@@ -18,7 +19,7 @@ export class UploadService {
     }
   }
 
-  async saveFileDataToDB(file: Express.Multer.File): Promise<any> {
+  async saveFileDataToDB(file: Multer.File): Promise<any> {
     console.log('upload service>', file);
 
     try {

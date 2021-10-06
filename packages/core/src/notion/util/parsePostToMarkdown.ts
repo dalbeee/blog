@@ -1,6 +1,6 @@
-import { INotionBlock, SubBlock } from "./types";
+import { NotionBlock, SubBlock } from "../useCase/types";
 
-export const parseNotionPostToMarkdown = (post: INotionBlock): any => {
+export const parseNotionPostToMarkdown = (post: NotionBlock): any => {
   const content = post.results.map((block) => {
     const parseSubBlock = (subBlock: SubBlock[]) => {
       return subBlock

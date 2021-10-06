@@ -1,3 +1,5 @@
 export * from "./utils";
 
-export * as notion from "./useCase/notion";
+export * as infrastructure from "./infrastructure";
+
+export * as notion from "./notion";

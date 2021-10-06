@@ -1,14 +1,15 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 
-// import { devConsole } from "@core/utils/devConsole";
+import { devConsole } from "../..";
 import { HttpClient } from "./httpClient";
 
 export class Axios implements HttpClient {
   client: AxiosInstance;
 
-  constructor(private readonly url: string) {
+  constructor(private readonly url: string, axiosConfig?: AxiosRequestConfig) {
     const config: Partial<AxiosRequestConfig> = {
       baseURL: this.url,
+      ...axiosConfig,
     };
 
     const client = axios.create(config);
@@ -19,8 +20,8 @@ export class Axios implements HttpClient {
         return response.data;
       },
       (error) => {
-        console.log("error from axios layer :", error.response);
-        throw error.response.data;
+        devConsole("error from axios layer :", error);
+        // throw error.response.data;
       }
     );
   }

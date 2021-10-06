@@ -1,4 +1,36 @@
-export interface INotionPages {
+export interface DatabaseQueryResult {
+  object: string;
+  id: string;
+  created_time: string;
+  last_edited_time: string;
+  cover: string | null;
+  icon: null | {
+    type: string;
+    emoji: string;
+  };
+  parent: null | {
+    type: string;
+    database_id: string;
+  };
+  archived: boolean;
+  properties: {
+    // [key: string]: {
+    //   id: string;
+    //   type: string;
+    //   relation: Array<string>;
+    // };
+    이름?: {
+      id: string;
+      type: string;
+      title: Array<{
+        type: string;
+        plain_text: string;
+      }>;
+    };
+  };
+}
+
+export interface NotionPages {
   object: string;
   id: string;
   created_time: string;
@@ -39,7 +71,7 @@ export interface SubBlock {
   href: null | string;
 }
 
-export interface IBlock {
+export interface Block {
   object: string;
   id: string;
   created_time: string;
@@ -56,7 +88,7 @@ export interface IBlock {
   image?: BlockItem;
 }
 
-export interface INotionBlock {
+export interface NotionBlock {
   object: string;
-  results: IBlock[];
+  results: Block[];
 }

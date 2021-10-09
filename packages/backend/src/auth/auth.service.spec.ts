@@ -2,13 +2,12 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Post } from '../posts/Post.entity';
-import { User } from '../user/User.entity';
+import { Post } from '../posts/entity/post.entity';
+import { User } from '../user/entity/user.entity';
 import { UsersModule } from '../user/user.module';
 import { AuthService } from './auth.service';
-import { jwtConstants } from './constants';
-import { LocalStrategy } from './strategy.local';
-import { JwtStrategy } from './strategy.jwt';
+import { JwtStrategy } from './strategy/jwt.strategy';
+import { LocalStrategy } from './strategy/local.strategy';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -32,7 +31,7 @@ describe('AuthService', () => {
         UsersModule,
         PassportModule,
         JwtModule.register({
-          secret: jwtConstants.secret,
+          secret: process.env.SECRET_JWT,
           signOptions: { expiresIn: '90m' },
         }),
       ],

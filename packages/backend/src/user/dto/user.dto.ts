@@ -1,22 +1,15 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { Exclude } from 'class-transformer';
-import { IsString, Max, Min } from 'class-validator';
+import { IsEmail, IsString, Length } from 'class-validator';
 
 export class UserDTO {
-  @IsString()
-  @Min(6)
-  @Max(20)
+  @IsEmail()
+  @Length(6, 30)
   email: string;
 
   @IsString()
-  @Min(4)
-  @Max(20)
+  @Length(4, 20)
   username: string;
 
   @IsString()
-  @Min(6)
-  @Max(20)
+  @Length(6, 20)
   password: string;
 }
-
-export class UserRO extends PartialType(UserDTO) {}

@@ -8,16 +8,16 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { ClassSerializerInterceptor, UseInterceptors } from '@nestjs/common';
+import { JwtAuthGuard } from '@src/auth/guard/jwtAuth.guard';
+
 import { CommentDTO } from './comment.dto';
 import { CommentsService } from './comment.service';
-import { ClassSerializerInterceptor, UseInterceptors } from '@nestjs/common';
 
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('comments')
 export class CommentsController {
   constructor(private commentService: CommentsService) {}
-
   @Get()
   getAll() {
     return this.commentService.getAll();
@@ -46,7 +46,7 @@ export class CommentsController {
 
   @UseGuards(JwtAuthGuard)
   @Delete(':commentId')
-  deleteComment(@Req() req, @Param('commentId') commentId: number) {
+  deleteComment(@Req() req, @Param('commentId') commentId: string) {
     return this.commentService.deleteComment(req.user, commentId);
   }
 }

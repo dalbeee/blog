@@ -1,7 +1,9 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UserRO } from 'src/user/dto/user.dto';
-import { UserService } from 'src/user/user.service';
+import * as bcrypt from 'bcrypt';
+
+import { User } from '@src/user/entity/user.entity';
+import { UserService } from '@src/user/user.service';
 
 @Injectable()
 export class AuthService {
@@ -10,43 +12,19 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  // TODO implement db exception
-  async validateUser({ username, password: pass }: UserRO): Promise<UserRO> {
-    console.log('login');
-    // try {
-    const user = await this.usersService.findByName(username);
-    if (!user) {
-      throw new HttpException(
-        { target: 'id', message: 'id not found' },
-        HttpStatus.FORBIDDEN,
-      );
-    }
-    if (user.password !== pass)
-      throw new HttpException(
-        { target: 'password', message: 'user info not found' },
-        401,
-      );
-    const { password, posts, comments, ...result } = user;
-    return result;
-    // } catch (error) {
-    //   console.dir(error);
-    //   if (error instanceof HttpException) {
-    //   }
-    //   throw Error(error);
-    // }
+  async validateUser({ username, password }: any): Promise<User> {
+    const validatePassword = () => bcrypt.compareSync(password, user.password);
+
+    const user = await this.usersService.findByEmail(username);
+    if (!user || !validatePassword()) throw new UnauthorizedException();
+    return user;
   }
 
-  async login(user: UserRO) {
-    console.log(user);
-    const payload = { username: user.username };
+  async createAccessToken(user: User) {
+    const payload = { email: user.email };
 
-    try {
-      return {
-        access_token: this.jwtService.sign(payload),
-        username: user.username,
-      };
-    } catch (error) {
-      throw new HttpException({ message: 'error@auth.service.login' }, 501);
-    }
+    return {
+      access_token: this.jwtService.sign(payload),
+    };
   }
 }

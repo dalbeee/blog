@@ -1,6 +1,4 @@
 import { createConnection } from 'typeorm';
-import * as dotenv from 'dotenv';
-dotenv.config();
 
 export const databaseProviders = [
   {
@@ -14,7 +12,7 @@ export const databaseProviders = [
         password: process.env.PASSWORD,
         database: process.env.DATABASE,
         synchronize: true,
-        entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+        entities: [__dirname + '/**/*.entity{.ts,.js}'],
       }),
   },
 ];

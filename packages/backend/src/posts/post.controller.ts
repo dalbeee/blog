@@ -1,54 +1,56 @@
-import {
-  Body,
-  ClassSerializerInterceptor,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  Req,
-  UseGuards,
-  UseInterceptors,
-} from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { PostDTO } from './dto/post.dto';
-import { PostsService } from './post.service';
-@UseInterceptors(ClassSerializerInterceptor)
-@Controller('posts')
-export class PostsController {
-  constructor(private postsService: PostsService) {}
+// import {
+//   Body,
+//   ClassSerializerInterceptor,
+//   Controller,
+//   Delete,
+//   Get,
+//   Param,
+//   Post,
+//   UseGuards,
+//   UseInterceptors,
+// } from '@nestjs/common';
 
-  @Get()
-  getAll() {
-    return this.postsService.getAll();
-  }
+// import { CurrentUser } from '@src/auth/decorator/currentUser.decorator';
+// import { User } from '@src/user/entity/user.entity';
+// import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+// import { PostDTO } from './dto/post.dto';
+// import { PostsService } from './post.service';
 
-  @Get('/getById/:id')
-  getById(@Param('id') id: number) {
-    return this.postsService.getById(id);
-  }
+// @UseInterceptors(ClassSerializerInterceptor)
+// @Controller('posts')
+// export class PostsController {
+//   constructor(private postsService: PostsService) {}
 
-  @Get(':slug')
-  getBySlug(@Param('slug') slug: string) {
-    return this.postsService.getBySlug(slug);
-  }
+//   @Get()
+//   getAll() {
+//     return this.postsService.getAll();
+//   }
 
-  @UseGuards(JwtAuthGuard)
-  @Post('/create')
-  createPost(@Req() req, @Body() post: PostDTO) {
-    console.log('requser', req.user);
-    return this.postsService.createPost(req.user, post);
-  }
+//   @Get('/:id')
+//   getById(@Param('id') id: string) {
+//     return this.postsService.getById(id);
+//   }
 
-  // @UseGuards(JwtAuthGuard)
-  // @Delete(':id')
-  // deletePost(@Param('id') id: number) {
-  //   return this.postsService.deletePost(id);
-  // }
+//   @Get('/slug/:slug')
+//   getBySlug(@Param('slug') slug: string) {
+//     return this.postsService.getBySlug(slug);
+//   }
 
-  @UseGuards(JwtAuthGuard)
-  @Delete(':slug')
-  deletePostBySlug(@Param('slug') slug: string) {
-    return this.postsService.deletePostBySlug(slug);
-  }
-}
+//   @UseGuards(JwtAuthGuard)
+//   @Post()
+//   createPost(@CurrentUser() user: User, @Body() post: PostDTO) {
+//     return this.postsService.createPost(user, post);
+//   }
+
+//   // @UseGuards(JwtAuthGuard)
+//   // @Delete(':id')
+//   // deletePost(@Param('id') id: number) {
+//   //   return this.postsService.deletePost(id);
+//   // }
+
+//   @UseGuards(JwtAuthGuard)
+//   @Delete(':slug')
+//   deletePostBySlug(@Param('slug') slug: string) {
+//     return this.postsService.deletePostBySlug(slug);
+//   }
+// }

@@ -1,18 +1,16 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Post } from 'src/posts/Post.entity';
-import { UserDTO } from 'src/user/dto/user.dto';
-import { User } from 'src/user/User.entity';
 import { Repository } from 'typeorm';
+import { HttpException, Inject, Injectable } from '@nestjs/common';
+
+import { Post } from '@src/posts/entity/post.entity';
+import { User } from '@src/user/entity/user.entity';
 import { CommentDTO } from './comment.dto';
-import { Comment } from './comment.entity';
+import { Comment } from './entity/comment.entity';
 
 @Injectable()
 export class CommentsService {
   constructor(
     @Inject('COMMENT_REPOSITORY')
-    private commentRepository: Repository<Comment>,
-    @Inject('USER_REPOSITORY') private userRepository: Repository<User>,
+    private readonly commentRepository: Repository<Comment>,
     @Inject('POST_REPOSITORY') private postRepository: Repository<Post>,
   ) {}
 
@@ -26,7 +24,7 @@ export class CommentsService {
   }
 
   async createCommentToPostBySlug(
-    { username }: UserDTO,
+    user: User,
     postSlug: string,
     comment: CommentDTO,
   ) {
@@ -34,9 +32,8 @@ export class CommentsService {
       const getPostResult = await this.postRepository.findOne({
         slug: postSlug,
       });
-      const getUserResult = await this.userRepository.findOne({ username });
       const commentRow = this.commentRepository.create(comment);
-      commentRow.user = getUserResult;
+      commentRow.user = user;
       commentRow.post = getPostResult;
 
       return await this.commentRepository.save(commentRow);
@@ -47,12 +44,10 @@ export class CommentsService {
     }
   }
 
-  async createComment({ username }: UserDTO, comment: CommentDTO) {
+  async createComment(user: User, comment: CommentDTO) {
     try {
-      const userResult = await this.userRepository.findOne({ username });
-
       const row = this.commentRepository.create(comment);
-      row.user = userResult;
+      row.user = user;
       return await this.commentRepository.save(row);
     } catch (error) {
       console.log('error from comment > createComment', error.message);
@@ -61,7 +56,7 @@ export class CommentsService {
     }
   }
 
-  async deleteComment({ username }: UserDTO, commentId: number) {
+  async deleteComment(user: User, commentId: string) {
     try {
       const getCommentResult = await this.commentRepository.findOne(
         {
@@ -71,7 +66,7 @@ export class CommentsService {
       );
 
       if (!getCommentResult) throw new HttpException('comment not found', 400);
-      if (getCommentResult.user.username !== username)
+      if (getCommentResult.user !== user)
         throw new HttpException('authenticate error', 401);
 
       return await this.commentRepository.delete(commentId);

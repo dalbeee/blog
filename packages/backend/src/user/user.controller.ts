@@ -1,35 +1,36 @@
 import {
   Body,
-  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
   Param,
   Post,
-  Put,
   UseGuards,
-  UseInterceptors,
 } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+
+import { CurrentUser } from '@src/auth/decorator/currentUser.decorator';
+import { JwtAuthGuard } from '@src/auth/guard/jwtAuth.guard';
 import { UserDTO } from './dto/user.dto';
+import { User } from './entity/user.entity';
 import { UserService } from './user.service';
 
-@UseInterceptors(ClassSerializerInterceptor)
 @Controller('users')
 export class UsersController {
   constructor(private usersService: UserService) {}
 
+  // @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
     return this.usersService.findAll();
   }
 
+  // @UseGuards(JwtAuthGuard)
   @Get(':username')
-  findById(@Param('username') username: string) {
+  findByName(@Param('username') username: string) {
     return this.usersService.findByName(username);
   }
 
-  @Post('/create')
+  @Post()
   createUser(@Body() user: UserDTO) {
     return this.usersService.createUser(user);
   }
@@ -38,9 +39,9 @@ export class UsersController {
   // @Put()
   // updateUser() {}
 
-  // @UseGuards(JwtAuthGuard)
-  // @Delete()
-  // deleteUser(@Body() user: UserDTO) {
-  //   return this.usersService.deleteUser(user);
-  // }
+  @UseGuards(JwtAuthGuard)
+  @Delete('/:email')
+  deleteUser(@Param('email') email: string, @CurrentUser() user: User) {
+    return this.usersService.deleteUser(email, user);
+  }
 }

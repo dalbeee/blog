@@ -1,71 +1,61 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
-import { QueryFailedError, Repository } from 'typeorm';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+
 import { UserDTO } from './dto/user.dto';
-import { User } from './User.entity';
+import { User } from './entity/user.entity';
+import { UserRepository } from './user.repository';
 
 @Injectable()
 export class UserService {
-  constructor(
-    @Inject('USER_REPOSITORY') private userRepository: Repository<User>,
-  ) {}
+  constructor(private readonly userRepository: UserRepository) {}
 
-  async findAll(): Promise<any> {
+  async findAll(): Promise<User[]> {
+    return await this.userRepository.find();
+  }
+
+  async findByName(username: string): Promise<User> {
     try {
-      return await this.userRepository.find();
+      return await this.userRepository.findOneOrFail(
+        { username },
+        // { relations: ['posts', 'comments'] },
+      );
     } catch (error) {
-      console.log('error from user > findAll', error.message);
-
-      throw new Error(error.message);
+      throw new NotFoundException();
     }
   }
 
-  async findByName(username: string): Promise<any> {
+  async findByEmail(email: string): Promise<User> {
     try {
-      const result = await this.userRepository.findOne(
-        { username },
-        { relations: ['posts', 'comments'] },
+      return await this.userRepository.findOneOrFail(
+        { email },
+        // { relations: ['posts', 'comments'] },
       );
+    } catch (error) {
+      throw new NotFoundException();
+    }
+  }
 
-      // TODO httpException 을 던져서 스택에서 못잡으면 500 에러를 띄운다 -> 어떻게 에러를 계속 전달?
-      // if (!result)
-      //   throw new HttpException({ target: 'id', message: 'id not found' }, 400);
+  async createUser(user: UserDTO): Promise<User> {
+    try {
+      const row = this.userRepository.create(user);
+      return await this.userRepository.save(row);
+    } catch (error) {
+      throw new ConflictException(error.message);
+    }
+  }
+
+  async deleteUser(email: string, user: User) {
+    if (user.email !== email) throw new BadRequestException();
+
+    try {
+      const result = await this.userRepository.softDelete({ email });
       return result;
     } catch (error) {
-      console.log('error from user > findByName', error.message);
-
-      throw Error(error.message);
-    }
-  }
-
-  async createUser(user: UserDTO): Promise<any> {
-    try {
-      const newUser = await this.userRepository.save(user);
-      console.log(newUser);
-      return newUser;
-    } catch (error) {
-      const message = [];
-      console.log('error from user > createUser', error.message);
-
-      if (error instanceof QueryFailedError)
-        message.push({ code: 401, message: 'duplicate' });
-      throw new HttpException({ error: message }, HttpStatus.CONFLICT);
-    }
-  }
-
-  // TODO 마무리
-  async deleteUser({ username }: UserDTO) {
-    try {
-      const userData = await this.userRepository.findOne({ username });
-
-      userData.posts = null;
-      const result = await this.userRepository.save(userData);
-      console.log(result);
-
-      return await this.userRepository.delete({ username });
-    } catch (error) {
-      console.log('error from user > deleteUser', error.message);
-
-      throw new Error(error.message);
+      throw new ConflictException(error.message);
     }
   }
 }

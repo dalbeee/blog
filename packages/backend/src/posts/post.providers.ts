@@ -1,5 +1,5 @@
 import { Connection } from 'typeorm';
-import { Post } from './Post.entity';
+import { Post } from './entity/post.entity';
 
 export const postRepository = {
   provide: 'POST_REPOSITORY',

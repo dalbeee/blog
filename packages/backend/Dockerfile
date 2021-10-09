@@ -8,20 +8,31 @@ RUN chown -R node:node /app
 USER node
 WORKDIR /app
 COPY package.json tsconfig.build.json ./
-RUN npm i
+RUN yarn install
 EXPOSE 3000
-CMD npm run start:dev
+CMD yarn start:dev
+
+
+FROM node:lts-alpine as testing
+RUN mkdir -p /app/dist
+RUN chown -R node:node /app
+USER node
+WORKDIR /app
+COPY --chown=node:node --from=development /app/node_modules ./node_modules
+COPY . .
+# ENV CI=true
+CMD yarn test:e2e
 
 FROM node:lts-alpine as build
 WORKDIR /app
-COPY --from=development /app/node_modules ./node_modules
+COPY --chown=node:node --from=development /app/node_modules ./node_modules
 COPY . .
-RUN npm run build
+RUN yarn build
 
 FROM node:lts-alpine as node_modules_production
 WORKDIR /app
 COPY . .
-RUN npm i --production
+RUN yarn install --production
 
 FROM node:lts-alpine as production
 USER node
@@ -32,4 +43,4 @@ COPY --chown=node:node --from=build /app/dist ./dist
 COPY --chown=node:node package.json ./
 
 EXPOSE 3000
-CMD npm run start:prod
+CMD yarn start:prod

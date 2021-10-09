@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from '../user/User.entity';
-import { Post } from './Post.entity';
+import { User } from '../user/entity/user.entity';
+import { Post } from './entity/post.entity';
 import { PostsService } from './post.service';
 
 describe('PostsService', () => {

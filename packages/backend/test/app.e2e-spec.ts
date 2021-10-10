@@ -243,7 +243,7 @@ describe('USER MODULE', () => {
         .expect(200);
     });
 
-    it('change username and login will return 201', async () => {
+    it('change username and login will return 200', async () => {
       await request(app.getHttpServer())
         .patch(`/users/${user.email}`)
         .send({
@@ -255,10 +255,10 @@ describe('USER MODULE', () => {
       await request(app.getHttpServer())
         .post('/auth/login')
         .send({ email: user.email, password: user.password })
-        .expect(201);
+        .expect(200);
     });
 
-    it('change email and login with changed email will return 201', async () => {
+    it('change email and login with changed email will return 200', async () => {
       await request(app.getHttpServer())
         .patch(`/users/${user.email}`)
         .send({
@@ -270,10 +270,10 @@ describe('USER MODULE', () => {
       await request(app.getHttpServer())
         .post('/auth/login')
         .send({ email: 'tester@email.com', password: user.password })
-        .expect(201);
+        .expect(200);
     });
 
-    it('change password and login with changed password will return 201', async () => {
+    it('change password and login with changed password will return 200', async () => {
       await request(app.getHttpServer())
         .patch(`/users/${user.email}`)
         .send({
@@ -290,7 +290,7 @@ describe('USER MODULE', () => {
       await request(app.getHttpServer())
         .post('/auth/login')
         .send({ email: user.email, password: 'changedPW' })
-        .expect(201);
+        .expect(200);
     });
 
     it('change duplicated email will return 409', async () => {
@@ -355,7 +355,7 @@ describe('USER MODULE', () => {
       });
     });
 
-    it('after delete, login with same info will return 404', async () => {
+    it('after delete, login with same info will return 401', async () => {
       await request(app.getHttpServer())
         .delete(`/users/${user.email}`)
         .set('Authorization', `Bearer ${access_token}`)
@@ -364,7 +364,7 @@ describe('USER MODULE', () => {
       await request(app.getHttpServer())
         .post(`/auth/login`)
         .send({ email: user.email, password: user.password })
-        .expect(404);
+        .expect(401);
     });
   });
 });
@@ -388,6 +388,51 @@ describe('AUTH MODULE', () => {
         .send({ email: user.email, password: user.password });
 
       expect(body.access_token).toEqual(expect.any(String));
+    });
+
+    it('with successful login will return 200', async () => {
+      const user: UserDTO = {
+        email: faker.internet.email(),
+        username: faker.datatype.string(10),
+        password: faker.datatype.string(10),
+      };
+
+      await request(app.getHttpServer()).post(`/users`).send(user).expect(201);
+
+      await request(app.getHttpServer())
+        .post(`/auth/login`)
+        .send({ email: user.email, password: user.password })
+        .expect(200);
+    });
+
+    it('with invalid password login will return 401', async () => {
+      const user: UserDTO = {
+        email: faker.internet.email(),
+        username: faker.datatype.string(10),
+        password: faker.datatype.string(10),
+      };
+
+      await request(app.getHttpServer()).post(`/users`).send(user).expect(201);
+
+      await request(app.getHttpServer())
+        .post(`/auth/login`)
+        .send({ email: user.email, password: '123456' })
+        .expect(401);
+    });
+
+    it('with invalid email login will return 401', async () => {
+      const user: UserDTO = {
+        email: faker.internet.email(),
+        username: faker.datatype.string(10),
+        password: faker.datatype.string(10),
+      };
+
+      await request(app.getHttpServer()).post(`/users`).send(user).expect(201);
+
+      await request(app.getHttpServer())
+        .post(`/auth/login`)
+        .send({ email: 'test@gmail.com', password: user.password })
+        .expect(401);
     });
 
     it(`export util function 'getUserAndJwt' will valid`, async () => {

@@ -11,7 +11,7 @@ services:
       target: development
       context: ./packages/frontend
     volumes:
-      - ./frontend:/app
+      - ./packages/frontend:/app
       - /app/node_modules
       - /app/.next
 
@@ -20,7 +20,7 @@ services:
       target: development
       context: ./packages/backend
     volumes:
-      - ./backend:/app
+      - ./packages/backend:/app
       - ./storage/uploads:/app/uploads
       - /app/node_modules
       - /app/dist
@@ -30,6 +30,24 @@ services:
       USER: root
       PASSWORD: "secret-pw"
       DATABASE: "nest-blog"
+      SECRET_JWT: jA#()*%!@13
+
+  backend_test:
+    build:
+      target: testing
+      context: ./packages/backend
+    volumes:
+      - ./packages/backend:/app
+      - ./storage/uploads:/app/uploads
+      - /app/node_modules
+      - /app/dist
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      USER: root
+      PASSWORD: "secret-pw"
+      DATABASE: "nest-blog"
+      SECRET_JWT: jA#()*%!@13
 
   db:
     image: mysql:8.0.23
@@ -39,4 +57,5 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: "secret-pw"
       MYSQL_DATABASE: "nest-blog"
-
+    cap_add:
+      - SYS_NICE

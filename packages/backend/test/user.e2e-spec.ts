@@ -1,39 +1,38 @@
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import supertest, * as request from 'supertest';
+import * as request from 'supertest';
 import * as faker from 'faker';
 
 import { User } from '@src/user/entity/user.entity';
 import { UserDTO } from '@src/user/dto/user.dto';
 import { AppModule } from '@src/app.module';
 import { UserRepository } from '@src/user/user.repository';
+import { getUserAndJwt } from './util/getUserAndJwt';
 
-describe('userModule', () => {
-  let app: INestApplication;
-  let userRepository: UserRepository;
+let app: INestApplication;
+let userRepository: UserRepository;
 
-  beforeAll(async () => {
-    const moduleRef = await Test.createTestingModule({
-      imports: [AppModule],
-      providers: [UserRepository],
-    }).compile();
+beforeAll(async () => {
+  const moduleRef = await Test.createTestingModule({
+    imports: [AppModule],
+    providers: [UserRepository],
+  }).compile();
 
-    app = moduleRef.createNestApplication();
-    await app.init();
+  app = moduleRef.createNestApplication();
+  await app.init();
 
-    userRepository = moduleRef.get<UserRepository>(UserRepository);
-  });
+  userRepository = moduleRef.get<UserRepository>(UserRepository);
+});
 
-  afterEach(async () => userRepository.clear());
+afterEach(async () => userRepository.clear());
 
-  afterAll(() => app.close());
+afterAll(() => app.close());
 
-  //
-
-  describe('createUser method', () => {
+describe('USER MODULE', () => {
+  describe('@POST /users : createUser method', () => {
     const url = `/users`;
 
-    describe('with unvalid info', () => {
+    describe('check DTO', () => {
       it('empty username will return 400', async () => {
         const userDTO: Partial<UserDTO> = {
           email: faker.internet.email(),
@@ -94,6 +93,16 @@ describe('userModule', () => {
         };
         await request(app.getHttpServer()).post(url).send(userDTO).expect(400);
       });
+
+      it('username, password field space not allow. return 400', async () => {
+        const userDTO: UserDTO = {
+          email: faker.internet.email(),
+          username: 'test user',
+          password: '123456',
+        };
+
+        await request(app.getHttpServer()).post(url).send(userDTO).expect(400);
+      });
     });
 
     describe('with valid info', () => {
@@ -124,127 +133,266 @@ describe('userModule', () => {
         expect(body.password).toBeUndefined();
       });
 
-      it('duplicate will return 409', async () => {
-        await request(app.getHttpServer()).post(url).send(userDTO).expect(201);
-        await request(app.getHttpServer()).post(url).send(userDTO).expect(409);
+      it('duplicate email will return 409', async () => {
+        const userDTO1: UserDTO = {
+          email: 'test@email.com',
+          username: faker.datatype.string(10),
+          password: '123456',
+        };
+
+        const userDTO2: UserDTO = {
+          email: 'test@email.com',
+          username: faker.datatype.string(10),
+          password: '123456',
+        };
+
+        await request(app.getHttpServer()).post(url).send(userDTO1).expect(201);
+        await request(app.getHttpServer()).post(url).send(userDTO2).expect(409);
+      });
+
+      it('duplicate username will return 409', async () => {
+        const userDTO1: UserDTO = {
+          email: faker.internet.email(),
+          username: 'testuser1',
+          password: '123456',
+        };
+
+        const userDTO2: UserDTO = {
+          email: faker.internet.email(),
+          username: 'testuser1',
+          password: '123456',
+        };
+
+        await request(app.getHttpServer()).post(url).send(userDTO1).expect(201);
+        await request(app.getHttpServer()).post(url).send(userDTO2).expect(409);
       });
     });
   });
 
-  describe('findUser method', () => {
-    let user: Overwrite<request.Response, { body: User }>;
-    let result: Overwrite<request.Response, { body: User }>;
+  describe('@GET /users', () => {
+    let user: UserDTO;
+    let token: string;
 
     beforeEach(async () => {
-      const userDTO: UserDTO = {
-        email: faker.internet.email(),
-        username: faker.lorem.word(10),
-        password: '123456',
-      };
-
-      user = await request(app.getHttpServer()).post('/users').send(userDTO);
-      result = await request(app.getHttpServer()).get(
-        `/users/${user.body.username}`,
-      );
+      [user, token] = await getUserAndJwt(app);
     });
 
-    it('one will success', async () => {
-      expect(result.body).toBeDefined();
-    });
-
-    it('will not return password', async () => {
-      expect(result.body.password).not.toBeDefined();
+    it('without JWT will return 401', async () => {
+      await request(app.getHttpServer()).get(`/users`).expect(401);
     });
   });
 
-  //
-  //
+  describe('@GET /users/:email : findUser method', () => {
+    let results: User[] = [];
 
-  describe('deleteUser method', () => {
-    let userDTO: UserDTO;
-    let user: Overwrite<request.Response, { body: User }>;
-    type Result = Overwrite<request.Response, { body: User }>;
-
-    beforeEach(async () => {
-      userDTO = {
-        email: faker.internet.email(),
-        username: faker.lorem.word(10),
-        password: '123456',
-      };
-
-      user = await request(app.getHttpServer()).post(`/users`).send(userDTO);
+    const userFactory = (): UserDTO => ({
+      email: faker.internet.email(),
+      username: faker.random.alpha({ count: 10 }),
+      password: faker.datatype.string(10),
     });
 
-    describe('authGuard test', () => {
+    beforeEach(async () => {
+      const createUser = async (user: UserDTO) =>
+        await request(app.getHttpServer()).post('/users').send(user);
+
+      const users = Array.from({ length: 10 }, userFactory);
+
+      results = await Promise.all(
+        users.map(async (user) => {
+          const result = await createUser(user);
+          return result.body;
+        }),
+      );
+    });
+
+    it('find one will return 200', async () => {
+      await request(app.getHttpServer())
+        .get(`/users/${results[0].email}`)
+        .expect(200);
+    });
+
+    it('find one will return User Object', async () => {
+      await request(app.getHttpServer())
+        .get(`/users/${results[0].email}`)
+        .expect(results[0]);
+    });
+  });
+
+  describe('@PATCH /users/:email : patchUser method', () => {
+    let user: UserDTO;
+    let token: string;
+
+    beforeEach(async () => {
+      [user, token] = await getUserAndJwt(app);
+    });
+
+    it('without JWT will return 401', async () => {
+      await request(app.getHttpServer())
+        .patch(`/users/${user.email}`)
+        .send({ email: 'test@gmail.com' })
+        .expect(401);
+    });
+
+    it('change username will return 200', async () => {
+      await request(app.getHttpServer())
+        .patch(`/users/${user.email}`)
+        .send({
+          username: 'tester',
+        })
+        .set('Authorization', `Bearer ${token}`)
+        .expect(200);
+    });
+
+    it('change username and login will return 201', async () => {
+      await request(app.getHttpServer())
+        .patch(`/users/${user.email}`)
+        .send({
+          username: 'testname',
+        })
+        .set('Authorization', `Bearer ${token}`)
+        .expect(200);
+
+      await request(app.getHttpServer())
+        .post('/auth/login')
+        .send({ email: user.email, password: user.password })
+        .expect(201);
+    });
+
+    it('change email and login with changed email will return 201', async () => {
+      await request(app.getHttpServer())
+        .patch(`/users/${user.email}`)
+        .send({
+          email: 'tester@email.com',
+        })
+        .set('Authorization', `Bearer ${token}`)
+        .expect(200);
+
+      await request(app.getHttpServer())
+        .post('/auth/login')
+        .send({ email: 'tester@email.com', password: user.password })
+        .expect(201);
+    });
+
+    it('change password and login with changed password will return 201', async () => {
+      await request(app.getHttpServer())
+        .patch(`/users/${user.email}`)
+        .send({
+          password: 'changedPW',
+        })
+        .set('Authorization', `Bearer ${token}`)
+        .expect(200);
+
+      await request(app.getHttpServer())
+        .post('/auth/login')
+        .send({ email: user.email, password: user.password })
+        .expect(401);
+
+      await request(app.getHttpServer())
+        .post('/auth/login')
+        .send({ email: user.email, password: 'changedPW' })
+        .expect(201);
+    });
+
+    it('change duplicated email will return 409', async () => {
+      const existUser: UserDTO = {
+        email: 'exist@mail.com',
+        username: faker.datatype.string(10),
+        password: faker.datatype.string(10),
+      };
+
+      await request(app.getHttpServer())
+        .post('/users')
+        .send(existUser)
+        .expect(201);
+
+      await request(app.getHttpServer())
+        .patch(`/users/${user.email}`)
+        .send({ email: existUser.email })
+        .set('Authorization', `Bearer ${token}`)
+        .expect(409);
+    });
+
+    it('change duplicated username will return 409', async () => {
+      const existUser: UserDTO = {
+        email: faker.internet.email(),
+        username: 'existUser',
+        password: faker.datatype.string(10),
+      };
+
+      await request(app.getHttpServer())
+        .post('/users')
+        .send(existUser)
+        .expect(201);
+
+      await request(app.getHttpServer())
+        .patch(`/users/${user.email}`)
+        .send({ username: existUser.username })
+        .set('Authorization', `Bearer ${token}`)
+        .expect(409);
+    });
+  });
+
+  describe('@DELETE /users/:email : deleteUser method', () => {
+    let user: UserDTO;
+    let access_token: string;
+
+    beforeEach(async () => {
+      [user, access_token] = await getUserAndJwt(app);
+    });
+
+    describe('without JWT will return 401', () => {
       it('without JWT will return 401', async () => {
         await request(app.getHttpServer())
-          .delete(`/users/${userDTO.email}`)
+          .delete(`/users/${user.email}`)
           .expect(401);
       });
 
       it('with JWT will return 200', async () => {
-        const jwt = await request(app.getHttpServer())
-          .post(`/auth/login`)
-          .send({
-            email: userDTO.email,
-            password: userDTO.password,
-          });
-
         await request(app.getHttpServer())
-          .delete(`/users/${userDTO.email}`)
-          .set('Authorization', `Bearer ${jwt.body.access_token}`)
+          .delete(`/users/${user.email}`)
+          .set('Authorization', `Bearer ${access_token}`)
           .expect(200);
       });
     });
 
-    it('after delete, attempt with same info will failed to login', async () => {
-      const userDTO: UserDTO = {
-        email: faker.internet.email(),
-        username: faker.datatype.string(10),
-        password: '123456',
-      };
-
-      await request(app.getHttpServer()).post(`/users`).send(userDTO);
-
-      const jwt = await request(app.getHttpServer()).post(`/auth/login`).send({
-        email: userDTO.email,
-        password: userDTO.password,
-      });
-
+    it('after delete, login with same info will return 404', async () => {
       await request(app.getHttpServer())
-        .delete(`/users/${userDTO.email}`)
-        .set('Authorization', `Bearer ${jwt.body.access_token}`)
+        .delete(`/users/${user.email}`)
+        .set('Authorization', `Bearer ${access_token}`)
         .expect(200);
 
       await request(app.getHttpServer())
         .post(`/auth/login`)
-        .send({ email: userDTO.email, password: userDTO.password })
+        .send({ email: user.email, password: user.password })
         .expect(404);
     });
   });
+});
 
-  describe('/auth/login method', () => {
-    it('module was defined', async () => {
-      await request(app.getHttpServer()).get(`/auth`).expect(200);
-    });
+describe('AUTH MODULE', () => {
+  describe('@POST /auth/login', () => {
+    let user: UserDTO;
+    let token: string;
 
     it('with successful login will get jwt token', async () => {
-      const userDTO: UserDTO = {
+      const user: UserDTO = {
         email: faker.internet.email(),
         username: faker.datatype.string(10),
-        password: '123456',
+        password: faker.datatype.string(10),
       };
 
-      await request(app.getHttpServer())
-        .post(`/users`)
-        .send(userDTO)
-        .expect(201);
+      await request(app.getHttpServer()).post(`/users`).send(user).expect(201);
 
-      const result = await request(app.getHttpServer())
+      const { body } = await request(app.getHttpServer())
         .post(`/auth/login`)
-        .send({ email: userDTO.email, password: userDTO.password });
+        .send({ email: user.email, password: user.password });
 
-      expect(result.body.access_token).toBeDefined();
+      expect(body.access_token).toEqual(expect.any(String));
+    });
+
+    it(`export util function 'getUserAndJwt' will valid`, async () => {
+      [user, token] = await getUserAndJwt(app);
+      expect(token).toEqual(expect.any(String));
     });
   });
 });

@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import { UserDTO } from './dto/user.dto';
+import { UpdateUserDTO, UserDTO } from './dto/user.dto';
 import { User } from './entity/user.entity';
 import { UserRepository } from './user.repository';
 
@@ -48,14 +48,33 @@ export class UserService {
     }
   }
 
-  async deleteUser(email: string, user: User) {
-    if (user.email !== email) throw new BadRequestException();
+  async patchUser(user: User, updateUserDTO: UpdateUserDTO): Promise<any> {
+    if (updateUserDTO?.email) {
+      try {
+        const findRow = await this.findByEmail(updateUserDTO.email);
+        if (findRow) throw new ConflictException('email not available');
+      } catch (error) {}
+    }
+
+    if (updateUserDTO?.username) {
+      try {
+        const findRow = await this.findByName(updateUserDTO.username);
+        if (findRow) throw new ConflictException('username not available');
+      } catch (error) {}
+    }
 
     try {
-      const result = await this.userRepository.softDelete({ email });
-      return result;
+      const updateRow: User = Object.assign(user, updateUserDTO);
+      return await this.userRepository.save(updateRow);
     } catch (error) {
       throw new ConflictException(error.message);
     }
+  }
+
+  async deleteUser(email: string, user: User) {
+    if (user.email !== email) throw new BadRequestException();
+
+    const result = await this.userRepository.softDelete({ email });
+    return result;
   }
 }

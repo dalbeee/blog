@@ -4,21 +4,21 @@ RUN mkdir -p /app/.next
 RUN chown -R node:node /app
 USER node
 WORKDIR /app
-COPY package.json .
-RUN npm i
+COPY package.json ./
+RUN yarn install
 EXPOSE 3000
-CMD npm run dev
+CMD yarn dev
 
 FROM node:lts-alpine as build
 WORKDIR /app
 COPY . .
 COPY --from=development /app/node_modules ./node_modules
-RUN npm run build
+RUN yarn build
 
 FROM node:lts-alpine as node_modules_production
 WORKDIR /app
 COPY . .
-RUN npm i --production
+RUN yarn install --production
 
 FROM node:lts-alpine as production
 ENV NODE_ENV production

@@ -1,6 +1,9 @@
 {
-  "extends": "../../tsconfig.json",
+  // "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "rootDir": ".",
+    "paths": { "@private/core/*": ["./packages/core/*"] },
+
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,

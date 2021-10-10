@@ -5,27 +5,35 @@ import { IPost } from "../..";
 import Comment from "../../component/Comment";
 import CommentController from "../../component/CommentController";
 import PostController from "../../component/PostController";
+import useNotion from "../../hooks/useNotion";
 import { usePostContext } from "../../store/postContext";
 import { getPostBySlug, getPosts } from "../../util/axios";
 import { logger } from "../../util/logger";
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const { data: post } = await getPostBySlug(context.params.slug as string);
-
+  // const { data: post } = await getPostBySlug(context.params.slug as string);
+  const notionAPI = useNotion();
+  const post = await notionAPI.getPost(context.params.slug as string);
+  console.log(post);
   return {
-    props: { post },
+    props: { post: { title: "string", content: post } },
     revalidate: 1,
   };
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const { data: getPostsData } = await getPosts();
+  // const { data: getPostsData } = await getPosts();
+  const notionAPI = useNotion();
+  const getPostsData = await notionAPI.getPosts(
+    "4a31fcbc35a14835a01cbdb421525d09"
+  );
   const paths = [];
-  logger(getPostsData);
+  // logger(getPostsData);
 
   getPostsData &&
     !!getPostsData.length &&
-    getPostsData.map((post) => paths.push({ params: { slug: post.slug } }));
+    getPostsData.map((post) => paths.push({ params: { slug: post.id } }));
+  // getPostsData.map((post) => paths.push({ params: { slug: post.slug } }));
 
   return {
     paths,
@@ -34,7 +42,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 const PostDetail = ({ post }: { post: IPost }) => {
-  if (!post) return <div>loading</div>;
+  console.log(post);
+  // if (!post) return <div>loading</div>;
 
   const { post: postContext } = usePostContext();
   const [targetPost, setTargetPost] = useState<IPost>();
@@ -59,8 +68,8 @@ const PostDetail = ({ post }: { post: IPost }) => {
         <ReactMarkdown className="w-full py-4 text-gray-700 break-words markdown">
           {targetPost.content}
         </ReactMarkdown>
-        <Comment comments={targetPost.comments} />
-        <CommentController />
+        {/* <Comment comments={targetPost.comments} /> */}
+        {/* <CommentController /> */}
       </div>
     </div>
   );

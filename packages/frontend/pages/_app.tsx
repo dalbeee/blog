@@ -4,7 +4,7 @@ import Head from "next/head";
 
 import { PostContextProvider } from "../store/postContext";
 import { UserContextProvider } from "../store/userContext";
-// import { GetToastComponent, ToastProvider } from "../store/toastContext";
+import { GetToastComponent, ToastProvider } from "../store/toastContext";
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -22,19 +22,19 @@ function MyApp({ Component, pageProps }) {
         />
       </Head>
 
-      {/* <ToastProvider> */}
-      <UserContextProvider>
-        <PostContextProvider>
-          <div className="flex justify-center">
-            <div className="w-full sm:w-3/5 lg:w-2/5">
-              <Header />
-              <Component {...pageProps} />
-              {/* <GetToastComponent /> */}
+      <ToastProvider>
+        <UserContextProvider>
+          <PostContextProvider>
+            <div className="flex justify-center">
+              <div className="w-full sm:w-3/5 lg:w-2/5">
+                <Header />
+                <Component {...pageProps} />
+                <GetToastComponent />
+              </div>
             </div>
-          </div>
-        </PostContextProvider>
-      </UserContextProvider>
-      {/* </ToastProvider> */}
+          </PostContextProvider>
+        </UserContextProvider>
+      </ToastProvider>
     </>
   );
 }

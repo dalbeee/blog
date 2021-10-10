@@ -6,6 +6,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
+    "test": "jest",
     "test:watch": "jest --watch",
     "rimraf": "rm -rf dist",
     "build:watch": "yarn rimraf && tsc -w",

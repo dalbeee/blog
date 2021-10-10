@@ -1,4 +1,4 @@
-// import Image from "next/image";
+import { formatDistance, parseISO } from "date-fns";
 import Link from "next/link";
 import { memo, useState } from "react";
 import { IPost } from "..";
@@ -15,7 +15,7 @@ const CardMain = ({ post }: { post: IPost }) => {
   );
 
   return (
-    <Link href={`/post/${post.slug}`}>
+    <Link href={`/post/${post.slug || post.id}`}>
       <a>
         <div className="flex flex-col w-full mb-4 overflow-hidden h-1/3 rounded-xl">
           <div className="relative w-full overflow-hidden h-3/5">
@@ -27,12 +27,15 @@ const CardMain = ({ post }: { post: IPost }) => {
               className="w-full h-full"
             />
           </div>
-          <div className="bg-gray-100 h-2/5">
+          <div className="bg-gray-100 h-2/5 px-2">
             <div className="w-full text-xl text-gray-700 truncate h-1/3">
               {post.title}
             </div>
-            <div className="w-full overflow-hidden text-gray-400 whitespace-pre-wrap overflow-ellipsis h-2/3">
+            <div className="w-full overflow-hidden text-gray-400 whitespace-pre-wrap overflow-ellipsis h-1/3">
               {post.description}
+            </div>
+            <div className="text-right w-full overflow-hidden text-gray-400 whitespace-pre-wrap overflow-ellipsis h-1/3">
+              {formatDistance(new Date(), parseISO(post.createdAt))}
             </div>
           </div>
         </div>

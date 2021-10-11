@@ -1,5 +1,5 @@
 {
-  "name": "@mono/root",
+  "name": "@blog/root",
   "private": true,
   "devDependencies": {
     "lerna": "^4.0.0"
@@ -9,5 +9,16 @@
   ],
   "dependencies": {
     "axios": "^0.21.4"
+  },
+  "scripts": {
+    "frontend": "yarn workspace @blog/frontend start",
+    "frontend:dev": "yarn workspace @blog/frontend dev",
+    "frontend:build": "yarn workspace @blog/frontend build",
+    "backend": "yarn workspace @blog/backend start:prod",
+    "backend:dev": "yarn workspace @blog/backend start:dev",
+    "backend:test:e2e": "yarn workspace @blog/backend test:e2e",
+    "backend:build": "yarn workspace @blog/backend build",
+    "core:build": "yarn workspace @blog/core build",
+    "core:build:watch": "yarn workspace @blog/core build:watch"
   }
 }

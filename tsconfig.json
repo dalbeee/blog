@@ -16,7 +16,7 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
 
-    "rootDir": ".",
-    "paths": { "@private/core/*": ["./packages/core/*"] }
-  }
+    "rootDir": "."
+  },
+  "exclude": ["**/node_modules"]
 }

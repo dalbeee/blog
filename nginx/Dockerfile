@@ -6,7 +6,8 @@ WORKDIR /etc/nginx/conf.d/
 RUN rm /etc/nginx/conf.d/default.conf
 # RUN rm /usr/share/nginx/html/index.html
 
-COPY ./nginx.conf /etc/nginx/conf.d
+# COPY ./nginx.conf /etc/nginx/conf.d
+COPY ./front-only.conf /etc/nginx/conf.d
 # COPY ./index.html /usr/share/nginx/html
 
 # RUN adduser -S www-data -u 1000

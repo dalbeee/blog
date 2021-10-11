@@ -1,5 +1,6 @@
-import { notion, infrastructure } from "@private/core";
 import { AxiosRequestConfig } from "axios";
+
+import { notion, infrastructure } from "@blog/core";
 
 const useNotion = () => {
   const url = "https://api.notion.com/v1";

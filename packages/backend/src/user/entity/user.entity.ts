@@ -3,7 +3,7 @@ import { Exclude } from 'class-transformer';
 import * as bcrypt from 'bcrypt';
 
 import { Comment } from '@src/comments/entity/comment.entity';
-import { Post } from '@src/posts/entity/post.entity';
+import { Post } from '@src/post/entity/post.entity';
 import { BaseEntity } from '@src/share/entity/baseEntity';
 
 @Entity()

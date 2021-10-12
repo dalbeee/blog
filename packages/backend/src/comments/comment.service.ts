@@ -1,7 +1,7 @@
 import { Repository } from 'typeorm';
 import { HttpException, Inject, Injectable } from '@nestjs/common';
 
-import { Post } from '@src/posts/entity/post.entity';
+import { Post } from '@src/post/entity/post.entity';
 import { User } from '@src/user/entity/user.entity';
 import { CommentDTO } from './comment.dto';
 import { Comment } from './entity/comment.entity';

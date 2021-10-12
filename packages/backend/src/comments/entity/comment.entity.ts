@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
-import { Post } from '@src/posts/entity/post.entity';
+import { Post } from '@src/post/entity/post.entity';
 import { BaseEntity } from '@src/share/entity/baseEntity';
 import { User } from '@src/user/entity/user.entity';
 

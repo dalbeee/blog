@@ -1,26 +1,25 @@
 import { GetStaticProps } from "next";
-import { useEffect } from "react";
 import Layout from "../component/Layout";
 import { IPost } from "..";
 import { usePostContext } from "../store/postContext";
-import { getPosts } from "../util/axios";
 import useNotion from "../hooks/useNotion";
+import { useEffect } from "react";
 
 export const getStaticProps: GetStaticProps = async () => {
   const notionAPI = useNotion();
-  let posts = await notionAPI.getPosts("4a31fcbc35a14835a01cbdb421525d09");
+  let posts = await notionAPI.getPosts();
   if (!posts) posts = [];
   return {
     props: { posts },
-    revalidate: 1,
+    revalidate: 5,
   };
 };
 
 export default function Home({ posts }: { posts: IPost[] }) {
   const { post } = usePostContext();
-
   useEffect(() => {
-    post.operation.setPosts(posts);
+    const getPosts = async () => post.operation.setPosts(posts);
+    getPosts();
   }, []);
 
   return <Layout />;

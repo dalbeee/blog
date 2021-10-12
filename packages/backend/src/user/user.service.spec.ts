@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { User } from './entity/user.entity';
 import { UserService } from './user.service';
-import { Post } from '@src/posts/entity/post.entity';
+import { Post } from '@src/post/entity/post.entity';
 
 describe('UserService', () => {
   let service: UserService;

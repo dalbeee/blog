@@ -19,11 +19,11 @@ import { UserService } from './user.service';
 export class UsersController {
   constructor(private usersService: UserService) {}
 
-  @UseGuards(JwtAuthGuard)
-  @Get()
-  async findAll() {
-    return await this.usersService.findAll();
-  }
+  // @UseGuards(JwtAuthGuard)
+  // @Get()
+  // async findAll() {
+  //   return await this.usersService.findAll();
+  // }
 
   // @UseGuards(JwtAuthGuard)
   @Get('/:email')

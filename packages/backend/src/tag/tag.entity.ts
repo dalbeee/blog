@@ -1,4 +1,4 @@
-import { Post } from '@src/posts/entity/post.entity';
+import { Post } from '@src/post/entity/post.entity';
 import {
   Column,
   Entity,

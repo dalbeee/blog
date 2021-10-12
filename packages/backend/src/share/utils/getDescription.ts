@@ -1,7 +1,6 @@
 const exclude = [];
 
 export const getDescription = (string: string) => {
-  // console.log('getDescrpition', string);
   let data: string = string;
 
   data = data.trim();
@@ -10,7 +9,6 @@ export const getDescription = (string: string) => {
     data = data.substr(0, 100);
     return data;
   } catch (error) {
-    console.log('error', error.mssage);
     throw new Error(error.message);
   }
 };

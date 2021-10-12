@@ -169,18 +169,17 @@ describe('USER MODULE', () => {
     });
   });
 
-  describe('@GET /users', () => {
-    let user: UserDTO;
-    let token: string;
+  // describe('@GET /users', () => {
+  //   let user: UserDTO;
+  //   let token: string;
 
-    beforeEach(async () => {
-      [user, token] = await getUserAndJwt(app);
-    });
+  //   beforeEach(async () => {
+  //     [user, token] = await getUserAndJwt(app);
+  //   });
 
-    it('without JWT will return 401', async () => {
-      await request(app.getHttpServer()).get(`/users`).expect(401);
-    });
-  });
+  //   it('without JWT will return 401', async () => {
+  //     await request(app.getHttpServer()).get(`/users`).expect(401);
+  //   });
 
   describe('@GET /users/:email : findUser method', () => {
     let results: User[] = [];

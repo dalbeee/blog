@@ -26,6 +26,7 @@ services:
       dockerfile: ./packages/backend/Dockerfile
     volumes:
       - ./packages/backend:/app/packages/backend
+      - ./packages/core:/app/packages/core
       - ./storage/uploads:/app/uploads
       - /app/node_modules
       - /app/dist
@@ -36,6 +37,7 @@ services:
       PASSWORD: secret-pw
       DATABASE: nest-blog
       SECRET_JWT: jA#()*%!@13
+    env_file: ./packages/backend/.env.dev
 
   backend_test:
     build:
@@ -44,6 +46,7 @@ services:
       dockerfile: ./packages/backend/Dockerfile
     volumes:
       - ./packages/backend:/app/packages/backend
+      - ./packages/core:/app/packages/core
       - ./storage/uploads:/app/uploads
       - /app/node_modules
       - /app/dist

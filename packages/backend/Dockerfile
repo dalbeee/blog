@@ -5,6 +5,7 @@ COPY package.json tsconfig.json yarn.lock ./
 COPY ./packages/backend/package*.json \
     ./packages/backend/tsconfig*.json \
     ./packages/backend/
+COPY ./packages/core/package.json ./packages/core/package.json
     
 FROM node:lts-alpine as development
 ARG DATABASE
@@ -17,6 +18,7 @@ WORKDIR /app
 RUN chown -R node:node /app
 USER node
 COPY --chown=node:node --from=config /app .
+COPY --chown=node:node ./packages/core/ ./packages/core/
 RUN yarn install
 EXPOSE 3000
 CMD yarn backend:dev

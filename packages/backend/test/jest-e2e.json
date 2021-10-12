@@ -8,6 +8,7 @@
   },
   "testEnvironment": "node",
   "moduleNameMapper": {
+    "^@blog/core$": "<rootDir>/../../core/src/index.ts",
     "@src/(.*)": "<rootDir>/../src/$1"
   },
   "transformIgnorePatterns": ["./node_modules/"]

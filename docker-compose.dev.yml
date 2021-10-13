@@ -57,6 +57,8 @@ services:
       PASSWORD: secret-pw
       DATABASE: nest-blog
       SECRET_JWT: jA#()*%!@13
+    env_file: ./packages/backend/.env.dev
+
 
   db:
     image: mysql:8.0.23

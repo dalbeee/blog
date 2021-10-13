@@ -13,7 +13,7 @@ import {
 import { CurrentUser } from '@src/auth/decorator/currentUser.decorator';
 import { JwtAuthGuard } from '@src/auth/guard/jwtAuth.guard';
 import { User } from '@src/user/entity/user.entity';
-import { PostDTO } from './dto/post.dto';
+import { CreatePostDTO, PostDTO } from './dto/post.dto';
 import { PostService } from './post.service';
 
 @UseInterceptors(ClassSerializerInterceptor)
@@ -52,5 +52,11 @@ export class PostController {
   @Delete(':slug')
   deletePostBySlug(@Param('slug') slug: string) {
     return this.postsService.deletePostBySlug(slug);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('test')
+  async test(@Body() post: CreatePostDTO, @CurrentUser() user: User) {
+    return await this.postsService.test(user, post);
   }
 }

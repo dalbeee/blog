@@ -28,7 +28,7 @@ export class NotionService {
     return await this.notionAPI.getPost(url);
   }
 
-  async getPosts(databaseId: string): Promise<NotionPost[]> {
-    return await this.notionAPI.getPosts(databaseId);
+  async getPosts(): Promise<NotionPost[]> {
+    return await this.notionAPI.getPosts(process.env.NOTION_DATABASE_ID);
   }
 }

@@ -8,9 +8,9 @@ import { UserDTO } from '@src/user/dto/user.dto';
 import { AppModule } from '@src/app.module';
 import { UserRepository } from '@src/user/user.repository';
 import { getUserAndJwt } from './util/getUserAndJwt';
+import { getConnection } from 'typeorm';
 
 let app: INestApplication;
-let userRepository: UserRepository;
 
 beforeAll(async () => {
   const moduleRef = await Test.createTestingModule({
@@ -20,11 +20,9 @@ beforeAll(async () => {
 
   app = moduleRef.createNestApplication();
   await app.init();
-
-  userRepository = moduleRef.get<UserRepository>(UserRepository);
 });
 
-afterEach(async () => userRepository.clear());
+afterEach(async () => await getConnection().dropDatabase());
 
 afterAll(() => app.close());
 
@@ -440,5 +438,75 @@ describe('AUTH MODULE', () => {
     });
   });
 });
+
+// describe('POST MODULE', () => {
+//   let user: UserDTO;
+//   let token: string;
+
+//   beforeEach(async () => {
+//     [user, token] = await getUserAndJwt(app);
+//   });
+
+//   describe('helper function check', () => {
+//     it('generatePost function will return 200', async () => {
+//       const result = await generatePosts(app, { token });
+//       console.log(result);
+//     });
+//   });
+
+//   describe('@POST /posts', () => {
+//     it('with valid createDTO will return 200', async () => {
+//       const postDTO: PostDTO = {
+//         title: 'hellos',
+//         content: 'contents',
+//         description: 'aa',
+//         createdAt: new Date(),
+//       };
+//       await request(app.getHttpServer())
+//         .post(`/posts`)
+//         .send(postDTO)
+//         .set('Authorization', `Bearer ${token}`);
+//       expect(200);
+//     });
+//   });
+
+//   it('test', async () => {
+//     const post: CreatePostDTO = {
+//       title: 'title',
+//       content: 'content',
+//       createdAt: new Date(),
+//       description: 'desc',
+//     };
+
+//     const { body } = await request(app.getHttpServer())
+//       .post(`/posts/test`)
+//       .send(post)
+//       .set('Authorization', `Bearer ${token}`);
+
+//     console.log(body);
+//   });
+// });
+
+// describe('NOTION MODULE', () => {
+//   let user: UserDTO;
+//   let token: string;
+
+//   beforeEach(async () => {
+//     [user, token] = await getUserAndJwt(app);
+//   });
+
+//   it('api will return 200', async () => {
+//     await request(app.getHttpServer()).get('/notion').expect(200);
+//   });
+
+//   describe('NOTION CRAWLER', () => {
+//     it('test', async () => {
+//       const { body } = await request(app.getHttpServer())
+//         .get('/notion/crawler')
+//         .set('Authorization', `Bearer ${token}`);
+//       console.log(body);
+//     });
+//   });
+// });
 
 type Overwrite<T, U> = { [P in Exclude<keyof T, keyof U>]: T[P] } & U;

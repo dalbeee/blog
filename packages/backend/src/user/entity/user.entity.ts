@@ -1,4 +1,11 @@
-import { AfterLoad, BeforeInsert, BeforeUpdate, Column, Entity } from 'typeorm';
+import {
+  AfterLoad,
+  BeforeInsert,
+  BeforeUpdate,
+  Column,
+  Entity,
+  OneToMany,
+} from 'typeorm';
 import { Exclude } from 'class-transformer';
 import * as bcrypt from 'bcrypt';
 
@@ -40,8 +47,8 @@ export class User extends BaseEntity {
     this.tempPassword !== this.password && (await this.passwordHashing());
   }
 
-  // @OneToMany(() => Post, (post) => post.user, { cascade: true })
-  // posts: Post[];
+  @OneToMany(() => Post, (post) => post.user, { cascade: true })
+  posts: Post[];
 
   // @OneToMany(() => Comment, (comment) => comment.user, { cascade: true })
   // comments: Comment[];

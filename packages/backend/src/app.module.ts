@@ -9,6 +9,7 @@ import { UsersModule } from '@src/user/user.module';
 import { AuthModule } from '@src/auth/auth.module';
 import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { NotionModule } from './notion/notion.module';
+import { PostModule } from './post/post.module';
 
 @Module({
   imports: [
@@ -24,8 +25,8 @@ import { NotionModule } from './notion/notion.module';
     }),
     UsersModule,
     AuthModule,
-    NotionModule,
-    // PostsModule,
+    // NotionModule,
+    // PostModule,
     // UploadModule,
   ],
   providers: [

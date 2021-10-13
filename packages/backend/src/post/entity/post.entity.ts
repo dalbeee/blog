@@ -3,30 +3,37 @@ import { BaseEntity } from '@src/share/entity/baseEntity';
 import { Tag } from '@src/tag/tag.entity';
 import { User } from '@src/user/entity/user.entity';
 
-import { Column, Entity, JoinColumn, ManyToMany, OneToMany } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 
 @Entity()
 export class Post extends BaseEntity {
   @Column()
   title: string;
 
-  @Column({ length: 20000 })
+  @Column({ length: 10000 })
   content: string;
 
   @Column()
   description: string;
 
-  @Column()
-  thumbnail: string;
+  @Column({ default: null })
+  thumbnail: string | null;
 
   @Column()
   slug: string;
 
-  // @ManyToOne(() => User, (user) => user.posts)
+  @ManyToOne(() => User, (user) => user.posts)
   user: User;
 
-  @ManyToMany(() => Tag, { nullable: true })
-  tags: Tag[];
+  // @ManyToMany(() => Tag, { nullable: true })
+  // tags: Tag[];
 
   // @OneToMany(() => Upload, (upload) => upload.post)
   // uploads: Upload[];

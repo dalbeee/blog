@@ -1,19 +1,19 @@
 import { NotionPost } from '@blog/core/dist/notion/useCase/types';
+import { Injectable } from '@nestjs/common';
 import { PostDTO } from '@src/post/dto/post.dto';
 import { PostService } from '@src/post/post.service';
 import { User } from '@src/user/entity/user.entity';
 import { NotionService } from './notion.service';
 
-export class CrawlerDatabase {
+@Injectable()
+export class NotionCrawler {
   constructor(
     private readonly postService: PostService,
     private readonly notionService: NotionService,
   ) {}
 
-  async getDBService() {
-    const dbResponse: NotionPost[] = await this.notionService.getPosts(
-      process.env.NOTION_DATABASE_ID,
-    );
+  async getDBService(user: User) {
+    const dbResponse: NotionPost[] = await this.notionService.getPosts();
 
     dbResponse.map(async (item) => {
       const notionPostToPost = (item: NotionPost): PostDTO => ({
@@ -24,9 +24,7 @@ export class CrawlerDatabase {
       });
 
       const post = notionPostToPost(item);
-
-      const result = await this.postService.createPost({} as User, post);
-      console.log(result);
+      const result = await this.postService.createPost(user, post);
       return result;
     });
   }

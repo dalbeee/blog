@@ -9,6 +9,9 @@ import { AppModule } from '@src/app.module';
 import { UserRepository } from '@src/user/user.repository';
 import { getUserAndJwt } from './util/getUserAndJwt';
 import { getConnection } from 'typeorm';
+import { getToken } from './util/getToken';
+import { generatePostDTO } from './util/Posts';
+import { CreatePostDTO } from '@src/post/dto/post.dto';
 
 let app: INestApplication;
 
@@ -22,9 +25,11 @@ beforeAll(async () => {
   await app.init();
 });
 
-afterEach(async () => await getConnection().dropDatabase());
-
-afterAll(() => app.close());
+afterAll(async () => {
+  await getConnection().dropDatabase();
+  await getConnection().close();
+  await app.close();
+});
 
 describe('USER MODULE', () => {
   describe('@POST /users : createUser method', () => {
@@ -104,26 +109,26 @@ describe('USER MODULE', () => {
     });
 
     describe('with valid info', () => {
-      const userDTO: UserDTO = {
-        email: faker.internet.email(),
-        username: faker.datatype.string(10),
-        password: '123456',
-      };
-
-      it('will return 201', async () => {
-        await request(app.getHttpServer()).post(url).send(userDTO).expect(201);
-      });
-
-      it('will have User Object', async () => {
+      it('will return 201 and user Object', async () => {
+        const userDTO: UserDTO = {
+          email: faker.internet.email(),
+          username: faker.datatype.string(10),
+          password: faker.datatype.string(10),
+        };
         const { body } = await request(app.getHttpServer())
           .post(url)
           .send(userDTO)
           .expect(201);
-
         expect(body.email).toEqual(userDTO.email);
       });
 
       it('will not return password', async () => {
+        const userDTO: UserDTO = {
+          email: faker.internet.email(),
+          username: faker.datatype.string(10),
+          password: faker.datatype.string(10),
+        };
+
         const { body } = await request(app.getHttpServer())
           .post(url)
           .send(userDTO)
@@ -167,18 +172,6 @@ describe('USER MODULE', () => {
     });
   });
 
-  // describe('@GET /users', () => {
-  //   let user: UserDTO;
-  //   let token: string;
-
-  //   beforeEach(async () => {
-  //     [user, token] = await getUserAndJwt(app);
-  //   });
-
-  //   it('without JWT will return 401', async () => {
-  //     await request(app.getHttpServer()).get(`/users`).expect(401);
-  //   });
-
   describe('@GET /users/:email : findUser method', () => {
     let results: User[] = [];
 
@@ -218,9 +211,12 @@ describe('USER MODULE', () => {
   describe('@PATCH /users/:email : patchUser method', () => {
     let user: UserDTO;
     let token: string;
+    let user2: UserDTO;
+    let token2: string;
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       [user, token] = await getUserAndJwt(app);
+      [user2, token2] = await getUserAndJwt(app);
     });
 
     it('without JWT will return 401', async () => {
@@ -230,100 +226,80 @@ describe('USER MODULE', () => {
         .expect(401);
     });
 
-    it('change username will return 200', async () => {
-      await request(app.getHttpServer())
-        .patch(`/users/${user.email}`)
-        .send({
-          username: 'tester',
-        })
-        .set('Authorization', `Bearer ${token}`)
-        .expect(200);
-    });
-
-    it('change username and login will return 200', async () => {
-      await request(app.getHttpServer())
-        .patch(`/users/${user.email}`)
-        .send({
-          username: 'testname',
-        })
-        .set('Authorization', `Bearer ${token}`)
-        .expect(200);
-
+    it('change duplicated username will return 409', async () => {
       await request(app.getHttpServer())
         .post('/auth/login')
         .send({ email: user.email, password: user.password })
         .expect(200);
-    });
-
-    it('change email and login with changed email will return 200', async () => {
-      await request(app.getHttpServer())
-        .patch(`/users/${user.email}`)
-        .send({
-          email: 'tester@email.com',
-        })
-        .set('Authorization', `Bearer ${token}`)
-        .expect(200);
-
-      await request(app.getHttpServer())
-        .post('/auth/login')
-        .send({ email: 'tester@email.com', password: user.password })
-        .expect(200);
-    });
-
-    it('change password and login with changed password will return 200', async () => {
-      await request(app.getHttpServer())
-        .patch(`/users/${user.email}`)
-        .send({
-          password: 'changedPW',
-        })
-        .set('Authorization', `Bearer ${token}`)
-        .expect(200);
-
-      await request(app.getHttpServer())
-        .post('/auth/login')
-        .send({ email: user.email, password: user.password })
-        .expect(401);
-
-      await request(app.getHttpServer())
-        .post('/auth/login')
-        .send({ email: user.email, password: 'changedPW' })
-        .expect(200);
-    });
-
-    it('change duplicated email will return 409', async () => {
-      const existUser: UserDTO = {
-        email: 'exist@mail.com',
-        username: faker.datatype.string(10),
-        password: faker.datatype.string(10),
-      };
-
-      await request(app.getHttpServer())
-        .post('/users')
-        .send(existUser)
-        .expect(201);
 
       await request(app.getHttpServer())
         .patch(`/users/${user.email}`)
-        .send({ email: existUser.email })
+        .send({ username: user2.username })
         .set('Authorization', `Bearer ${token}`)
         .expect(409);
     });
 
-    it('change duplicated username will return 409', async () => {
-      const existUser: UserDTO = {
-        email: faker.internet.email(),
-        username: 'existUser',
-        password: faker.datatype.string(10),
-      };
-
-      await request(app.getHttpServer())
-        .post('/users')
-        .send(existUser)
-        .expect(201);
+    it('change username and login will return 200', async () => {
+      const rename = faker.datatype.string(10);
 
       await request(app.getHttpServer())
         .patch(`/users/${user.email}`)
-        .send({ username: existUser.username })
+        .send({
+          username: rename,
+        })
+        .set('Authorization', `Bearer ${token}`)
+        .expect(200);
+
+      user.username = rename;
+    });
+
+    it('change email and login will return 200', async () => {
+      const email = faker.internet.email();
+
+      await request(app.getHttpServer())
+        .patch(`/users/${user.email}`)
+        .send({
+          email,
+        })
+        .set('Authorization', `Bearer ${token}`)
+        .expect(200);
+
+      await request(app.getHttpServer())
+        .post('/auth/login')
+        .send({ email, password: user.password })
+        .expect(200);
+
+      user.email = email;
+    });
+
+    it('change password and login will return 200', async () => {
+      const password = faker.datatype.string(10);
+
+      token = await getToken(app, {
+        email: user.email,
+        password: user.password,
+      });
+
+      await request(app.getHttpServer())
+        .patch(`/users/${user.email}`)
+        .send({
+          password,
+        })
+        .set('Authorization', `Bearer ${token}`)
+        .expect(200);
+
+      await request(app.getHttpServer())
+        .post('/auth/login')
+        .send({ email: user.email, password })
+        .expect(200);
+
+      user.password = password;
+    });
+
+    it('change duplicated email will return 409', async () => {
+      await request(app.getHttpServer())
+        .patch(`/users/${user.email}`)
+        .send({ email: user2.email })
         .set('Authorization', `Bearer ${token}`)
         .expect(409);
     });
@@ -371,15 +347,11 @@ describe('AUTH MODULE', () => {
     let user: UserDTO;
     let token: string;
 
+    beforeAll(async () => {
+      [user, token] = await getUserAndJwt(app);
+    });
+
     it('with successful login will get jwt token', async () => {
-      const user: UserDTO = {
-        email: faker.internet.email(),
-        username: faker.datatype.string(10),
-        password: faker.datatype.string(10),
-      };
-
-      await request(app.getHttpServer()).post(`/users`).send(user).expect(201);
-
       const { body } = await request(app.getHttpServer())
         .post(`/auth/login`)
         .send({ email: user.email, password: user.password });
@@ -388,14 +360,6 @@ describe('AUTH MODULE', () => {
     });
 
     it('with successful login will return 200', async () => {
-      const user: UserDTO = {
-        email: faker.internet.email(),
-        username: faker.datatype.string(10),
-        password: faker.datatype.string(10),
-      };
-
-      await request(app.getHttpServer()).post(`/users`).send(user).expect(201);
-
       await request(app.getHttpServer())
         .post(`/auth/login`)
         .send({ email: user.email, password: user.password })
@@ -403,14 +367,6 @@ describe('AUTH MODULE', () => {
     });
 
     it('with invalid password login will return 401', async () => {
-      const user: UserDTO = {
-        email: faker.internet.email(),
-        username: faker.datatype.string(10),
-        password: faker.datatype.string(10),
-      };
-
-      await request(app.getHttpServer()).post(`/users`).send(user).expect(201);
-
       await request(app.getHttpServer())
         .post(`/auth/login`)
         .send({ email: user.email, password: '123456' })
@@ -418,14 +374,6 @@ describe('AUTH MODULE', () => {
     });
 
     it('with invalid email login will return 401', async () => {
-      const user: UserDTO = {
-        email: faker.internet.email(),
-        username: faker.datatype.string(10),
-        password: faker.datatype.string(10),
-      };
-
-      await request(app.getHttpServer()).post(`/users`).send(user).expect(201);
-
       await request(app.getHttpServer())
         .post(`/auth/login`)
         .send({ email: 'test@gmail.com', password: user.password })
@@ -439,74 +387,43 @@ describe('AUTH MODULE', () => {
   });
 });
 
-// describe('POST MODULE', () => {
-//   let user: UserDTO;
-//   let token: string;
+describe('POST MODULE', () => {
+  let user: UserDTO;
+  let token: string;
+  beforeAll(async () => {
+    [user, token] = await getUserAndJwt(app);
+  });
 
-//   beforeEach(async () => {
-//     [user, token] = await getUserAndJwt(app);
-//   });
+  describe('check functions', () => {
+    it('check generatePost function', async () => {
+      const post = generatePostDTO();
 
-//   describe('helper function check', () => {
-//     it('generatePost function will return 200', async () => {
-//       const result = await generatePosts(app, { token });
-//       console.log(result);
-//     });
-//   });
+      await request(app.getHttpServer())
+        .post(`/posts`)
+        .send(post)
+        .set('Authorization', `Bearer ${token}`)
+        .expect(201);
+    });
+  });
 
-//   describe('@POST /posts', () => {
-//     it('with valid createDTO will return 200', async () => {
-//       const postDTO: PostDTO = {
-//         title: 'hellos',
-//         content: 'contents',
-//         description: 'aa',
-//         createdAt: new Date(),
-//       };
-//       await request(app.getHttpServer())
-//         .post(`/posts`)
-//         .send(postDTO)
-//         .set('Authorization', `Bearer ${token}`);
-//       expect(200);
-//     });
-//   });
+  describe('[POST] /posts', () => {
+    it('without JWT, will return 401', async () => {
+      const post = generatePostDTO();
 
-//   it('test', async () => {
-//     const post: CreatePostDTO = {
-//       title: 'title',
-//       content: 'content',
-//       createdAt: new Date(),
-//       description: 'desc',
-//     };
+      await request(app.getHttpServer()).post(`/posts`).send(post).expect(401);
+    });
+    it('without title, will return 400', async () => {
+      const post: CreatePostDTO = {
+        content: faker.datatype.string(100),
+      };
 
-//     const { body } = await request(app.getHttpServer())
-//       .post(`/posts/test`)
-//       .send(post)
-//       .set('Authorization', `Bearer ${token}`);
-
-//     console.log(body);
-//   });
-// });
-
-// describe('NOTION MODULE', () => {
-//   let user: UserDTO;
-//   let token: string;
-
-//   beforeEach(async () => {
-//     [user, token] = await getUserAndJwt(app);
-//   });
-
-//   it('api will return 200', async () => {
-//     await request(app.getHttpServer()).get('/notion').expect(200);
-//   });
-
-//   describe('NOTION CRAWLER', () => {
-//     it('test', async () => {
-//       const { body } = await request(app.getHttpServer())
-//         .get('/notion/crawler')
-//         .set('Authorization', `Bearer ${token}`);
-//       console.log(body);
-//     });
-//   });
-// });
+      await request(app.getHttpServer())
+        .post(`/posts`)
+        .send(post)
+        .set('Authorization', `Bearer ${token}`)
+        .expect(400);
+    });
+  });
+});
 
 type Overwrite<T, U> = { [P in Exclude<keyof T, keyof U>]: T[P] } & U;

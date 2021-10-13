@@ -25,8 +25,8 @@ import { PostModule } from './post/post.module';
     }),
     UsersModule,
     AuthModule,
+    PostModule,
     // NotionModule,
-    // PostModule,
     // UploadModule,
   ],
   providers: [

@@ -9,7 +9,6 @@ export class PostDTO {
   content: string;
 
   @IsOptional()
-  @IsString()
   description?: string;
 
   @IsOptional()

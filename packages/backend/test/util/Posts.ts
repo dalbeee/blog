@@ -31,5 +31,5 @@ export const createPostMethod = async (
 export const generatePostDTO = (): CreatePostDTO => ({
   title: faker.datatype.string(20),
   content: faker.datatype.string(200),
-  createdAt: new Date(),
+  // createdAt: new Date().toISOString(),
 });

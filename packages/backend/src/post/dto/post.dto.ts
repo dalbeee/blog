@@ -12,10 +12,10 @@ export class PostDTO {
   description?: string;
 
   @IsOptional()
-  createdAt?: Date;
+  createdAt?: string;
 
   @IsOptional()
-  updatedAt?: Date;
+  updatedAt?: string;
 }
 
 export class CreatePostDTO extends PartialType(PostDTO) {}

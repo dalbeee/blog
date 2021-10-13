@@ -8,8 +8,8 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-
 import { CurrentUser } from '@src/auth/decorator/currentUser.decorator';
+
 import { JwtAuthGuard } from '@src/auth/guard/jwtAuth.guard';
 import { UpdateUserDTO, UserDTO } from './dto/user.dto';
 import { User } from './entity/user.entity';

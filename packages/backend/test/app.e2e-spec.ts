@@ -423,6 +423,18 @@ describe('POST MODULE', () => {
         .set('Authorization', `Bearer ${token}`)
         .expect(400);
     });
+
+    it('success will return 201', async () => {
+      const post = generatePostDTO();
+
+      const { body } = await request(app.getHttpServer())
+        .post(`/posts`)
+        .send(post)
+        .set('Authorization', `Bearer ${token}`)
+        .expect(201);
+
+      expect(body).toMatchObject(post);
+    });
   });
 });
 

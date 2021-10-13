@@ -19,8 +19,8 @@ export class NotionCrawler {
       const notionPostToPost = (item: NotionPost): PostDTO => ({
         title: item.title,
         content: '',
-        createdAt: item.createdAt as unknown as Date,
-        updatedAt: item.updatedAt as unknown as Date,
+        createdAt: item.createdAt as unknown as string,
+        updatedAt: item.updatedAt as unknown as string,
       });
 
       const post = notionPostToPost(item);

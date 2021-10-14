@@ -1,6 +1,6 @@
 {
   "name": "@blog/backend",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "",
   "author": "",
   "private": true,
@@ -21,7 +21,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json --watchAll --runInBand"
   },
   "dependencies": {
-    "@blog/core": "0.3.1",
+    "@blog/core": "^0.3.2",
     "@nestjs/bull": "^0.4.1",
     "@nestjs/common": "^8.0.10",
     "@nestjs/core": "^8.0.10",

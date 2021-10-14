@@ -1,8 +1,8 @@
-import { PostDTO } from '@src/post/dto/post.dto';
+import { CreatePostDTO } from '@src/post/dto/post.dto';
 import { extractThumbnailFromPost } from './extractThumbnailFromPost';
 
 it('test with not images will return null', () => {
-  const test: PostDTO = {
+  const test: CreatePostDTO = {
     title: 'title',
     content: `---
     __Advertisement :)__
@@ -59,7 +59,7 @@ Like links, Images also have a footnote style syntax
 
 ![Alt text][id]
 `;
-  const post: PostDTO = {
+  const post: CreatePostDTO = {
     title: 'title',
     content: string,
   };

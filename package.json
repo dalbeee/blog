@@ -16,6 +16,7 @@
     "frontend:build": "yarn workspace @blog/frontend build",
     "backend": "yarn workspace @blog/backend start:prod",
     "backend:dev": "yarn workspace @blog/backend start:dev",
+    "backend:test": "yarn workspace @blog/backend test:watch",
     "backend:test:e2e": "yarn workspace @blog/backend test:e2e",
     "backend:build": "yarn workspace @blog/backend build",
     "core:build": "yarn workspace @blog/core build",

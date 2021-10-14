@@ -1,12 +1,15 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { IsOptional, IsString } from 'class-validator';
 
-export class PostDTO {
+export class CreatePostDTO {
   @IsString()
   title: string;
 
   @IsString()
   content: string;
+
+  @IsOptional()
+  notionId?: string;
 
   @IsOptional()
   description?: string;
@@ -18,4 +21,4 @@ export class PostDTO {
   updatedAt?: string;
 }
 
-export class CreatePostDTO extends PartialType(PostDTO) {}
+export class PatchPostDTO extends PartialType(CreatePostDTO) {}

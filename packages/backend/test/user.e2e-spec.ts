@@ -2,23 +2,19 @@ import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import * as request from 'supertest';
 import * as faker from 'faker';
+import { getConnection } from 'typeorm';
 
 import { User } from '@src/user/entity/user.entity';
 import { UserDTO } from '@src/user/dto/user.dto';
 import { AppModule } from '@src/app.module';
-import { UserRepository } from '@src/user/user.repository';
 import { getUserAndJwt } from './util/getUserAndJwt';
-import { getConnection } from 'typeorm';
 import { getToken } from './util/getToken';
-import { generatePostDTO } from './util/Posts';
-import { CreatePostDTO } from '@src/post/dto/post.dto';
 
 let app: INestApplication;
 
 beforeAll(async () => {
   const moduleRef = await Test.createTestingModule({
     imports: [AppModule],
-    providers: [UserRepository],
   }).compile();
 
   app = moduleRef.createNestApplication();
@@ -27,7 +23,6 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await getConnection().dropDatabase();
-  await getConnection().close();
   await app.close();
 });
 
@@ -338,102 +333,6 @@ describe('USER MODULE', () => {
         .post(`/auth/login`)
         .send({ email: user.email, password: user.password })
         .expect(401);
-    });
-  });
-});
-
-describe('AUTH MODULE', () => {
-  describe('@POST /auth/login', () => {
-    let user: UserDTO;
-    let token: string;
-
-    beforeAll(async () => {
-      [user, token] = await getUserAndJwt(app);
-    });
-
-    it('with successful login will get jwt token', async () => {
-      const { body } = await request(app.getHttpServer())
-        .post(`/auth/login`)
-        .send({ email: user.email, password: user.password });
-
-      expect(body.access_token).toEqual(expect.any(String));
-    });
-
-    it('with successful login will return 200', async () => {
-      await request(app.getHttpServer())
-        .post(`/auth/login`)
-        .send({ email: user.email, password: user.password })
-        .expect(200);
-    });
-
-    it('with invalid password login will return 401', async () => {
-      await request(app.getHttpServer())
-        .post(`/auth/login`)
-        .send({ email: user.email, password: '123456' })
-        .expect(401);
-    });
-
-    it('with invalid email login will return 401', async () => {
-      await request(app.getHttpServer())
-        .post(`/auth/login`)
-        .send({ email: 'test@gmail.com', password: user.password })
-        .expect(401);
-    });
-
-    it(`export util function 'getUserAndJwt' will valid`, async () => {
-      [user, token] = await getUserAndJwt(app);
-      expect(token).toEqual(expect.any(String));
-    });
-  });
-});
-
-describe('POST MODULE', () => {
-  let user: UserDTO;
-  let token: string;
-  beforeAll(async () => {
-    [user, token] = await getUserAndJwt(app);
-  });
-
-  describe('check functions', () => {
-    it('check generatePost function', async () => {
-      const post = generatePostDTO();
-
-      await request(app.getHttpServer())
-        .post(`/posts`)
-        .send(post)
-        .set('Authorization', `Bearer ${token}`)
-        .expect(201);
-    });
-  });
-
-  describe('[POST] /posts', () => {
-    it('without JWT, will return 401', async () => {
-      const post = generatePostDTO();
-
-      await request(app.getHttpServer()).post(`/posts`).send(post).expect(401);
-    });
-    it('without title, will return 400', async () => {
-      const post: CreatePostDTO = {
-        content: faker.datatype.string(100),
-      };
-
-      await request(app.getHttpServer())
-        .post(`/posts`)
-        .send(post)
-        .set('Authorization', `Bearer ${token}`)
-        .expect(400);
-    });
-
-    it('success will return 201', async () => {
-      const post = generatePostDTO();
-
-      const { body } = await request(app.getHttpServer())
-        .post(`/posts`)
-        .send(post)
-        .set('Authorization', `Bearer ${token}`)
-        .expect(201);
-
-      expect(body).toMatchObject(post);
     });
   });
 });

@@ -5,6 +5,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   UseGuards,
   UseInterceptors,
@@ -13,11 +14,11 @@ import {
 import { CurrentUser } from '@src/auth/decorator/currentUser.decorator';
 import { JwtAuthGuard } from '@src/auth/guard/jwtAuth.guard';
 import { User } from '@src/user/entity/user.entity';
-import { CreatePostDTO, PostDTO } from './dto/post.dto';
+import { CreatePostDTO, PatchPostDTO } from './dto/post.dto';
 import { PostService } from './post.service';
 
 @UseInterceptors(ClassSerializerInterceptor)
-@Controller('posts')
+@Controller('/posts')
 export class PostController {
   constructor(private postsService: PostService) {}
 
@@ -38,15 +39,19 @@ export class PostController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  createPost(@CurrentUser() user: User, @Body() post: PostDTO) {
+  createPost(@CurrentUser() user: User, @Body() post: CreatePostDTO) {
     return this.postsService.createPost(user, post);
   }
 
-  // @UseGuards(JwtAuthGuard)
-  // @Delete(':id')
-  // deletePost(@Param('id') id: number) {
-  //   return this.postsService.deletePost(id);
-  // }
+  @UseGuards(JwtAuthGuard)
+  @Patch('/:postId')
+  async patchPost(
+    @Param('postId') postId: string,
+    @Body() updatePostDTO: PatchPostDTO,
+    @CurrentUser() user: User,
+  ) {
+    return await this.postsService.patchPost(user, postId, updatePostDTO);
+  }
 
   @UseGuards(JwtAuthGuard)
   @Delete(':slug')

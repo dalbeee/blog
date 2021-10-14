@@ -24,10 +24,13 @@ export class Post extends BaseEntity {
   description: string;
 
   @Column({ default: null })
-  thumbnail: string | null;
+  thumbnail: string;
 
   @Column()
   slug: string;
+
+  @Column({ default: null })
+  notionId?: string;
 
   @ManyToOne(() => User, (user) => user.posts)
   user: User;

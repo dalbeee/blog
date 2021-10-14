@@ -3,6 +3,7 @@ import * as request from 'supertest';
 import { INestApplication } from '@nestjs/common';
 
 import { CreatePostDTO } from '@src/post/dto/post.dto';
+import { Post } from '@src/post/entity/post.entity';
 
 export const generatePosts = async (
   app: INestApplication,
@@ -10,7 +11,7 @@ export const generatePosts = async (
 ) => {
   const postDTOArray = Array.from({ length }, generatePostDTO);
 
-  const createdPosts = await Promise.all(
+  const createdPosts: Post[] = await Promise.all(
     postDTOArray.map(async (postDTO) =>
       createPostMethod(app, { post: postDTO, token }).then((r) => r.body),
     ),

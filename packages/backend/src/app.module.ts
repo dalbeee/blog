@@ -4,12 +4,13 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { BullModule } from '@nestjs/bull';
 
 import { UsersModule } from '@src/user/user.module';
 import { AuthModule } from '@src/auth/auth.module';
 import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
-import { NotionModule } from './notion/notion.module';
 import { PostModule } from './post/post.module';
+import { NotionModule } from './notion/notion.module';
 
 @Module({
   imports: [
@@ -23,10 +24,17 @@ import { PostModule } from './post/post.module';
       synchronize: true,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
     }),
+    BullModule.forRoot({
+      redis: {
+        host: 'redis',
+        port: 6379,
+      },
+    }),
     UsersModule,
     AuthModule,
     PostModule,
     NotionModule,
+
     // UploadModule,
   ],
   providers: [

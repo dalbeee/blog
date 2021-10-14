@@ -24,11 +24,11 @@ export class NotionService {
     this.notionAPI = new notion.useCase.NotionUseCase(repository);
   }
 
-  async getPost(url: string) {
-    return await this.notionAPI.getPost(url);
-  }
-
   async getPosts(): Promise<NotionPost[]> {
     return await this.notionAPI.getPosts(process.env.NOTION_DATABASE_ID);
+  }
+
+  async getPostToString(url: string): Promise<string> {
+    return await this.notionAPI.getPost(url);
   }
 }

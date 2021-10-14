@@ -20,8 +20,8 @@ export default async (): Promise<Config.InitialOptions> => {
     },
     testEnvironment: 'node',
     moduleNameMapper: {
-      '@src/(.*)': '<rootDir>/../src/$1',
-      '^@blog/core$': '<rootDir>/../../core/src/index.ts',
+      '@src/(.*)': '<rootDir>/src/$1',
+      '^@blog/core$': '<rootDir>/../core/src/index.ts',
     },
     transformIgnorePatterns: ['./node_modules/'],
   };

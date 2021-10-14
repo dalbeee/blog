@@ -6,7 +6,7 @@ import { NotionPost } from "./types";
 export class NotionUseCase {
   constructor(private readonly repository: NotionRepository) {}
 
-  async getPost(url: string): Promise<NotionBlock> {
+  async getPost(url: string): Promise<string> {
     const result = await this.repository.getPost(url);
     const parseMarkDown = parseNotionPostToMarkdown(result);
     return parseMarkDown;

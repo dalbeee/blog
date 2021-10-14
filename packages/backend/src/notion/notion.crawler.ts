@@ -1,31 +1,58 @@
+import { Process, Processor } from '@nestjs/bull';
+import { Job } from 'bull';
+
+import { Logger } from '@nestjs/common';
+
 import { NotionPost } from '@blog/core/dist/notion/useCase/types';
-import { Injectable } from '@nestjs/common';
-import { PostDTO } from '@src/post/dto/post.dto';
+
+import { CreatePostDTO, PatchPostDTO } from '@src/post/dto/post.dto';
 import { PostService } from '@src/post/post.service';
 import { User } from '@src/user/entity/user.entity';
 import { NotionService } from './notion.service';
 
-@Injectable()
+@Processor('notion')
 export class NotionCrawler {
+  private readonly logger = new Logger(NotionCrawler.name);
+
   constructor(
     private readonly postService: PostService,
     private readonly notionService: NotionService,
   ) {}
 
-  async getDBService(user: User) {
-    const dbResponse: NotionPost[] = await this.notionService.getPosts();
+  @Process('getNotionPost')
+  async getDBService(job: Job) {
+    this.logger.debug('Start transcoding...');
 
-    dbResponse.map(async (item) => {
-      const notionPostToPost = (item: NotionPost): PostDTO => ({
-        title: item.title,
-        content: '',
-        createdAt: item.createdAt as unknown as string,
-        updatedAt: item.updatedAt as unknown as string,
-      });
+    const notionDB = job.data.notionDB;
 
-      const post = notionPostToPost(item);
-      const result = await this.postService.createPost(user, post);
-      return result;
-    });
+    for (const post of notionDB) {
+      await this.saveOrUpdateNotionPostToLocalDB(job.data.user, post).then(
+        this.sleep.bind(null, 1000),
+      );
+    }
+    this.logger.debug('Transcoding completed');
+  }
+
+  async saveOrUpdateNotionPostToLocalDB(user: User, post: NotionPost) {
+    const getPost = await this.notionService.getPostToString(post.id);
+
+    const postDTO: PatchPostDTO | CreatePostDTO = {
+      title: post.title,
+      content: getPost,
+      notionId: post.id,
+      createdAt: post.createdAt as unknown as string,
+      updatedAt: post.updatedAt as unknown as string,
+    };
+
+    try {
+      await this.postService.getByNotionId(post.id);
+      await this.postService.patchPost(user, post.id, postDTO as PatchPostDTO);
+    } catch (error) {}
+
+    await this.postService.createPost(user, postDTO as CreatePostDTO);
+  }
+
+  sleep(milliseconds: number) {
+    return new Promise((res) => setTimeout(res, milliseconds));
   }
 }

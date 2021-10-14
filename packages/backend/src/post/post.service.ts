@@ -1,14 +1,16 @@
 import {
   BadRequestException,
   ConflictException,
+  ForbiddenException,
   Injectable,
+  NotFoundException,
 } from '@nestjs/common';
 
 import { User } from '@src/user/entity/user.entity';
 import { Post } from './entity/post.entity';
-import { CreatePostDTO, PostDTO } from './dto/post.dto';
+import { CreatePostDTO, PatchPostDTO } from './dto/post.dto';
 import { PostRepository } from './post.repository';
-import { getConnection, getManager } from 'typeorm';
+import { getConnection } from 'typeorm';
 
 @Injectable()
 export class PostService {
@@ -24,14 +26,21 @@ export class PostService {
   async getById(id: string): Promise<Post> {
     return await this.postsRepository.findOneOrFail(
       { id },
-      { relations: ['user', 'comments', 'comments.user'] },
+      { relations: ['user'] },
     );
   }
 
   async getBySlug(slug: string): Promise<Post> {
     return await this.postsRepository.findOneOrFail(
       { slug },
-      { relations: ['user', 'comments', 'comments.user'] },
+      // { relations: ['user', 'comments', 'comments.user'] },
+    );
+  }
+
+  async getByNotionId(notionId: string): Promise<Post> {
+    return await this.postsRepository.findOneOrFail(
+      { notionId },
+      // { relations: ['user', 'comments', 'comments.user'] },
     );
   }
 
@@ -45,6 +54,24 @@ export class PostService {
     }
   }
 
+  async patchPost(
+    user: User,
+    postId: string,
+    updateDTO: PatchPostDTO,
+  ): Promise<Post> {
+    const findPost = await this.getById(postId);
+
+    if (!this.hasUserCollectPermission(user, findPost)) {
+      throw new ForbiddenException();
+    }
+    const updatePost: Post = Object.assign(findPost, updateDTO);
+    return await this.postsRepository.save(updatePost);
+  }
+
+  hasUserCollectPermission(user: User, post: Post): boolean {
+    return post.user.id === user.id;
+  }
+
   async deletePostBySlug(slug: string) {
     try {
       return await this.postsRepository.delete({ slug });
@@ -54,32 +81,6 @@ export class PostService {
   }
 
   async test(user: User, post: CreatePostDTO) {
-    // const queryRunner = getConnection().createQueryRunner();
-    // queryRunner.connect();
-    // await queryRunner.startTransaction();
-    // try {
-    //   const row = this.postsRepository.createPost(user, post);
-    //   const result = [];
-    //   await queryRunner.manager.save(row).then((r) => result.push(r));
-
-    //   const row2 = this.postsRepository.create({
-    //     title: 'null',
-    //     content: 'content',
-    //     description: 'd',
-    //     slug: 'a',
-    //   });
-    //   await queryRunner.manager.save(row2).then((r) => result.push(r));
-
-    //   await queryRunner.commitTransaction();
-    //   return result;
-    // } catch (error) {
-    //   console.log(error.message);
-    //   await queryRunner.rollbackTransaction();
-    //   throw new BadRequestException(error.message);
-    // } finally {
-    //   await queryRunner.release();
-    // }
-
     return await getConnection().transaction(async (manager) => {
       const row = this.postsRepository.createPost(user, post);
 
@@ -87,8 +88,6 @@ export class PostService {
         const row2 = this.postsRepository.create({
           title: 'null',
           content: 'content',
-          // description: 'd',
-          // slug: 'a',
         });
         return await Promise.all([
           await manager.save(row),

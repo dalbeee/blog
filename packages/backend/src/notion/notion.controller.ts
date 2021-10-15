@@ -20,23 +20,30 @@ import { NotionService } from './notion.service';
 export class NotionController {
   constructor(
     private readonly notionService: NotionService,
-  ) // @InjectQueue('notion') private getNotionPost: Queue,
-  {}
+    @InjectQueue('notion') private getNotionPost: Queue,
+  ) {}
 
   @UseGuards(JwtAuthGuard)
   @Get('/crawler')
   async crawler(@CurrentUser() user: User) {
-    const notionResponseDatabase = await this.notionService.getPosts();
+    const notYetSavedPosts =
+      await this.notionService.findNotionPostsNotYetSavedLocal();
 
-    const notionDB = notionResponseDatabase.slice(0, 5);
+    const notYetUpdatedPosts =
+      await this.notionService.findPostsWithOutOfSyncUpdatedAtField();
 
-    // this.getNotionPost.add('getNotionPost', { user, notionDB });
+    const queue = notYetSavedPosts.concat(notYetUpdatedPosts);
+
+    this.getNotionPost.add('getNotionPost', {
+      user,
+      queuePosts: queue,
+    });
   }
 
   @UseInterceptors(CacheInterceptor)
   @Get()
   async getPosts(): Promise<NotionPost[]> {
-    return await this.notionService.getPosts();
+    return await this.notionService.getPostsFromServer();
   }
 
   @UseInterceptors(CacheInterceptor)

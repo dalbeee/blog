@@ -23,7 +23,7 @@ export class Post extends BaseEntity {
   @Column()
   description: string;
 
-  @Column({ default: null })
+  @Column({ default: null, length: 500 })
   thumbnail: string;
 
   @Column()

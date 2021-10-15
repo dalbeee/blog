@@ -1,9 +1,12 @@
 import { CacheModule, Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { BullModule } from '@nestjs/bull';
+
 import { PostModule } from '@src/post/post.module';
+import { PostRepository } from '@src/post/post.repository';
 import { NotionController } from './notion.controller';
 import { NotionCrawler } from './notion.crawler';
 import { NotionService } from './notion.service';
-import { BullModule } from '@nestjs/bull';
 
 @Module({
   imports: [
@@ -11,10 +14,11 @@ import { BullModule } from '@nestjs/bull';
       ttl: 0,
     }),
 
-    // BullModule.registerQueue({
-    //   name: 'notion',
-    // }),
+    BullModule.registerQueue({
+      name: 'notion',
+    }),
 
+    TypeOrmModule.forFeature([PostRepository]),
     PostModule,
   ],
   controllers: [NotionController],

@@ -39,7 +39,7 @@ export class PostService {
 
   async getByNotionId(notionId: string): Promise<Post> {
     return await this.postsRepository.findOneOrFail(
-      { notionId },
+      { where: { notionId } },
       // { relations: ['user', 'comments', 'comments.user'] },
     );
   }

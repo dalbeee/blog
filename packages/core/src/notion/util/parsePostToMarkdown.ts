@@ -6,7 +6,7 @@ export const parseNotionPostToMarkdown = (post: NotionBlock): string => {
       return subBlock
         .map((item) => {
           const parseItemLink = (item: SubBlock) => {
-            const link = item.text.link?.url;
+            const link = item.text?.link?.url;
             return link ? `(${item.plain_text})[${link}]` : item.plain_text;
           };
 

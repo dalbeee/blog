@@ -23,7 +23,7 @@ export class NotionCrawler {
     for (const [index, post] of queuePosts.entries()) {
       console.log(` ${index} of ${queuePosts.length}...`);
       await this.notionService
-        .saveOrUpdateNotionPostToLocal(job.data.user, post)
+        .syncPostToLocal(job.data.user, post)
         .then((r) => console.log(r))
         .then(this.sleep.bind(null, process.env.NOTION_API_THROTTLING || 1000));
     }

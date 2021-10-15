@@ -6,7 +6,7 @@ import { NotionPost } from "./types";
 export class NotionUseCase {
   constructor(private readonly repository: NotionRepository) {}
 
-  async getPost(url: string): Promise<string> {
+  async findPostFromServerToString(url: string): Promise<string> {
     let result;
     try {
       result = await this.repository.getPost(url);
@@ -18,7 +18,7 @@ export class NotionUseCase {
     return parseMarkDown;
   }
 
-  async getPosts(databaseId: string): Promise<NotionPost[]> {
+  async findPostsFromServer(databaseId: string): Promise<NotionPost[]> {
     const result: DatabaseQueryResult = await this.repository.getPosts(
       databaseId
     );

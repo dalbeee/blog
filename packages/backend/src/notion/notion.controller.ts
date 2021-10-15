@@ -27,11 +27,18 @@ export class NotionController {
   @Get('/crawler')
   async crawler(@CurrentUser() user: User) {
     const notYetSavedPosts =
-      await this.notionService.findNotionPostsNotYetSavedLocal();
+      await this.notionService.findPostsNotYetSavedLocal();
 
     const notYetUpdatedPosts =
-      await this.notionService.findPostsWithOutOfSyncUpdatedAtField();
+      await this.notionService.findPostsWithOutOfSyncByUpdatedAtField();
 
+    console.log(
+      'notYetSave : ',
+      notYetSavedPosts.length,
+      'notYetSync : ',
+      notYetUpdatedPosts.length,
+    );
+    // return;
     const queue = notYetSavedPosts.concat(notYetUpdatedPosts);
 
     this.getNotionPost.add('getNotionPost', {
@@ -43,12 +50,12 @@ export class NotionController {
   @UseInterceptors(CacheInterceptor)
   @Get()
   async getPosts(): Promise<NotionPost[]> {
-    return await this.notionService.getPostsFromServer();
+    return await this.notionService.findPostsFromServer();
   }
 
   @UseInterceptors(CacheInterceptor)
   @Get('/:postId')
   async getPost(@Param('postId') postId: string) {
-    return await this.notionService.getPostToString(postId);
+    return await this.notionService.findPostFromServerToString(postId);
   }
 }

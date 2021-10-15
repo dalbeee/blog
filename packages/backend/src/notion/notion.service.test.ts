@@ -26,7 +26,6 @@ beforeAll(async () => {
     imports: [CacheModule.register({})],
     providers: [
       NotionService,
-      // CacheModule,
       PostService,
       {
         provide: getRepositoryToken(PostRepository),
@@ -39,6 +38,10 @@ beforeAll(async () => {
   app.init();
   notionService = app.get<NotionService>(NotionService);
   mockPostRepository = app.get(getRepositoryToken(PostRepository));
+
+  notionService.findPostsFromServer = jest
+    .fn()
+    .mockResolvedValue(mockServerPosts);
 });
 
 afterAll(async () => app.close());
@@ -58,14 +61,28 @@ const mockServerPosts: NotionPost[] = [
     createdAt: faker.datatype.datetime().toISOString(),
     updatedAt: faker.datatype.datetime().toISOString(),
   },
+  {
+    id: faker.datatype.uuid(),
+    title: faker.datatype.string(10),
+    url: faker.datatype.string(10),
+    createdAt: faker.datatype.datetime().toISOString(),
+    updatedAt: faker.datatype.datetime().toISOString(),
+  },
 ];
 
 const mockLocalPosts: Partial<Post>[] = [
+  //  not yet save post is mockServerPosts[2]
   {
     // already saved post local
-    // ... and not yet save post is mockServerPosts[1]
     id: faker.datatype.uuid(),
     notionId: mockServerPosts[0].id,
+    updatedAt: new Date(mockServerPosts[0].updatedAt),
+  },
+  {
+    // already saved post local. but not same updatedAt field.
+    id: faker.datatype.uuid(),
+    notionId: mockServerPosts[1].id,
+    updatedAt: faker.datatype.datetime(),
   },
 ];
 
@@ -112,22 +129,17 @@ const mockServerBlocks: NotionBlock[] = [
   },
 ];
 
-// const getPostToStringLogic = (targetId) =>
-//   mockServerPosts.find((post) => post.id === targetId);
-
-// notionService.getPostToString = jest.fn();
-
 describe('getPostToString', () => {
   it('success will return any string', async () => {
     const url = 'b640af6c-a8a9-4c78-9693-acfe84ee6661';
-    const result = await notionService.getPostToString(url);
+    const result = await notionService.findPostFromServerToString(url);
     expect(result).toEqual(expect.any(String));
   });
 
   it('fail will return not string', async () => {
     const url = 'b640af6c-a8a9-4c78-9693-acfe84ee66611';
 
-    await expect(notionService.getPostToString(url)).rejects.toThrow(
+    await expect(notionService.findPostFromServerToString(url)).rejects.toThrow(
       HttpException,
     );
   });
@@ -135,7 +147,6 @@ describe('getPostToString', () => {
 
 describe('findPostsDerivedNotion', () => {
   const findAndCountLogic = (posts) => posts.filter((post) => !!post.notionId);
-
   mockPostRepository.findAndCount = jest
     .fn()
     .mockResolvedValue([
@@ -144,18 +155,21 @@ describe('findPostsDerivedNotion', () => {
     ]);
 
   it('findPostsDerivedNotion', async () => {
-    const result = await notionService.findPostsDerivedNotion();
+    const result = await notionService.findPosts();
     expect(result[1]).toEqual(findAndCountLogic(mockLocalPosts).length);
   });
 });
 
 describe('findNotionPostsNotYetSavedLocal', () => {
-  it('serverPosts=2, clientPosts=1, and will return remain 1 object', async () => {
-    notionService.getPostsFromServer = jest
-      .fn()
-      .mockResolvedValue(mockServerPosts);
+  it('serverPosts=3, clientPosts=2, and will return remain 1 object', async () => {
+    const result = await notionService.findPostsNotYetSavedLocal();
+    expect(result).toEqual([mockServerPosts[2]]);
+  });
+});
 
-    const result = await notionService.findNotionPostsNotYetSavedLocal();
+describe('findPostsWithOutOfSyncUpdatedAtField', () => {
+  it('success will return remain 1 object', async () => {
+    const result = await notionService.findPostsWithOutOfSyncByUpdatedAtField();
     expect(result).toEqual([mockServerPosts[1]]);
   });
 });

@@ -37,13 +37,6 @@ export class PostService {
     );
   }
 
-  async getByNotionId(notionId: string): Promise<Post> {
-    return await this.postsRepository.findOneOrFail(
-      { where: { notionId } },
-      // { relations: ['user', 'comments', 'comments.user'] },
-    );
-  }
-
   async createPost(user: User, post: CreatePostDTO): Promise<Post> {
     try {
       const newPost = this.postsRepository.createPost(user, post);

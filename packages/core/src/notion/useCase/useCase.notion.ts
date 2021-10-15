@@ -7,7 +7,13 @@ export class NotionUseCase {
   constructor(private readonly repository: NotionRepository) {}
 
   async getPost(url: string): Promise<string> {
-    const result = await this.repository.getPost(url);
+    let result;
+    try {
+      result = await this.repository.getPost(url);
+    } catch (error) {
+      throw error;
+    }
+
     const parseMarkDown = parseNotionPostToMarkdown(result);
     return parseMarkDown;
   }

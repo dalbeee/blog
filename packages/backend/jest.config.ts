@@ -14,7 +14,7 @@ export default async (): Promise<Config.InitialOptions> => {
     moduleFileExtensions: ['js', 'json', 'ts'],
     roots: ['.'],
 
-    testRegex: '.test.ts$',
+    testRegex: '.[^e2e].*test.ts$',
     transform: {
       '^.+\\.(t|j)s$': 'ts-jest',
     },
@@ -23,6 +23,8 @@ export default async (): Promise<Config.InitialOptions> => {
       '@src/(.*)': '<rootDir>/src/$1',
       '^@blog/core$': '<rootDir>/../core/src/index.ts',
     },
-    transformIgnorePatterns: ['./node_modules/'],
+    transformIgnorePatterns: ['./node_modules/', './test/'],
+    coverageDirectory: '../coverage',
+    setupFiles: ['./jest.setup.dev.ts'],
   };
 };

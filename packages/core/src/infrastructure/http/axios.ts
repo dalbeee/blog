@@ -23,10 +23,8 @@ export class Axios implements HttpClient {
         return response.data;
       },
       (error) => {
-        devConsole("error from axios layer :", error.message);
-        devConsole(error.response);
-        devConsole(error);
-        // throw error.response.data;
+        // devConsole("error from axios layer : ", error.response.data);
+        throw error.response.data;
       }
     );
   }

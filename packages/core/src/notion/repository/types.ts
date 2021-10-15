@@ -72,6 +72,7 @@ export interface SubBlock {
       url: string;
     };
   };
+  annotations?: any;
   plain_text: string | null;
   href: null | string;
 }

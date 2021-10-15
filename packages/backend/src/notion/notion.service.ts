@@ -3,6 +3,7 @@ import {
   HttpException,
   Inject,
   Injectable,
+  ServiceUnavailableException,
 } from '@nestjs/common';
 import { AxiosRequestConfig } from 'axios';
 import { Cache } from 'cache-manager';
@@ -43,7 +44,11 @@ export class NotionService {
   }
 
   async getPostToString(url: string): Promise<string> {
-    return await this.notionAPI.getPost(url);
+    try {
+      return await this.notionAPI.getPost(url);
+    } catch (error) {
+      throw new HttpException(error?.message, error?.status);
+    }
   }
 
   async findPostsDerivedNotion() {
@@ -65,6 +70,7 @@ export class NotionService {
           savedPost.updatedAt.toISOString() !== recentPost.updatedAt
         );
       });
+      // TODO define error type in notionService / findPostsWithOutOfSyncUpdatedAtField
       if (!findPost) return;
 
       const targetNotionPost = recentPosts.find(

@@ -1,0 +1,23 @@
+
+
+## todo
+### frontend
+- [ ]  admin page
+    - [ ]  plug-ins
+        - [ ]  notion connector
+- [ ]  table of content
+- [ ]  category view component
+- [ ]  infinity scroll
+
+### backend
+- [x]  convert NotionPost to Post
+- [x]  notion sync
+    - [x]  create post
+    - [x]  patch post
+    - [ ]  delete post
+    - [ ]  event emitter
+- [ ]  triggering interval notion sync using cron
+- [ ]  define error type in notionService / findPostsWithOutOfSyncByUpdatedAtField
+
+### misc
+- [ ]  db separate used by e2e testing and dev in docker dev mode

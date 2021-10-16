@@ -8,13 +8,13 @@ import { NotionPost } from '@blog/core/dist/notion/useCase/types';
 import { User } from '@src/user/entity/user.entity';
 import { NotionService } from './notion.service';
 
-@Processor('notion')
-export class NotionCrawler {
-  private readonly logger = new Logger(NotionCrawler.name);
+@Processor('notionSync')
+export class NotionSync {
+  private readonly logger = new Logger(NotionSync.name);
 
   constructor(private readonly notionService: NotionService) {}
 
-  @Process('getNotionPost')
+  @Process('syncNotionPosts')
   async getDBService(job: Job<{ user: User; queuePosts: NotionPost[] }>) {
     this.logger.debug('Start getNotion...');
 

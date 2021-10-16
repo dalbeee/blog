@@ -4,7 +4,6 @@ import {
   Inject,
   Injectable,
   InternalServerErrorException,
-  ServiceUnavailableException,
 } from '@nestjs/common';
 import { AxiosRequestConfig } from 'axios';
 import { Cache } from 'cache-manager';

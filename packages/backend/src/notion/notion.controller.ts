@@ -20,11 +20,11 @@ import { NotionService } from './notion.service';
 export class NotionController {
   constructor(
     private readonly notionService: NotionService,
-    @InjectQueue('notion') private getNotionPost: Queue,
+    @InjectQueue('notionSync') private notionSync: Queue,
   ) {}
 
   @UseGuards(JwtAuthGuard)
-  @Get('/crawler')
+  @Get('/sync')
   async crawler(@CurrentUser() user: User) {
     const notYetSavedPosts =
       await this.notionService.findPostsNotYetSavedLocal();
@@ -33,15 +33,15 @@ export class NotionController {
       await this.notionService.findPostsWithOutOfSyncByUpdatedAtField();
 
     console.log(
-      'notYetSave : ',
+      'new : ',
       notYetSavedPosts.length,
       'notYetSync : ',
       notYetUpdatedPosts.length,
     );
-    // return;
+
     const queue = notYetSavedPosts.concat(notYetUpdatedPosts);
 
-    this.getNotionPost.add('getNotionPost', {
+    this.notionSync.add('syncNotionPosts', {
       user,
       queuePosts: queue,
     });

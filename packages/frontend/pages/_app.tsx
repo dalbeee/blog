@@ -26,7 +26,7 @@ function MyApp({ Component, pageProps }) {
         <UserContextProvider>
           <PostContextProvider>
             <div className="flex justify-center">
-              <div className="w-full sm:w-3/5 lg:w-4/7">
+              <div className="w-full min-h-content sm:w-3/5 lg:w-4/7">
                 <Header />
                 <Component {...pageProps} />
                 <GetToastComponent />

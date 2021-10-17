@@ -71,7 +71,6 @@ export const GetToastComponent = () => {
         aria-atomic="true"
         style={{
           position: "relative",
-          minHeight: "100px",
         }}
       >
         <div className="fixed bottom-4 right-4">{operation.spread()}</div>

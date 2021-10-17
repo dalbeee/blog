@@ -2,12 +2,12 @@ import { GetStaticProps } from "next";
 import Layout from "../component/Layout";
 import { IPost } from "..";
 import { usePostContext } from "../store/postContext";
-import useNotion from "../hooks/useNotion";
+import usePost from "../hooks/usePost";
 import { useEffect } from "react";
 
 export const getStaticProps: GetStaticProps = async () => {
-  const notionAPI = useNotion();
-  let posts = await notionAPI.getPosts();
+  const postAPI = usePost();
+  let posts = await postAPI.getPosts();
   if (!posts) posts = [];
   return {
     props: { posts },

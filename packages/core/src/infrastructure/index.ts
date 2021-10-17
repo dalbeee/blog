@@ -1,2 +1,2 @@
-export * from "./http/axios";
-export * from "./http/httpClient";
+export * as httpClient from "./http";
+export * as repository from "./repository";

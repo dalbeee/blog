@@ -18,7 +18,7 @@ export class PostService {
 
   async getAll() {
     return await this.postsRepository.find({
-      relations: ['user', 'comments'],
+      // relations: ['user', 'comments'],
       order: { createdAt: 'DESC' },
     });
   }
@@ -26,7 +26,7 @@ export class PostService {
   async getById(id: string): Promise<Post> {
     return await this.postsRepository.findOneOrFail(
       { id },
-      { relations: ['user'] },
+      // { relations: ['user'] },
     );
   }
 

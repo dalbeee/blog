@@ -1,5 +1,5 @@
 import { NotionRepository } from "../repository";
-import { DatabaseQueryResult, NotionBlock } from "../repository/types";
+import { DatabaseQueryResult } from "../repository/types";
 import { parseNotionPostToMarkdown } from "../util/parsePostToMarkdown";
 import { NotionPost } from "./types";
 

@@ -15,7 +15,7 @@ const CardMain = ({ post }: { post: IPost }) => {
   );
 
   return (
-    <Link href={`/post/${post.slug || post.id}`}>
+    <Link href={`/post/${post.id}`}>
       <a>
         <div className="flex flex-col w-full mb-4 overflow-hidden h-1/3 rounded-xl border-gray-300 border-2">
           <div className="relative w-full overflow-hidden h-3/5">

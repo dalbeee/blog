@@ -2,6 +2,7 @@
 
 ## todo
 ### frontend
+- [x]  frontend use only /post API instead of /notion. separate notion and post.
 - [ ]  admin page
     - [ ]  plug-ins
         - [ ]  notion connector

@@ -2,20 +2,13 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import ReactMarkdown from "react-markdown";
 
 import { IPost } from "../..";
-import Comment from "../../component/Comment";
-import CommentController from "../../component/CommentController";
 import NotFound from "../../component/page/NotFound";
 import PostController from "../../component/PostController";
-import useNotion from "../../hooks/useNotion";
+import usePost from "../../hooks/usePost";
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const notionAPI = useNotion();
-  const postContent = await notionAPI.getPost(context.params.slug as string);
-  const postTitle = (await notionAPI.getPosts()).filter(
-    (post) => post.id === context.params.slug
-  )[0].title;
-
-  const post = { title: postTitle, content: postContent as string };
+  const postAPI = usePost();
+  const post = await postAPI.getPost(context.params.slug as string);
 
   const url = context.params.slug;
   return {
@@ -25,8 +18,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const notionAPI = useNotion();
-  const getPostsData = await notionAPI.getPosts();
+  const postAPI = usePost();
+  const getPostsData = await postAPI.getPosts();
   const paths = [];
 
   getPostsData?.length &&

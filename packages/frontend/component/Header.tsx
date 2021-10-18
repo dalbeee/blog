@@ -35,7 +35,7 @@ const UserModule = () => {
 
   return (
     <div className="absolute flex items-center h-full text-2xl right-2">
-      {userInfo?.username ? <LoggedInMenu /> : <LoggedOutMenu />}
+      {userInfo?.access_token ? <LoggedInMenu /> : <LoggedOutMenu />}
     </div>
   );
 };

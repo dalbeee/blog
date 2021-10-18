@@ -10,7 +10,7 @@ export class Axios implements HttpClient {
     private readonly url: string,
     axiosConfig: AxiosRequestConfig = {}
   ) {
-    const config: Partial<AxiosRequestConfig> = {
+    const config: AxiosRequestConfig = {
       baseURL: this.url,
       ...axiosConfig,
     };
@@ -23,8 +23,9 @@ export class Axios implements HttpClient {
         return response.data;
       },
       (error) => {
-        // devConsole("error from axios layer : ", error.response.data);
-        throw error.response.data;
+        console.log(error);
+        devConsole("error from axios layer : ", error?.response?.data);
+        throw error.response?.data;
       }
     );
   }
@@ -33,5 +34,9 @@ export class Axios implements HttpClient {
   }
   post(url: string, data: object): Promise<any> {
     return this.client.post(url, data);
+  }
+
+  patch(url: string, data: object): Promise<any> {
+    return this.client.patch(url, data);
   }
 }

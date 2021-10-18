@@ -11,7 +11,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const req = await Promise.all([notionApiKey, notionDatabaseId]);
 
   const object = req.reduce((acc, item) => {
-    acc[item.key] = item.value;
+    acc[item.key] = item ? item.value : null;
     return acc;
   }, {});
 

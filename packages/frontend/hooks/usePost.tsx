@@ -1,13 +1,12 @@
-import { notion, infrastructure } from "@blog/core";
+import { infrastructure } from "@blog/core";
+import { getHttpClient } from "../core/httpClient";
 
-const useNotion = () => {
-  const url = typeof window === "undefined" ? "http://backend:3000" : "/api";
-  const config = { headers: { "access-control-allow-origin": "*" } };
-  const httpClient = new infrastructure.httpClient.Axios(url, config);
+const usePost = () => {
+  const httpClient = getHttpClient();
+
   const repository = new infrastructure.repository.PostRepository(httpClient);
-  // const useCase = new notion.useCase.FrontendUseCase(repository);
 
   return repository;
 };
 
-export default useNotion;
+export default usePost;

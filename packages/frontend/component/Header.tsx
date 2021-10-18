@@ -10,10 +10,16 @@ const UserModule = () => {
     <div className="flex ">
       <Link href="/create">
         <a>
-          <span className="mr-4 material-icons">send</span>
+          <span className="mr-4 material-icons-round">send</span>
         </a>
       </Link>
-      <button onClick={onLogout} className="material-icons">
+
+      <Link href="/admin">
+        <a href="">
+          <span className="material-icons-round mr-4">settings</span>
+        </a>
+      </Link>
+      <button onClick={onLogout} className="material-icons-round">
         logout
       </button>
     </div>
@@ -22,7 +28,7 @@ const UserModule = () => {
   const LoggedOutMenu = () => (
     <div className="">
       <Link href="/login">
-        <button className="material-icons">login</button>
+        <button className="material-icons-round">login</button>
       </Link>
     </div>
   );

@@ -13,7 +13,7 @@ const login = () => {
   const onClick = async () => {
     if (!id || !password) return;
 
-    const requestUserInfo: UserLoginDTO = { username: id, password };
+    const requestUserInfo: UserLoginDTO = { email: id, password };
     const result = await operation.login(requestUserInfo);
 
     result
@@ -31,7 +31,9 @@ const login = () => {
     <div className="flex flex-col items-center justify-center h-content">
       <div className="w-4/5">
         <div className="flex items-center w-full h-16 ">
-          <span className="mr-4 material-icons ">person_outline</span>
+          <span className="opacity-70 mr-4 material-icons-round">
+            account_circle
+          </span>
           <input
             onChange={(e) => setId(e.target.value)}
             type="text"
@@ -43,7 +45,7 @@ const login = () => {
           {error?.message?.target === "id" && error.message.message}
         </div>
         <div className="flex items-center w-full h-16 ">
-          <span className="mr-4 material-icons">vpn_key</span>
+          <span className="opacity-70 mr-4 material-icons-round">vpn_key</span>
           <input
             onChange={(e) => setPassword(e.target.value)}
             type="password"
@@ -56,7 +58,7 @@ const login = () => {
         </div>
         <button
           onClick={onClick}
-          className="flex justify-center w-full px-2 py-1 mt-10 text-2xl font-semibold bg-gray-700 rounded-xl text-gray-50"
+          className="flex justify-center w-full px-2 py-1 mt-10 font-semibold bg-gray-700 rounded-xl text-gray-50"
         >
           login
         </button>

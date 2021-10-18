@@ -17,12 +17,12 @@ const PostController = () => {
         <div className="mr-4 text-gray-500"></div>
         <div className="mr-4 text-gray-500">
           <button>
-            <span className="material-icons">edit</span>
+            <span className="material-icons-round">edit</span>
           </button>
         </div>
         <div className="mr-4 text-gray-500">
           <button onClick={onDelete}>
-            <span className="material-icons">delete_forever</span>
+            <span className="material-icons-round">delete_forever</span>
           </button>
         </div>
       </div>

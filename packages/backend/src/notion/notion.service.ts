@@ -28,7 +28,7 @@ export class NotionService {
     private readonly postService: PostService,
   ) {
     const url = 'https://api.notion.com/v1';
-    const config: AxiosRequestConfig = {
+    const config = {
       headers: {
         'Notion-Version': '2021-08-16',
         Authorization: `Bearer ${process.env.SECRET_NOTION}`,
@@ -36,7 +36,7 @@ export class NotionService {
       withCredentials: true,
     };
 
-    const httpClient = new infrastructure.Axios(url, config);
+    const httpClient = new infrastructure.httpClient.Axios(url, config);
     const repository = new notion.repository.BackendRepository(httpClient);
     this.notionAPI = new notion.useCase.NotionUseCase(repository);
   }

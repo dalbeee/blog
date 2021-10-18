@@ -6,6 +6,7 @@
 - [ ]  admin page
     - [ ]  plug-ins
         - [ ]  notion connector
+            - [x]  skeleton
 - [ ]  table of content
 - [ ]  category view component
 - [ ]  infinity scroll
@@ -19,6 +20,8 @@
     - [ ]  event emitter
 - [ ]  triggering interval notion sync using cron
 - [ ]  define error type in notionService / findPostsWithOutOfSyncByUpdatedAtField
+- [ ]  admin
+    - [x]  config
 
 ### misc
 - [ ]  db separate used by e2e testing and dev in docker dev mode

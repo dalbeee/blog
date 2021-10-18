@@ -5,12 +5,13 @@ import {
 } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BullModule } from '@nestjs/bull';
+import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 
 import { UsersModule } from '@src/user/user.module';
 import { AuthModule } from '@src/auth/auth.module';
-import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { PostModule } from './post/post.module';
 import { NotionModule } from './notion/notion.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -34,8 +35,7 @@ import { NotionModule } from './notion/notion.module';
     AuthModule,
     PostModule,
     NotionModule,
-
-    // UploadModule,
+    AdminModule,
   ],
   providers: [
     {

@@ -45,6 +45,7 @@ export class NotionController {
       user,
       queuePosts: queue,
     });
+    return true;
   }
 
   @UseInterceptors(CacheInterceptor)

@@ -1,8 +1,9 @@
 import { infrastructure } from "@blog/core";
 
+import { getHttpClient } from "../core/httpClient";
+
 const useConfig = () => {
-  const url = typeof window === "undefined" ? "http://backend:3000" : "/api";
-  const httpClient = new infrastructure.httpClient.Axios(url);
+  const httpClient = getHttpClient();
   const configRepository = new infrastructure.repository.ConfigRepository(
     httpClient
   );

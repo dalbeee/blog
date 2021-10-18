@@ -1,16 +1,19 @@
-import { infrastructure } from "@blog/core";
-import { ConfigDTO } from "@blog/core/dist/infrastructure/repository";
 import { InputAdornment, TextField } from "@mui/material";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import LoadingButton from "@mui/lab/LoadingButton";
+
+import { ConfigDTO } from "@blog/core/dist/infrastructure/repository";
+
 import useConfig from "../../../../hooks/useConfig";
-import useHttpClient from "../../../../hooks/useHttpClient";
 import { useToastContext } from "../../../../store/toastContext";
+import { getHttpClient } from "../../../../core/httpClient";
+import { useNotion } from "../../../../hooks/useNotion";
 
 const Notion = ({ notionAPiKey, notionDatabaseId }) => {
   const configAPI = useConfig();
+  const notionAPI = useNotion();
   const toastAPI = useToastContext();
-  const httpClient = useHttpClient();
   const router = useRouter();
 
   const [keys, setKeys] = useState({
@@ -19,6 +22,8 @@ const Notion = ({ notionAPiKey, notionDatabaseId }) => {
   });
 
   const [isShowPassword, setIsShowPassword] = useState(false);
+
+  const [isFetching, setIsFetching] = useState(false);
 
   const handleChange = (e) => {
     setKeys((prev) => {
@@ -40,13 +45,16 @@ const Notion = ({ notionAPiKey, notionDatabaseId }) => {
     });
   };
 
-  const handleSync = () => {
-    httpClient.get("/notion/sync").then(() => {
+  const handleSync = async () => {
+    setIsFetching(true);
+    const result = await notionAPI.sync();
+    setIsFetching(false);
+
+    result &&
       toastAPI.operation.push({
         title: "info",
         content: "노션 데이터 동기화를 시작했습니다",
       });
-    });
   };
 
   return (
@@ -107,12 +115,14 @@ const Notion = ({ notionAPiKey, notionDatabaseId }) => {
               save
             </button>
             <div className="py-4">
-              <button
-                className={`w-full bg-blue-800 text-gray-200 px-10 py-2 rounded-xl font-semibold`}
+              <LoadingButton
+                fullWidth
                 onClick={handleSync}
+                loading={isFetching}
+                variant="outlined"
               >
                 sync now
-              </button>
+              </LoadingButton>
             </div>
             <div className="py-4">
               <button className="w-full bg-red-600 text-gray-200 px-10 py-2 rounded-xl text-xs ">

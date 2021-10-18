@@ -23,9 +23,10 @@ export class Axios implements HttpClient {
         return response.data;
       },
       (error) => {
-        console.log(error);
-        devConsole("error from axios layer : ", error?.response?.data);
-        throw error.response?.data;
+        // console.log("response", error.response);
+        // console.log("data", error.response.data);
+        // devConsole("error from axios layer : ", error?.response);
+        return Promise.reject(error.response.data);
       }
     );
   }
@@ -38,5 +39,9 @@ export class Axios implements HttpClient {
 
   patch(url: string, data: object): Promise<any> {
     return this.client.patch(url, data);
+  }
+
+  use(middleware: Function) {
+    middleware(this.client);
   }
 }

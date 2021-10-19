@@ -11,9 +11,9 @@ import {
 import dynamic from "next/dynamic";
 import UploadFilePond from "../component/UploadFilePond";
 import { logger } from "../util/logger";
-import { useUserContext } from "../store/userContext";
-import { useToastContext } from "../store/toastContext";
 import { usePostContext } from "../store/postContext";
+import { useUser } from "../hooks/useUser";
+import AuthRouter from "../component/router/AuthRouter";
 
 const EditorWithNoSSR = dynamic<TuiEditorWithForwardedProps>(
   () =>
@@ -31,17 +31,13 @@ export const EditorComponent = forwardRef<
   />
 ));
 
-const create: React.FC = (props) => {
-  const { operation } = useUserContext();
-  const { operation: toast } = useToastContext();
+const create = (props) => {
   const { post } = usePostContext();
   const router = useRouter();
+  const userAPI = useUser();
 
   useEffect(() => {
-    operation.isAuthenticated().then((res) => {
-      res === false &&
-        toast.push({ title: "알림", content: "로그인이 필요합니다" });
-    });
+    userAPI.checkUserAuthenticate();
   }, []);
 
   const titleRef = useRef(null); // title

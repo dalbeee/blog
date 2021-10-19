@@ -15,6 +15,8 @@ import { CurrentUser } from '@src/auth/decorator/currentUser.decorator';
 import { JwtAuthGuard } from '@src/auth/guard/jwtAuth.guard';
 import { User } from '@src/user/entity/user.entity';
 import { NotionService } from './notion.service';
+import { Role, Roles } from '@src/auth/decorator/role';
+import { RolesGuard } from '@src/auth/guard/role.guard';
 
 @Controller('/notion')
 export class NotionController {
@@ -23,7 +25,9 @@ export class NotionController {
     @InjectQueue('notionSync') private notionSync: Queue,
   ) {}
 
+  @UseGuards(RolesGuard)
   @UseGuards(JwtAuthGuard)
+  @Roles(Role.Admin)
   @Get('/sync')
   async crawler(@CurrentUser() user: User) {
     const notYetSavedPosts =

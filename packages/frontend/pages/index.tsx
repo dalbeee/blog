@@ -7,12 +7,24 @@ import { useEffect } from "react";
 
 export const getStaticProps: GetStaticProps = async () => {
   const postAPI = usePost();
-  let posts = await postAPI.getPosts();
-  if (!posts) posts = [];
-  return {
-    props: { posts },
-    revalidate: 5,
-  };
+
+  try {
+    let posts = await postAPI.getPosts();
+
+    return {
+      props: { posts },
+      revalidate: 5,
+    };
+  } catch (error) {
+    if (error.status === 502) {
+      return {
+        redirect: {
+          destination: "/502",
+          permanent: false,
+        },
+      };
+    }
+  }
 };
 
 export default function Home({ posts }: { posts: IPost[] }) {

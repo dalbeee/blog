@@ -2,19 +2,29 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import ReactMarkdown from "react-markdown";
 
 import { IPost } from "../..";
-import NotFound from "../../component/page/NotFound";
+import Http404 from "../../component/page/Http404";
 import PostController from "../../component/PostController";
 import usePost from "../../hooks/usePost";
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const postAPI = usePost();
-  const post = await postAPI.getPost(context.params.slug as string);
 
-  const url = context.params.slug;
-  return {
-    props: { post, url },
-    revalidate: 5,
-  };
+  try {
+    const post = await postAPI.getPost(context.params.slug as string);
+
+    const url = context.params.slug;
+    return {
+      props: { post, url },
+      revalidate: 5,
+    };
+  } catch (error) {
+    return {
+      redirect: {
+        destination: "/404",
+        permanent: false,
+      },
+    };
+  }
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -32,8 +42,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 const PostDetail = ({ post }: { post: IPost }) => {
-  if (!post) return <NotFound />;
-
   return (
     <div className="flex justify-center w-full">
       <div className="w-11/12" style={{ maxWidth: "860px" }}>

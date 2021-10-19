@@ -12,6 +12,7 @@ import * as bcrypt from 'bcrypt';
 import { Comment } from '@src/comments/entity/comment.entity';
 import { Post } from '@src/post/entity/post.entity';
 import { BaseEntity } from '@src/share/entity/baseEntity';
+import { Role } from '@src/auth/decorator/role';
 
 @Entity()
 export class User extends BaseEntity {
@@ -24,6 +25,12 @@ export class User extends BaseEntity {
   @Exclude()
   @Column()
   password: string;
+
+  @Column({
+    nullable: true,
+    type: 'simple-array',
+  })
+  roles: Role[];
 
   @Exclude()
   private tempPassword: string;
@@ -56,5 +63,7 @@ export class User extends BaseEntity {
   constructor(partial: Partial<User>) {
     super();
     Object.assign(this, partial);
+
+    this.roles = this.roles || [Role.User];
   }
 }

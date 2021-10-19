@@ -24,10 +24,14 @@ export class PostService {
   }
 
   async getById(id: string): Promise<Post> {
-    return await this.postsRepository.findOneOrFail(
-      { id },
-      // { relations: ['user'] },
-    );
+    try {
+      return await this.postsRepository.findOneOrFail(
+        { id },
+        // { relations: ['user'] },
+      );
+    } catch (error) {
+      throw new NotFoundException();
+    }
   }
 
   async getBySlug(slug: string): Promise<Post> {

@@ -27,7 +27,7 @@ export class PostService {
     try {
       return await this.postsRepository.findOneOrFail(
         { id },
-        // { relations: ['user'] },
+        { relations: ['user'] },
       );
     } catch (error) {
       throw new NotFoundException();

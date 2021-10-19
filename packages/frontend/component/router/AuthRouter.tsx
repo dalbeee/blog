@@ -13,18 +13,11 @@ const AuthRouter: any = ({ children, role }) => {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    userAPI
-      .checkUserAuthenticate()
-      .then((r) => {
-        setUser(r);
-      })
-      .catch(() => {
-        router.push("/login");
-      });
+    userAPI.checkUserAuthenticate().then((r) => setUser(r));
   }, []);
 
   if (!user) return <Loading />;
-  if (!user.roles?.includes(role)) return <Custom403 />;
+  if (role && !user.roles?.includes(role)) return <Custom403 />;
 
   return <>{children}</>;
 };

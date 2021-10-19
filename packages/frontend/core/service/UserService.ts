@@ -27,7 +27,6 @@ export const userService = (userRepository: UserRepository) => {
     try {
       return await userRepository.checkUserAuthenticate();
     } catch (error) {
-      console.log("errrrrrrrr", error);
       toastAPI.operation.push({
         title: "알림",
         content: "로그인이 필요합니다",

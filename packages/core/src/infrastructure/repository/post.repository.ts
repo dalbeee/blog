@@ -1,3 +1,4 @@
+import { CreatePostDTO } from "../..";
 import { Post } from "../../domain/blog/entity/post.entity";
 import { HttpClient } from "../http";
 
@@ -12,8 +13,8 @@ export class PostRepository {
     return await this.httpClient.get(`/posts`);
   }
 
-  async createPost(post: PostDTO): Promise<Post> {
-    return await this.httpClient.post(`/post`, post);
+  async createPost(post: CreatePostDTO): Promise<Post> {
+    return await this.httpClient.post(`/posts`, post);
   }
 
   async deletePost(postId: string): Promise<any> {

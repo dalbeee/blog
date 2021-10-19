@@ -6,9 +6,12 @@ export const httpClientUncaughtExceptionMiddleware = (axios: AxiosInstance) => {
   axios.interceptors.response.use(
     (res) => res,
     (err) => {
-      devConsole("unhandled httpClient Error", err);
+      devConsole(
+        "unhandled httpClient Error @from uncatchedExceptionMiddleware",
+        err
+      );
       // return Promise.reject(err);
-      return;
+      throw err;
     }
   );
 };

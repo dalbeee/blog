@@ -1,4 +1,4 @@
-import { CreatePostDTO } from '@src/post/dto/post.dto';
+import { CreatePostDTO } from '@blog/core/dist/domain';
 
 export const extractThumbnailFromPost = (post: CreatePostDTO) =>
   post.content

@@ -1,6 +1,6 @@
 import * as request from 'supertest';
 
-import { UserDTO } from '@src/user/dto/user.dto';
+import { UserDTO } from '@blog/core/dist/domain';
 
 export const getToken = async (app, user: Partial<UserDTO>) => {
   const jwt = await request(app.getHttpServer()).post(`/auth/login`).send({

@@ -1,9 +1,9 @@
 import { extractThumbnailFromPost } from '@src/share/utils/extractThumbnailFromPost';
 import { User } from '@src/user/entity/user.entity';
 import { EntityRepository, Repository } from 'typeorm';
-import { CreatePostDTO } from './dto/post.dto';
 import { Post } from './entity/post.entity';
 import * as helper from '@src/share/utils';
+import { CreatePostDTO } from '@blog/core/dist/domain';
 
 @EntityRepository(Post)
 export class PostRepository extends Repository<Post> {

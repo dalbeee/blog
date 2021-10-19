@@ -4,11 +4,11 @@ import * as request from 'supertest';
 import * as faker from 'faker';
 import { getConnection } from 'typeorm';
 
-import { UserDTO } from '@src/user/dto/user.dto';
+import { PatchPostDTO, UserDTO } from '@blog/core/dist/domain';
+
 import { AppModule } from '@src/app.module';
 import { getUserAndJwt } from './util/getUserAndJwt';
 import { generatePostDTO, generatePosts } from './util/Posts';
-import { PatchPostDTO } from '@src/post/dto/post.dto';
 import { Post } from '@src/post/entity/post.entity';
 
 let app: INestApplication;

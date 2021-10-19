@@ -11,10 +11,11 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 
+import { CreatePostDTO, PatchPostDTO } from '@blog/core/dist/domain';
+
 import { CurrentUser } from '@src/auth/decorator/currentUser.decorator';
 import { JwtAuthGuard } from '@src/auth/guard/jwtAuth.guard';
 import { User } from '@src/user/entity/user.entity';
-import { CreatePostDTO, PatchPostDTO } from './dto/post.dto';
 import { PostService } from './post.service';
 
 @UseInterceptors(ClassSerializerInterceptor)

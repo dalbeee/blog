@@ -8,7 +8,7 @@ import {
 
 import { User } from '@src/user/entity/user.entity';
 import { Post } from './entity/post.entity';
-import { CreatePostDTO, PatchPostDTO } from './dto/post.dto';
+import { CreatePostDTO, PatchPostDTO } from '@blog/core/dist/domain';
 import { PostRepository } from './post.repository';
 import { getConnection } from 'typeorm';
 

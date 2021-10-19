@@ -4,8 +4,9 @@ import * as request from 'supertest';
 import * as faker from 'faker';
 import { getConnection } from 'typeorm';
 
+import { UserDTO } from '@blog/core/dist/domain';
+
 import { User } from '@src/user/entity/user.entity';
-import { UserDTO } from '@src/user/dto/user.dto';
 import { AppModule } from '@src/app.module';
 import { getUserAndJwt } from './util/getUserAndJwt';
 import { getToken } from './util/getToken';

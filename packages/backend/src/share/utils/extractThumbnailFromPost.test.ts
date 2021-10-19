@@ -1,4 +1,4 @@
-import { CreatePostDTO } from '@src/post/dto/post.dto';
+import { CreatePostDTO } from '@blog/core/dist/domain';
 import { extractThumbnailFromPost } from './extractThumbnailFromPost';
 
 it('test with not images will return null', () => {

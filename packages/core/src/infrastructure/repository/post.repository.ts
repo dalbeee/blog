@@ -1,5 +1,4 @@
-import { CreatePostDTO } from "../..";
-import { Post } from "../../domain/blog/entity/post.entity";
+import { CreatePostDTO, Post } from "../../domain";
 import { HttpClient } from "../http";
 
 export class PostRepository {

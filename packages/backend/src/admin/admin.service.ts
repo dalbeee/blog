@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 
+import { ConfigDTO } from '@blog/core/dist/domain';
+
 import { AdminRepository } from './admin.repository';
-import { ConfigDTO } from './dto/config.dto';
 
 @Injectable()
 export class AdminService {

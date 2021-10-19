@@ -7,8 +7,9 @@ import {
   Patch,
 } from '@nestjs/common';
 
+import { ConfigDTO } from '@blog/core/dist/domain';
+
 import { AdminService } from './admin.service';
-import { ConfigDTO } from './dto/config.dto';
 
 @Controller('/admin')
 export class AdminController {

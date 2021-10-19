@@ -13,10 +13,10 @@ import { NotionPost } from '@blog/core/dist/notion/useCase/types';
 
 import { PostRepository } from '@src/post/post.repository';
 import { User } from '@src/user/entity/user.entity';
-import { CreatePostDTO, PatchPostDTO } from '@src/post/dto/post.dto';
 import { PostService } from '@src/post/post.service';
 import { Post } from '@src/post/entity/post.entity';
 import { IsNull, Not } from 'typeorm';
+import { CreatePostDTO, PatchPostDTO } from '@blog/core/dist/domain';
 
 @Injectable()
 export class NotionService {

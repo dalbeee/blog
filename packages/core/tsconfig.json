@@ -7,7 +7,8 @@
     "composite": true,
     "outDir": "./dist",
     "rootDir": "src",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "experimentalDecorators": true
   },
   "include": ["src"],
   "exclude": ["node_modules"]

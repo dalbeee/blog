@@ -1,18 +1,16 @@
-import React, { forwardRef, useEffect, useRef, useState } from "react";
-import { PostDTO } from "..";
+import React, { forwardRef, useRef, useState } from "react";
 import { useRouter } from "next/router";
+import dynamic from "next/dynamic";
+
+import { CreatePostDTO } from "@blog/core/dist/domain";
 
 import {
   EditorPropsWithHandlers,
   TuiEditorWithForwardedProps,
   EditorType,
 } from "../hooks/useTuiEditor";
-
-import dynamic from "next/dynamic";
 import UploadFilePond from "../component/UploadFilePond";
-import { logger } from "../util/logger";
-import { usePostContext } from "../store/postContext";
-import { useUser } from "../hooks/useUser";
+import { usePost } from "../hooks/usePost";
 import AuthRouter from "../component/router/AuthRouter";
 
 const EditorWithNoSSR = dynamic<TuiEditorWithForwardedProps>(
@@ -31,14 +29,9 @@ export const EditorComponent = forwardRef<
   />
 ));
 
-const create = (props) => {
-  const { post } = usePostContext();
+const Create = (props) => {
+  const postAPI = usePost();
   const router = useRouter();
-  const userAPI = useUser();
-
-  useEffect(() => {
-    userAPI.checkUserAuthenticate();
-  }, []);
 
   const titleRef = useRef(null); // title
   const ref = useRef<EditorType>(); // tui editor
@@ -62,10 +55,10 @@ const create = (props) => {
     }
 
     const content = ref.current?.getInstance().getMarkdown();
-    const postData: PostDTO = { title, content };
-    const result = await post.operation.createPost(postData);
-    logger(result);
-    result.data && router.push("/");
+    const postData: CreatePostDTO = { title, content };
+    await postAPI.createPost(postData).then(() => {
+      router.push("/");
+    });
   };
 
   return (
@@ -109,4 +102,14 @@ const create = (props) => {
   );
 };
 
-export default create;
+const AuthEditorComponent = () => {
+  return (
+    <>
+      <AuthRouter>
+        <Create />
+      </AuthRouter>
+    </>
+  );
+};
+
+export default AuthEditorComponent;

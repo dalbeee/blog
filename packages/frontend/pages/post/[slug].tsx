@@ -4,7 +4,7 @@ import ReactMarkdown from "react-markdown";
 import { IPost } from "../..";
 import Http404 from "../../component/page/Http404";
 import PostController from "../../component/PostController";
-import usePost from "../../hooks/usePost";
+import { usePost } from "../../hooks/usePost";
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const postAPI = usePost();

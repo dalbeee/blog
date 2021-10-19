@@ -2,7 +2,7 @@ import { GetStaticProps } from "next";
 import Layout from "../component/Layout";
 import { IPost } from "..";
 import { usePostContext } from "../store/postContext";
-import usePost from "../hooks/usePost";
+import { usePost } from "../hooks/usePost";
 import { useEffect } from "react";
 
 export const getStaticProps: GetStaticProps = async () => {

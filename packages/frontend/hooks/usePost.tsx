@@ -1,12 +1,15 @@
 import { infrastructure } from "@blog/core";
 import { getHttpClient } from "../core/httpClient";
+import { postService } from "../core/service/postService";
 
-const usePost = () => {
+export const usePost = () => {
   const httpClient = getHttpClient();
 
-  const repository = new infrastructure.repository.PostRepository(httpClient);
+  const postRepository = new infrastructure.repository.PostRepository(
+    httpClient
+  );
 
-  return repository;
+  const service = postService(postRepository);
+
+  return service;
 };
-
-export default usePost;

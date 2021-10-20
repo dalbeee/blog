@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "rimraf": "rm -rf .next",
+    "build": "yarn rimraf && next build",
     "start": "next start",
     "test:watch": "jest --watch"
   },
@@ -21,6 +22,7 @@
     "filepond": "^4.30.3",
     "filepond-plugin-file-rename": "^1.1.8",
     "jest": "^27.3.1",
+    "jwt-decode": "^3.1.2",
     "lodash": "^4.17.21",
     "marked": "^3.0.7",
     "next": "11.1.2",

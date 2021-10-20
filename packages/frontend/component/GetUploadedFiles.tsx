@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { getAllFilesPath } from "../util/axios";
-import Image from "next/image";
+import axios from "axios";
 
 const GetUploadedFiles = () => {
   const [data, setData] = useState(null);
 
-  const onClick = async () => setData(await getAllFilesPath());
+  // TODO >> export const getAllFilesPath = async () => await getAxiosData("GET", "/upload");
+  const onClick = async () => setData(await axios.get("/upload"));
 
   useEffect(() => {
     onClick();

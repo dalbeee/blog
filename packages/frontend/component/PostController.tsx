@@ -1,13 +1,14 @@
 import { useRouter } from "next/router";
-import { usePostContext } from "../store/postContext";
+
+import { usePost } from "../hooks/usePost";
 
 const PostController = () => {
   const router = useRouter();
-  const { post } = usePostContext();
+  const postAPI = usePost();
 
   //   TODO implement update method
   const onDelete = async () => {
-    const result = await post.operation.deletePost(router.query.slug as string);
+    const result = await postAPI.deletePost(router.query.slug as string);
     !result.isError && router.push("/");
   };
 

@@ -1,38 +1,40 @@
-import { GetStaticProps } from "next";
-import Layout from "../component/Layout";
-import { IPost } from "..";
-import { usePostContext } from "../store/postContext";
+import { useEffect, useState } from "react";
+
+import { Post } from "@blog/core/dist/domain";
+
 import { usePost } from "../hooks/usePost";
-import { useEffect } from "react";
+import Content from "../component/Content";
 
-export const getStaticProps: GetStaticProps = async () => {
+// export const getStaticProps: GetStaticProps = async () => {
+//   const postAPI = usePost();
+
+//   // try {
+//   let posts = (await postAPI.getPosts()) || [];
+
+//   return {
+//     props: { posts },
+//     revalidate: 5,
+//   };
+//   // } catch (error) {
+//   //   if (error.status === 502) {
+//   //     return {
+//   //       redirect: {
+//   //         destination: "/502",
+//   //         permanent: false,
+//   //       },
+//   //     };
+//   //   }
+//   // }
+// };
+
+// export default function Home({ posts }: { posts: IPost[] }) {
+export default function Home() {
   const postAPI = usePost();
+  const [posts, setPosts] = useState<Post[]>([]);
 
-  try {
-    let posts = await postAPI.getPosts();
-
-    return {
-      props: { posts },
-      revalidate: 5,
-    };
-  } catch (error) {
-    if (error.status === 502) {
-      return {
-        redirect: {
-          destination: "/502",
-          permanent: false,
-        },
-      };
-    }
-  }
-};
-
-export default function Home({ posts }: { posts: IPost[] }) {
-  const { post } = usePostContext();
   useEffect(() => {
-    const getPosts = async () => post.operation.setPosts(posts);
-    getPosts();
+    postAPI.getPosts().then((r) => setPosts(r));
   }, []);
 
-  return <Layout />;
+  return <Content posts={posts} />;
 }

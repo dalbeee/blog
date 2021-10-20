@@ -1,8 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import { IPost } from "..";
 
-const cardSub = ({ post }: { post: IPost }) => {
+import { Post } from "@blog/core/dist/domain";
+
+const cardSub = ({ post }: { post: Post }) => {
   if (!post) return null;
 
   return (

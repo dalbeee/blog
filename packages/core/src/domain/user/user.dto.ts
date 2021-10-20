@@ -1,5 +1,6 @@
 import {
   IsEmail,
+  IsNotEmpty,
   IsOptional,
   IsString,
   Length,
@@ -39,4 +40,14 @@ export class UpdateUserDTO {
   @Matches(/^\S*$/, { message: "space not allow" })
   @IsOptional()
   password?: string;
+}
+
+export class UserLoginDTO {
+  @IsString()
+  @IsNotEmpty()
+  email: string;
+
+  @IsString()
+  @IsNotEmpty()
+  password: string;
 }

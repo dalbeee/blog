@@ -1,32 +1,47 @@
-import { GetStaticProps } from "next";
+import { useEffect, useState } from "react";
 import AdminLayout from "../../../component/admin/Layout";
 import Notion from "../../../component/admin/plugin/notion/Notion";
+import Loading from "../../../component/page/Loading";
 import useConfig from "../../../hooks/useConfig";
 
-export const getStaticProps: GetStaticProps = async (context) => {
+interface Data {
+  NOTION_API_KEY: string;
+  NOTION_DATABASE_ID: string;
+}
+
+const notion = () => {
+  const [data, setData] = useState<Data>({} as Data);
+  const [isFetched, setIsFetched] = useState(false);
   const configAPI = useConfig();
-  const notionApiKey = await configAPI.getKeyValue("NOTION_API_KEY");
-  const notionDatabaseId = await configAPI.getKeyValue("NOTION_DATABASE_ID");
 
-  const req = await Promise.all([notionApiKey, notionDatabaseId]);
+  useEffect(() => {
+    const getData = async () => {
+      const notionApiKey = await configAPI.getKeyValue("NOTION_API_KEY");
+      const notionDatabaseId = await configAPI.getKeyValue(
+        "NOTION_DATABASE_ID"
+      );
 
-  const object = req.reduce((acc, item) => {
-    acc[item.key] = item ? item.value : null;
-    return acc;
-  }, {});
+      const req = await Promise.all([notionApiKey, notionDatabaseId]);
 
-  return {
-    props: { ...object },
-  };
-};
+      const object = req.reduce((acc, item) => {
+        if (!item) return acc;
+        acc[item.key] = item.value;
+        return acc;
+      }, {});
 
-const notion = (req: any) => {
+      setData(object);
+      setIsFetched(true);
+    };
+    getData();
+  }, []);
+
+  if (!isFetched) return <Loading />;
   return (
     <>
       <AdminLayout>
         <Notion
-          notionAPiKey={req.NOTION_API_KEY}
-          notionDatabaseId={req.NOTION_DATABASE_ID}
+          notionAPiKey={data?.NOTION_API_KEY}
+          notionDatabaseId={data?.NOTION_DATABASE_ID}
         />
       </AdminLayout>
     </>

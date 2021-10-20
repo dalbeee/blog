@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { UserLoginDTO } from "..";
-import { useUserContext } from "../store/userContext";
+
+import { UserLoginDTO } from "@blog/core/dist/domain";
+
 import { useToastContext } from "../store/toastContext";
+import { useUser } from "../hooks/useUser";
 
 const login = () => {
-  const { operation, error } = useUserContext();
   const { operation: toast } = useToastContext();
+  const userAPI = useUser();
 
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
@@ -14,7 +16,7 @@ const login = () => {
     if (!id || !password) return;
 
     const requestUserInfo: UserLoginDTO = { email: id, password };
-    const result = await operation.login(requestUserInfo);
+    const result = await userAPI.login(requestUserInfo);
 
     result
       ? toast.push({
@@ -42,7 +44,7 @@ const login = () => {
           />
         </div>
         <div className="font-semibold text-red-400">
-          {error?.message?.target === "id" && error.message.message}
+          {/* {error?.message?.target === "id" && error.message.message} */}
         </div>
         <div className="flex items-center w-full h-16 ">
           <span className="opacity-70 mr-4 material-icons-round">vpn_key</span>
@@ -54,7 +56,7 @@ const login = () => {
           />
         </div>
         <div className="font-semibold text-red-400">
-          {error?.message?.target === "password" && error.message.message}
+          {/* {error?.message?.target === "password" && error.message.message} */}
         </div>
         <button
           onClick={onClick}

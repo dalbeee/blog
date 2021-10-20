@@ -1,24 +1,20 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { CommentDTO } from "..";
-import { usePostContext } from "../store/postContext";
 
 const CommentController = () => {
-  const { comment: commentContext } = usePostContext();
-
-  const [comment, setComment] = useState<CommentDTO>(null);
+  const [comment, setComment] = useState<any>(null);
 
   const router = useRouter();
 
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    const result = await commentContext.operation.createComment(
-      comment,
-      router.query.slug as string
-    );
+    // const result = await createComment(
+    //   comment,
+    //   router.query.slug as string
+    // );
 
-    !result.isError && setComment(null);
+    // !result.isError && setComment(null);
   };
 
   return (

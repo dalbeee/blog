@@ -1,4 +1,4 @@
-import { CreatePostDTO } from "@blog/core";
+import { CreatePostDTO } from "@blog/core/dist/domain";
 import { PostRepository } from "@blog/core/dist/infrastructure/repository";
 
 import { useToastContext } from "../../store/toastContext";

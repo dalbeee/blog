@@ -1,9 +1,7 @@
 import Header from "../component/Header";
-import "../styles/globals.css";
 import Head from "next/head";
 
-import { PostContextProvider } from "../store/postContext";
-import { UserContextProvider } from "../store/userContext";
+import "../styles/globals.css";
 import { GetToastComponent, ToastProvider } from "../store/toastContext";
 
 function MyApp({ Component, pageProps }) {
@@ -23,17 +21,13 @@ function MyApp({ Component, pageProps }) {
       </Head>
 
       <ToastProvider>
-        <UserContextProvider>
-          <PostContextProvider>
-            <div className="flex justify-center">
-              <div className="w-full min-h-content sm:w-3/5 lg:w-4/7">
-                <Header />
-                <Component {...pageProps} />
-                <GetToastComponent />
-              </div>
-            </div>
-          </PostContextProvider>
-        </UserContextProvider>
+        <div className="flex justify-center">
+          <div className="w-full min-h-content sm:w-3/5 lg:w-4/7">
+            <Header />
+            <Component {...pageProps} />
+            <GetToastComponent />
+          </div>
+        </div>
       </ToastProvider>
     </>
   );

@@ -1,8 +1,8 @@
 import { GetStaticPaths, GetStaticProps } from "next";
 import ReactMarkdown from "react-markdown";
 
-import { IPost } from "../..";
-import Http404 from "../../component/page/Http404";
+import { Post } from "@blog/core/dist/domain";
+
 import PostController from "../../component/PostController";
 import { usePost } from "../../hooks/usePost";
 
@@ -29,19 +29,27 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const postAPI = usePost();
-  const getPostsData = await postAPI.getPosts();
-  const paths = [];
+  try {
+    const getPostsData = await postAPI.getPosts();
+    const paths = [];
 
-  getPostsData?.length &&
-    getPostsData.map((post) => paths.push({ params: { slug: post.id } }));
+    getPostsData?.length &&
+      getPostsData.map((post) => paths.push({ params: { slug: post.id } }));
 
-  return {
-    paths,
-    fallback: true,
-  };
+    return {
+      paths,
+      fallback: true,
+    };
+  } catch (error) {
+    return {
+      paths: [],
+      fallback: true,
+    };
+  }
 };
 
-const PostDetail = ({ post }: { post: IPost }) => {
+const PostDetail = ({ post }: { post: Post }) => {
+  if (!post) return null;
   return (
     <div className="flex justify-center w-full">
       <div className="w-11/12" style={{ maxWidth: "860px" }}>

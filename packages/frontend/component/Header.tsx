@@ -1,10 +1,11 @@
 import Link from "next/link";
-import { useUserContext } from "../store/userContext";
+
+import { useUser } from "../hooks/useUser";
 
 const UserModule = () => {
-  const { userInfo, operation } = useUserContext();
+  const userAPI = useUser();
 
-  const onLogout = () => operation.logout();
+  const onLogout = () => userAPI.logout();
 
   const LoggedInMenu = () => (
     <div className="flex ">
@@ -35,7 +36,7 @@ const UserModule = () => {
 
   return (
     <div className="absolute flex items-center h-full text-2xl right-2">
-      {userInfo?.access_token ? <LoggedInMenu /> : <LoggedOutMenu />}
+      {!!userAPI.getAccessToken() ? <LoggedInMenu /> : <LoggedOutMenu />}
     </div>
   );
 };

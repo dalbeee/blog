@@ -12,6 +12,9 @@
 /.next/
 /out/
 
+.packages/frontend/node_modules/
+.packages/frontend/.next/
+
 # production
 /build
 

@@ -1,9 +1,10 @@
 import { formatDistance, parseISO } from "date-fns";
 import Link from "next/link";
 import { memo, useState } from "react";
-import { IPost } from "..";
 
-const CardMain = ({ post }: { post: IPost }) => {
+import { Post } from "@blog/core/dist/domain";
+
+const CardMain = ({ post }: { post: Post }) => {
   if (!post) return null;
 
   const [thumbnail] = useState(

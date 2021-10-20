@@ -1,6 +1,6 @@
-import AdminLayout from "../../component/admin/Layout";
-import PlugInHome from "../../component/admin/plugin/PlugInHome";
-import AuthRouter from "../../component/router/AuthRouter";
+import AdminLayout from "../../components/admin/Layout";
+import PlugInHome from "../../components/admin/plugin/PlugInHome";
+import AuthRouter from "../../components/router/AuthRouter";
 
 const index = () => {
   return (

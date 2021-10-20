@@ -1,8 +1,7 @@
 import { AxiosInstance } from "axios";
 
-import { useToastContext } from "../store/toastContext";
-
 import Router from "next/router";
+import { useToastContext } from "../../store/toastContext";
 
 export const httpClientAuthExceptionMiddleware = (axios: AxiosInstance) => {
   const toastAPI = useToastContext();

@@ -1,24 +1,30 @@
-import { validate } from "class-validator";
+import { validate, ValidationError } from "class-validator";
 
-export const validationService = () => {
-  const getValidation = async <T>(target: T, source: object): Promise<T> => {
-    const newObject = assignObject(target, source);
+export class ValidationService {
+  async getValidation<T>(target: T, source: object): Promise<T> {
+    const newObject = this.assignObject(target, source);
 
     const validationError = await validate(newObject as Object);
 
     if (!validationError.length) {
       return newObject;
     } else {
-      throw validationError;
+      throw await this.parseValidationErrorToMessage(validationError);
     }
-  };
+  }
 
-  return { getValidation };
-};
+  assignObject<T>(target: T, source: Object) {
+    return Object.keys(source).reduce((_, v) => {
+      target[v] = source[v];
+      return target;
+    }, target);
+  }
 
-export const assignObject = <T>(target: T, source: Object) => {
-  return Object.keys(source).reduce((_, v) => {
-    target[v] = source[v];
-    return target;
-  }, target);
-};
+  async parseValidationErrorToMessage(error: ValidationError[]) {
+    const errorMessage = error?.map(
+      (item) => Object.values(item?.constraints)?.[0]
+    );
+
+    return errorMessage;
+  }
+}

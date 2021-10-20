@@ -3,7 +3,7 @@ import ReactMarkdown from "react-markdown";
 
 import { Post } from "@blog/core/dist/domain";
 
-import PostController from "../../component/PostController";
+import PostController from "../../components/PostController";
 import { usePost } from "../../hooks/usePost";
 
 export const getStaticProps: GetStaticProps = async (context) => {

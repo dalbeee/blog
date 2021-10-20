@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Post } from "@blog/core/dist/domain";
 
 import { usePost } from "../hooks/usePost";
-import Content from "../component/Content";
+import Content from "../components/Content";
 
 // export const getStaticProps: GetStaticProps = async () => {
 //   const postAPI = usePost();

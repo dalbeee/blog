@@ -1,55 +1,45 @@
 import { CreatePostDTO } from "@blog/core/dist/domain";
 import { PostRepository } from "@blog/core/dist/infrastructure/repository";
 
-import { useToastContext } from "../../store/toastContext";
-import { isServerSide } from "../../util/isServerSide";
-import { validationService } from "./validationService";
+import { ValidationService } from "./validationService";
 
-export const postService = (postRepository: PostRepository) => {
-  const toastAPI = !isServerSide() && useToastContext();
-  const validationAPI = validationService();
+export class PostService {
+  validationService: ValidationService;
+  constructor(private readonly postRepository: PostRepository) {
+    this.validationService = new ValidationService();
+  }
 
-  const getPost = async (postId: string) =>
-    await postRepository.getPost(postId);
-  const getPosts = async () => await postRepository.getPosts();
+  async getPost(postId: string) {
+    return await this.postRepository.getPost(postId);
+  }
 
-  const createPost = async (post: CreatePostDTO) => {
+  async getPosts() {
+    return await this.postRepository.getPosts();
+  }
+
+  async createPost(post: CreatePostDTO) {
+    let postDTO: CreatePostDTO;
+
     try {
-      const postDTO = await validationAPI.getValidation(
+      postDTO = await this.validationService.getValidation(
         new CreatePostDTO(),
         post
       );
-      const result = await postRepository.createPost(postDTO);
-      toastAPI.operation.push({
-        title: "알림",
-        content: "포스팅이 성공하였습니다",
-      });
-      return result;
     } catch (error) {
-      const errorMessage = error?.map(
-        (item) => Object.values(item?.constraints)?.[0]
-      );
-      toastAPI.operation.push({
-        title: "알림",
-        content: `포스팅 생성에 실패하였습니다\n${errorMessage}`,
-      });
+      throw error;
     }
-  };
 
-  const deletePost = async (postId: string) => {
     try {
-      const result = await postRepository.deletePost(postId);
-      toastAPI.operation.push({
-        title: "알림",
-        content: "포스팅 삭제에 성공하였습니다",
-      });
+      const result = await this.postRepository.createPost(postDTO);
       return result;
     } catch (error) {
-      toastAPI.operation.push({
-        title: "알림",
-        content: "포스팅 삭제에 실패하였습니다",
-      });
+      throw error;
     }
-  };
-  return { createPost, getPost, getPosts, deletePost };
-};
+  }
+
+  async deletePost(postId: string) {
+    const result = await this.postRepository.deletePost(postId);
+
+    return result;
+  }
+}

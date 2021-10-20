@@ -9,9 +9,9 @@ import {
   TuiEditorWithForwardedProps,
   EditorType,
 } from "../hooks/useTuiEditor";
-import UploadFilePond from "../component/UploadFilePond";
+import UploadFilePond from "../components/UploadFilePond";
 import { usePost } from "../hooks/usePost";
-import AuthRouter from "../component/router/AuthRouter";
+import AuthRouter from "../components/router/AuthRouter";
 
 const EditorWithNoSSR = dynamic<TuiEditorWithForwardedProps>(
   () =>
@@ -56,9 +56,12 @@ const Create = (props) => {
 
     const content = ref.current?.getInstance().getMarkdown();
     const postData: CreatePostDTO = { title, content };
-    await postAPI.createPost(postData).then(() => {
-      router.push("/");
-    });
+    await postAPI
+      .createPost(postData)
+      .then(() => {
+        router.push("/");
+      })
+      .catch(() => {});
   };
 
   return (
@@ -105,7 +108,7 @@ const Create = (props) => {
 const AuthEditorComponent = () => {
   return (
     <>
-      <AuthRouter>
+      <AuthRouter role="user">
         <Create />
       </AuthRouter>
     </>

@@ -1,7 +1,4 @@
 export const devConsole = (message?: any, ...optionalParams: any[]) => {
-  console.log(
-    process.env.NODE_ENV === "development" && "DEV MODE >",
-    message,
-    ...optionalParams
-  );
+  process.env.NODE_ENV === "development" &&
+    console.log("DEV MODE >", message, ...optionalParams);
 };

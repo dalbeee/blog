@@ -1,10 +1,13 @@
 import { AxiosInstance } from "axios";
-import { getToken } from "../util/auth";
+
+import { AuthService } from "../service/authService";
 
 export const httpClientAuthHeaderMiddleware = (axios: AxiosInstance) => {
+  const authAPI = new AuthService();
+
   const config = {
     // headers: { "access-control-allow-origin": "*" },
-    Authorization: `Bearer ${getToken()}`,
+    Authorization: `Bearer ${authAPI.getToken()}`,
   };
 
   axios.interceptors.request.use((res) => {

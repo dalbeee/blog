@@ -1,7 +1,7 @@
 import { infrastructure } from "@blog/core";
-import { isServerSide } from "../util/isServerSide";
-import { httpClient5xxExceptionMiddleware } from "./httpClient.5xxExceptionMiddleware";
 
+import { httpClient5xxExceptionMiddleware } from "./httpClient.5xxExceptionMiddleware";
+import { isServerSide } from "../../util/isServerSide";
 import { httpClientAuthExceptionMiddleware } from "./httpClient.authExceptionMiddleware";
 import { httpClientAuthHeaderMiddleware } from "./httpClient.authHeaderMiddleware";
 import { httpClientUncaughtExceptionMiddleware } from "./httpClient.uncatchedExceptionMiddleware";

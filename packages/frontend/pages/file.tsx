@@ -1,4 +1,4 @@
-import GetUploadedFiles from "../component/GetUploadedFiles";
+import GetUploadedFiles from "../components/GetUploadedFiles";
 
 const file = () => {
   return (

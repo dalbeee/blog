@@ -1,20 +1,13 @@
 import { InputAdornment, TextField } from "@mui/material";
-import { useRouter } from "next/router";
 import { useState } from "react";
 import LoadingButton from "@mui/lab/LoadingButton";
 
 import { ConfigDTO } from "@blog/core/dist/infrastructure/repository";
 
-import useConfig from "../../../../hooks/useConfig";
-import { useToastContext } from "../../../../store/toastContext";
-import { getHttpClient } from "../../../../core/httpClient";
 import { useNotion } from "../../../../hooks/useNotion";
 
 const Notion = ({ notionAPiKey, notionDatabaseId }) => {
-  const configAPI = useConfig();
   const notionAPI = useNotion();
-  const toastAPI = useToastContext();
-  const router = useRouter();
 
   const [keys, setKeys] = useState({
     NOTION_API_KEY: "",
@@ -32,29 +25,17 @@ const Notion = ({ notionAPiKey, notionDatabaseId }) => {
   };
 
   const handleClick = (e) => {
-    const body: ConfigDTO[] = Object.keys(keys).map((key) => ({
+    const data: ConfigDTO[] = Object.keys(keys).map((key) => ({
       key: key,
       value: keys[key],
     }));
-    configAPI.setKeyValue(body).then((r) => {
-      toastAPI.operation.push({
-        title: "info",
-        content: "데이터를 저장했습니다",
-      });
-      router.push("/admin/plugin/notion");
-    });
+    notionAPI.saveConfig(data);
   };
 
   const handleSync = async () => {
     setIsFetching(true);
-    const result = await notionAPI.sync();
+    await notionAPI.sync();
     setIsFetching(false);
-
-    result &&
-      toastAPI.operation.push({
-        title: "info",
-        content: "노션 데이터 동기화를 시작했습니다",
-      });
   };
 
   return (

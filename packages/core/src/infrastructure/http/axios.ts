@@ -1,6 +1,5 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 
-import { devConsole } from "../..";
 import { HttpClient } from "./httpClient";
 
 export class Axios implements HttpClient {
@@ -26,7 +25,7 @@ export class Axios implements HttpClient {
         // console.log("response", error);
         // console.log("data", error.response.data);
         // devConsole("error from axios layer : ", error?.response);
-        return Promise.reject(error.response.data);
+        return Promise.reject(error.response);
       }
     );
   }

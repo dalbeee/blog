@@ -1,8 +1,11 @@
-import { User } from "@blog/core/src/@types/user";
+import JwtDecode from "jwt-decode";
 import { useRouter } from "next/router";
 
-import { UserLoginDTO } from "../..";
+import { UserLoginDTO } from "@blog/core/dist/domain";
+import { User } from "@blog/core/src/@types/user";
+
 import { useToastContext } from "../../store/toastContext";
+import { isServerSide } from "../../util/isServerSide";
 import { UserRepository } from "../repository/UserRepository";
 
 export const userService = (userRepository: UserRepository) => {
@@ -10,16 +13,11 @@ export const userService = (userRepository: UserRepository) => {
   const router = useRouter();
   const toastAPI = useToastContext();
 
-  const login = (userDTO: UserLoginDTO): Promise<boolean> => {
-    const fn = async (): Promise<boolean> => {
-      const response = await userRepository.login(userDTO);
-      localStorage.setItem(localStorageKey, response.access_token);
+  const login = async (userDTO: UserLoginDTO): Promise<boolean> => {
+    const result = await userRepository.login(userDTO);
+    localStorage.setItem(localStorageKey, result.access_token);
+    router.push("/");
 
-      router.push("/");
-      return true;
-    };
-
-    const result = fn();
     return result;
   };
 
@@ -35,6 +33,10 @@ export const userService = (userRepository: UserRepository) => {
     }
   };
 
+  const getAccessToken = (): string => {
+    return !isServerSide() && localStorage.getItem(localStorageKey);
+  };
+
   const logout = async (): Promise<boolean> => {
     localStorage.removeItem(localStorageKey);
     router.push("/");
@@ -42,5 +44,15 @@ export const userService = (userRepository: UserRepository) => {
     return true;
   };
 
-  return { login, logout, checkUserAuthenticate };
+  const decodeJWT = (): User => {
+    try {
+      const token = getAccessToken();
+      const result: User = JwtDecode(token);
+      return result;
+    } catch (error) {
+      return null;
+    }
+  };
+
+  return { login, logout, checkUserAuthenticate, getAccessToken, decodeJWT };
 };

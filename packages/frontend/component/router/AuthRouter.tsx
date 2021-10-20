@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { FC, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { User } from "@blog/core";
 
@@ -10,14 +10,29 @@ import Loading from "../page/Loading";
 const AuthRouter: any = ({ children, role }) => {
   const userAPI = useUser();
   const router = useRouter();
+
   const [user, setUser] = useState<User | null>(null);
 
+  const [isFetched, setIsFetched] = useState(false);
+
+  const [token, setToken] = useState(null);
+
   useEffect(() => {
-    userAPI.checkUserAuthenticate().then((r) => setUser(r));
+    const getToken = userAPI.getAccessToken();
+    setToken(getToken);
+    setUser(userAPI.decodeJWT());
+    setIsFetched(true);
   }, []);
 
-  if (!user) return <Loading />;
-  if (role && !user.roles?.includes(role)) return <Custom403 />;
+  useEffect(() => {
+    if (isFetched && !token) {
+      router.push("/login");
+    }
+  }, [isFetched]);
+
+  if (!isFetched) return <Loading />;
+
+  if (role && !user?.roles?.includes(role)) return <Custom403 />;
 
   return <>{children}</>;
 };

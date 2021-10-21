@@ -12,6 +12,7 @@
   },
   "scripts": {
     "frontend": "yarn workspace @blog/frontend start",
+    "frontend:test": "yarn workspace @blog/frontend test:watch",
     "frontend:dev": "yarn workspace @blog/frontend dev",
     "frontend:build": "yarn workspace @blog/frontend build",
     "backend": "yarn workspace @blog/backend start:prod",

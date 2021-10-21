@@ -1,12 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { UserLoginDTO } from "@blog/core/dist/domain";
 
-import { useToastContext } from "../store/toastContext";
 import { useUser } from "../hooks/useUser";
 
 const login = () => {
-  const { operation: toast } = useToastContext();
   const userAPI = useUser();
 
   const [id, setId] = useState("");
@@ -16,17 +14,7 @@ const login = () => {
     if (!id || !password) return;
 
     const requestUserInfo: UserLoginDTO = { email: id, password };
-    const result = await userAPI.login(requestUserInfo);
-
-    result
-      ? toast.push({
-          title: "알림",
-          content: "로그인에 성공하였습니다",
-        })
-      : toast.push({
-          title: "알림",
-          content: "로그인에 실패하였습니다",
-        });
+    await userAPI.login(requestUserInfo);
   };
 
   return (

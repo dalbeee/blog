@@ -16,8 +16,13 @@ import { getConnection } from 'typeorm';
 export class PostService {
   constructor(private postsRepository: PostRepository) {}
 
-  async getAll() {
+  async getAll(pageNumber = 1, take = 20) {
+    const skip = (pageNumber - 1) * take;
+
     return await this.postsRepository.find({
+      skip,
+      take,
+
       // relations: ['user', 'comments'],
       order: { createdAt: 'DESC' },
     });

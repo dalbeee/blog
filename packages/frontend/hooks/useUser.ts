@@ -16,22 +16,23 @@ export const useUser = () => {
   const toastAPI = useToastContext();
 
   const login = async (userDTO: UserLoginDTO): Promise<boolean> => {
-    const result = await service.login(userDTO);
-    router.push("/");
-
-    return result;
-  };
-
-  const checkUserAuthenticate = async (): Promise<User> => {
-    try {
-      return await service.checkUserAuthenticate();
-    } catch (error) {
-      toastAPI.operation.push({
-        title: "알림",
-        content: "로그인이 필요합니다",
+    return await service
+      .login(userDTO)
+      .then(() => {
+        toastAPI.operation.push({
+          title: "알림",
+          content: "로그인에 성공하였습니다",
+        });
+        router.push("/");
+        return true;
+      })
+      .catch(() => {
+        toastAPI.operation.push({
+          title: "알림",
+          content: "로그인에 실패하였습니다",
+        });
+        return false;
       });
-      router.push("/login");
-    }
   };
 
   const getAccessToken = (): string => {
@@ -39,15 +40,24 @@ export const useUser = () => {
   };
 
   const logout = async (): Promise<boolean> => {
-    await service.logout();
+    service.logout();
+
+    toastAPI.operation.push({
+      title: "알림",
+      content: "로그아웃에 성공하였습니다",
+    });
     router.push("/");
 
     return true;
   };
 
-  const decodeJWT = (): User => {
+  const decodeJWT = (): User | null => {
     return service.decodeJWT();
   };
 
-  return { login, logout, checkUserAuthenticate, getAccessToken, decodeJWT };
+  const isExpiredToken = (): boolean => {
+    return service.isExpiredToken();
+  };
+
+  return { login, logout, getAccessToken, decodeJWT, isExpiredToken };
 };

@@ -16,7 +16,7 @@ const UserModule = () => {
       </Link>
 
       <Link href="/admin">
-        <a href="">
+        <a>
           <span className="material-icons-round mr-4">settings</span>
         </a>
       </Link>
@@ -29,7 +29,9 @@ const UserModule = () => {
   const LoggedOutMenu = () => (
     <div className="">
       <Link href="/login">
-        <button className="material-icons-round">login</button>
+        <a>
+          <button className="material-icons-round">login</button>
+        </a>
       </Link>
     </div>
   );
@@ -45,7 +47,9 @@ const Header = () => {
   return (
     <div className="relative flex justify-center w-full h-16 item-center">
       <Link href="/">
-        <button className="flex items-center text-3xl ">blog</button>
+        <a>
+          <button className="flex items-center text-3xl ">blog</button>
+        </a>
       </Link>
       <UserModule />
     </div>

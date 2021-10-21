@@ -6,9 +6,11 @@ import { User } from "@blog/core";
 import { useUser } from "../../hooks/useUser";
 import Custom403 from "../../pages/403";
 import Loading from "../page/Loading";
+import { coreAPI } from "../../core/coreAPI";
 
 const AuthRouter: FC<{ role?: string }> = ({ children, role }) => {
   const userAPI = useUser();
+  const core = coreAPI();
   const router = useRouter();
 
   const [user, setUser] = useState<User | null>(null);
@@ -25,7 +27,8 @@ const AuthRouter: FC<{ role?: string }> = ({ children, role }) => {
   }, []);
 
   useEffect(() => {
-    if (isFetched && !token) {
+    if (isFetched && (userAPI.isExpiredToken() || !token)) {
+      core.user.logout();
       router.push("/login");
     }
   }, [isFetched]);

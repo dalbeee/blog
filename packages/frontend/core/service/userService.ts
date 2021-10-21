@@ -1,40 +1,34 @@
 import JwtDecode from "jwt-decode";
-import { useRouter } from "next/router";
 
 import { UserLoginDTO } from "@blog/core/dist/domain";
 import { User } from "@blog/core/src/@types/user";
 
-import { useToastContext } from "../../store/toastContext";
-import { isServerSide } from "../../util/isServerSide";
 import { UserRepository } from "../repository/UserRepository";
+import { AuthService } from "./authService";
 
 export class UserService {
+  authService = new AuthService();
   constructor(private readonly userRepository: UserRepository) {}
 
-  localStorageKey = "t_";
-  router = useRouter();
-  toastAPI = useToastContext();
-
   async login(userDTO: UserLoginDTO): Promise<boolean> {
-    const result = await this.userRepository.login(userDTO);
-    localStorage.setItem(this.localStorageKey, result.access_token);
-    return result;
-  }
-
-  async checkUserAuthenticate(): Promise<User> {
-    return await this.userRepository.checkUserAuthenticate();
+    try {
+      const result = await this.userRepository.login(userDTO);
+      this.authService.setToken(result.access_token);
+      return true;
+    } catch (error) {
+      throw error;
+    }
   }
 
   getAccessToken(): string {
-    return !isServerSide() && localStorage.getItem(this.localStorageKey);
+    return this.authService.getToken();
   }
 
-  async logout(): Promise<boolean> {
-    localStorage.removeItem(this.localStorageKey);
-    return true;
+  logout(): void {
+    this.authService.deleteToken();
   }
 
-  decodeJWT(): User {
+  decodeJWT(): User | null {
     try {
       const token = this.getAccessToken();
       const result: User = JwtDecode(token);
@@ -42,5 +36,9 @@ export class UserService {
     } catch (error) {
       return null;
     }
+  }
+
+  isExpiredToken() {
+    return this.authService.isExpiredToken();
   }
 }

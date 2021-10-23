@@ -11,6 +11,7 @@ COPY ./packages/core/package.json ./packages/core/package.json
 FROM node:lts-alpine as dependency
 WORKDIR /app
 COPY ./packages/core/package.json ./packages/core/package.json
+COPY ./packages/core/ ./packages/core/
 RUN npm i
 
 FROM node:lts-alpine as development
@@ -32,7 +33,7 @@ WORKDIR /app
 COPY --chown=node:node --from=config /app .
 COPY --chown=node:node --from=dependency /app .
 COPY --from=development /app/node_modules ./node_modules
-COPY ./packages/core/ ./packages/core/
+# COPY ./packages/core/ ./packages/core/
 COPY ./packages/frontend/ ./packages/frontend/
 RUN yarn frontend:build
 

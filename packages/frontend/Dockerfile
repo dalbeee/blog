@@ -8,6 +8,11 @@ COPY ./packages/frontend/package*.json \
     ./packages/frontend/
 COPY ./packages/core/package.json ./packages/core/package.json
 
+FROM node:lts-alpine as dependency
+WORKDIR /app
+COPY ./packages/core/package.json ./packages/core/package.json
+RUN npm i
+
 FROM node:lts-alpine as development
 ENV NODE_ENV development
 RUN mkdir -p /app/.next
@@ -15,7 +20,8 @@ RUN chown -R node:node /app
 WORKDIR /app
 USER node
 COPY --chown=node:node --from=config /app .
-COPY --chown=node:node ./packages/core/ ./packages/core/
+COPY --chown=node:node --from=dependency /app .
+# COPY --chown=node:node ./packages/core/ ./packages/core/
 RUN yarn install
 COPY --chown=node:node ./packages/frontend /app/packages/frontend/
 EXPOSE 3000

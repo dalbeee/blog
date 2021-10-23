@@ -30,6 +30,7 @@ CMD yarn frontend:dev
 FROM node:lts-alpine as build
 WORKDIR /app
 COPY --chown=node:node --from=config /app .
+COPY --chown=node:node --from=dependency /app .
 COPY --from=development /app/node_modules ./node_modules
 COPY ./packages/core/ ./packages/core/
 COPY ./packages/frontend/ ./packages/frontend/

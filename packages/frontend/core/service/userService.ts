@@ -1,5 +1,3 @@
-import JwtDecode from "jwt-decode";
-
 import { UserLoginDTO } from "@blog/core/dist/domain";
 import { User } from "@blog/core/src/@types/user";
 
@@ -29,13 +27,8 @@ export class UserService {
   }
 
   decodeJWT(): User | null {
-    try {
-      const token = this.getAccessToken();
-      const result: User = JwtDecode(token);
-      return result;
-    } catch (error) {
-      return null;
-    }
+    const token = this.getAccessToken();
+    return this.authService.decodeJWT(token);
   }
 
   isExpiredToken() {

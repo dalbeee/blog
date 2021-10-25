@@ -13,17 +13,10 @@ services:
       context: .
       dockerfile: ./packages/frontend/Dockerfile
     volumes:
-      - ./packages/frontend:/app/packages/frontend
-      - ./packages/core:/app/packages/core
-      - /app/node_modules
-      # - /app/packages/frontend
-      # - /app/.next
+      - .:/app
 
   redis:
     image: redis:6.2.6
-    # labels:
-    #     - "name=redis"
-    #     - "mode=standalone"
     ports:
       - "6379"
 
@@ -33,11 +26,7 @@ services:
       context: .
       dockerfile: ./packages/backend/Dockerfile
     volumes:
-      - ./packages/backend:/app/packages/backend
-      - ./packages/core:/app/packages/core
-      - ./storage/uploads:/app/uploads
-      - ./node_modules:/app/node_modules
-      - /app/dist
+      - .:/app
     environment:
       DB_HOST: db
       DB_PORT: 3306
@@ -53,14 +42,9 @@ services:
       context: .
       dockerfile: ./packages/backend/Dockerfile
     volumes:
-      - ./packages/backend:/app/packages/backend
-      - ./packages/core:/app/packages/core
-      - ./storage/uploads:/app/uploads
-      - ./node_modules:/app/node_modules
-      # - /app/node_modules
-      - /app/dist
+      - .:/app
     environment:
-      DB_HOST: db
+      DB_HOST: db_test
       DB_PORT: 3306
       USER: root
       PASSWORD: secret-pw
@@ -74,6 +58,17 @@ services:
     command: --default-authentication-plugin=mysql_native_password
     ports:
       - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: secret-pw
+      MYSQL_DATABASE: nest-blog
+    cap_add:
+      - SYS_NICE
+
+  db_test:
+    image: mysql:8.0.23
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - "3307:3306"
     environment:
       MYSQL_ROOT_PASSWORD: secret-pw
       MYSQL_DATABASE: nest-blog

@@ -20,9 +20,13 @@ const UserModule = () => {
           <span className="material-icons-round mr-4">settings</span>
         </a>
       </Link>
-      <button onClick={onLogout} className="material-icons-round">
-        logout
-      </button>
+      <Link href="">
+        <a>
+          <button onClick={onLogout} className="material-icons-round">
+            logout
+          </button>
+        </a>
+      </Link>
     </div>
   );
 
@@ -47,9 +51,7 @@ const Header = () => {
   return (
     <div className="relative flex justify-center w-full h-16 item-center">
       <Link href="/">
-        <a>
-          <button className="flex items-center text-3xl ">blog</button>
-        </a>
+        <button className="flex items-center text-3xl ">blog</button>
       </Link>
       <UserModule />
     </div>

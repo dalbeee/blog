@@ -27,7 +27,13 @@ export class NotionService {
   }
 
   async sync() {
-    return await this.notionRepository.sync();
+    try {
+      return await this.notionRepository.sync();
+    } catch (error) {
+      if (error.status === 403)
+        throw Error(`\n입력한 정보가 정확하지 않습니다.`);
+      throw error.data;
+    }
   }
 
   async setKeyValue(data: ConfigDTO[]) {
@@ -35,4 +41,8 @@ export class NotionService {
   }
 
   async getKeyValue() {}
+
+  async initVariables() {
+    return await this.notionRepository.initVariables();
+  }
 }

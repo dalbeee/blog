@@ -6,4 +6,8 @@ export class NotionRepository {
   async sync() {
     return await this.httpClient.get(`/notion/sync`);
   }
+
+  async initVariables() {
+    return await this.httpClient.get(`/notion/initVariables`);
+  }
 }

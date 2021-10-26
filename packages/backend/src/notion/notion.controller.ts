@@ -1,15 +1,6 @@
-import {
-  CacheInterceptor,
-  Controller,
-  Get,
-  Param,
-  UseGuards,
-  UseInterceptors,
-} from '@nestjs/common';
+import { Controller, ForbiddenException, Get, UseGuards } from '@nestjs/common';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
-
-import { NotionPost } from '@blog/core/dist/notion/useCase/types';
 
 import { CurrentUser } from '@src/auth/decorator/currentUser.decorator';
 import { JwtAuthGuard } from '@src/auth/guard/jwtAuth.guard';
@@ -30,37 +21,36 @@ export class NotionController {
   @Roles(Role.Admin)
   @Get('/sync')
   async crawler(@CurrentUser() user: User) {
-    const notYetSavedPosts =
-      await this.notionService.findPostsNotYetSavedLocal();
+    try {
+      const notYetSavedPosts =
+        await this.notionService.findPostsNotYetSavedLocal();
 
-    const notYetUpdatedPosts =
-      await this.notionService.findPostsWithOutOfSyncByUpdatedAtField();
+      const notYetUpdatedPosts =
+        await this.notionService.findPostsWithOutOfSyncByUpdatedAtField();
 
-    console.log(
-      'new : ',
-      notYetSavedPosts.length,
-      'notYetSync : ',
-      notYetUpdatedPosts.length,
-    );
+      console.log(
+        'new : ',
+        notYetSavedPosts.length,
+        'notYetSync : ',
+        notYetUpdatedPosts.length,
+      );
 
-    const queue = notYetSavedPosts.concat(notYetUpdatedPosts);
+      const queue = notYetSavedPosts.concat(notYetUpdatedPosts);
 
-    this.notionSync.add('syncNotionPosts', {
-      user,
-      queuePosts: queue,
-    });
-    return true;
+      this.notionSync.add('syncNotionPosts', {
+        user,
+        queuePosts: queue,
+      });
+      return true;
+    } catch (error) {
+      throw new ForbiddenException();
+    }
   }
 
-  @UseInterceptors(CacheInterceptor)
-  @Get()
-  async getPosts(): Promise<NotionPost[]> {
-    return await this.notionService.findPostsFromServer();
-  }
-
-  @UseInterceptors(CacheInterceptor)
-  @Get('/:postId')
-  async getPost(@Param('postId') postId: string) {
-    return await this.notionService.findPostFromServerToString(postId);
+  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard)
+  @Get('/initVariables')
+  async initVariables() {
+    return await this.notionService.initVariables();
   }
 }

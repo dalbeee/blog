@@ -7,6 +7,7 @@ import { PostRepository } from '@src/post/post.repository';
 import { NotionController } from './notion.controller';
 import { NotionSync } from './notion.sync';
 import { NotionService } from './notion.service';
+import { AdminModule } from '@src/admin/admin.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { NotionService } from './notion.service';
 
     TypeOrmModule.forFeature([PostRepository]),
     PostModule,
+    AdminModule,
   ],
   controllers: [NotionController],
   providers: [NotionService, NotionSync],

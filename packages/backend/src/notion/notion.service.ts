@@ -1,3 +1,4 @@
+import { IsNull, Not } from 'typeorm';
 import {
   CACHE_MANAGER,
   HttpException,
@@ -5,18 +6,17 @@ import {
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
-import { AxiosRequestConfig } from 'axios';
 import { Cache } from 'cache-manager';
 
 import { notion, infrastructure } from '@blog/core';
 import { NotionPost } from '@blog/core/dist/notion/useCase/types';
+import { CreatePostDTO, PatchPostDTO } from '@blog/core/dist/domain';
 
 import { PostRepository } from '@src/post/post.repository';
 import { User } from '@src/user/entity/user.entity';
 import { PostService } from '@src/post/post.service';
 import { Post } from '@src/post/entity/post.entity';
-import { IsNull, Not } from 'typeorm';
-import { CreatePostDTO, PatchPostDTO } from '@blog/core/dist/domain';
+import { AdminService } from '@src/admin/admin.service';
 
 @Injectable()
 export class NotionService {
@@ -26,19 +26,38 @@ export class NotionService {
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private readonly postRepository: PostRepository,
     private readonly postService: PostService,
+    private readonly adminService: AdminService,
   ) {
+    this.initVariables().then(() => {
+      this.initService();
+    });
+  }
+
+  async initService() {
     const url = 'https://api.notion.com/v1';
     const config = {
       headers: {
         'Notion-Version': '2021-08-16',
-        Authorization: `Bearer ${process.env.SECRET_NOTION}`,
+        Authorization: `Bearer ${process.env.NOTION_API_KEY}`,
+        withCredentials: true,
       },
-      withCredentials: true,
     };
-
     const httpClient = new infrastructure.httpClient.Axios(url, config);
     const repository = new notion.repository.BackendRepository(httpClient);
     this.notionAPI = new notion.useCase.NotionUseCase(repository);
+  }
+
+  async initVariables() {
+    process.env.NOTION_API_KEY = (
+      await this.adminService.getKeyValue('NOTION_API_KEY')
+    )?.value;
+
+    process.env.NOTION_DATABASE_ID = (
+      await this.adminService.getKeyValue('NOTION_DATABASE_ID')
+    )?.value;
+
+    this.initService();
+    return true;
   }
 
   async findPostsFromServer(): Promise<NotionPost[]> {

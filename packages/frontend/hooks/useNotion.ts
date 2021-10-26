@@ -20,10 +20,10 @@ export const useNotion = () => {
           content: "노션 데이터 동기화를 시작했습니다",
         });
       })
-      .catch(() => {
+      .catch((e) => {
         toastAPI.operation.push({
           title: "info",
-          content: "노션 데이터 동기화에 실패했습니다",
+          content: `노션 데이터 동기화에 실패했습니다. ${e.message}`,
         });
       });
   };
@@ -36,6 +36,7 @@ export const useNotion = () => {
           title: "info",
           content: "데이터를 저장했습니다",
         });
+        notionAPI.initVariables();
         router.push("/admin/plugin/notion");
       })
       .catch(() => {

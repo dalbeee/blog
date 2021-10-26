@@ -1,17 +1,20 @@
 import { IsNotEmpty, IsString, ValidationError } from "class-validator";
 
-import { assignObject, validationService } from "./validationService";
+import { ValidationService } from "./validationService";
+
+const validateService = new ValidationService();
 
 describe("assignObject", () => {
   class TestDTO {
     @IsString()
     a: string;
   }
+
   it("success test", async () => {
     const source = {
       a: "hello",
     };
-    const result = assignObject(new TestDTO(), source);
+    const result = validateService.assignObject(new TestDTO(), source);
 
     expect(result).toEqual({ a: expect.any(String) });
   });
@@ -21,7 +24,7 @@ describe("assignObject", () => {
       a: "hello",
       b: "world",
     };
-    const result = assignObject(new TestDTO(), source);
+    const result = validateService.assignObject(new TestDTO(), source);
     expect(result).not.toEqual({
       a: expect.any(String),
     });
@@ -42,29 +45,19 @@ describe("validationService.getValidation", () => {
       a: "hello",
       b: "world",
     };
-    const result = await validationService().getValidation(
-      new TestDTO(),
-      source
-    );
+    const result = await validateService.getValidation(new TestDTO(), source);
 
     expect(result).toBeInstanceOf(TestDTO);
   });
 
-  it("fail will thrown error result", async () => {
+  it("fail will thrown error result array", async () => {
     const source = {
       a: "hello",
     };
 
-    const expectedObject = [
-      {
-        property: "b",
-        // constraints: {},
-      },
-    ];
-
     const result = async () =>
-      await validationService().getValidation(new TestDTO(), source);
+      await validateService.getValidation(new TestDTO(), source);
 
-    await expect(result()).rejects.toMatchObject(expectedObject);
+    await expect(result()).rejects.toEqual(["b should not be empty"]);
   });
 });

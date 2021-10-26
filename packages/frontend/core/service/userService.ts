@@ -1,7 +1,7 @@
 import { UserLoginDTO } from "@blog/core/dist/domain";
+import { UserRepository } from "@blog/core/dist/infrastructure/repository";
 import { User } from "@blog/core/src/@types/user";
 
-import { UserRepository } from "../repository/UserRepository";
 import { AuthService } from "./authService";
 
 export class UserService {

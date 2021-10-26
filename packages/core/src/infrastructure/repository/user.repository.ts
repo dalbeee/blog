@@ -1,5 +1,5 @@
-import { UserLoginDTO } from "@blog/core/dist/domain";
-import { HttpClient } from "@blog/core/dist/infrastructure/http";
+import { UserLoginDTO } from "../../domain";
+import { HttpClient } from "../http";
 
 export class UserRepository {
   constructor(private readonly httpClient: HttpClient) {}

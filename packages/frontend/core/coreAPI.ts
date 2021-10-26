@@ -1,7 +1,11 @@
-import { infrastructure } from "@blog/core";
+import {
+  ConfigRepository,
+  NotionRepository,
+  PostRepository,
+  UserRepository,
+} from "@blog/core/dist/infrastructure/repository";
 
 import { getHttpClient } from "./httpClient/httpClient";
-import { UserRepository } from "./repository/UserRepository";
 import { AuthService } from "./service/authService";
 import { ConfigService } from "./service/configService";
 import { PostService } from "./service/postService";
@@ -14,22 +18,16 @@ export const coreAPI = () => {
 
   const authService = new AuthService();
 
-  const postRepository = new infrastructure.repository.PostRepository(
-    httpClient
-  );
+  const postRepository = new PostRepository(httpClient);
   const postService = new PostService(postRepository);
 
   const userRepository = new UserRepository(httpClient);
   const userService = new UserService(userRepository);
 
-  const configRepository = new infrastructure.repository.ConfigRepository(
-    httpClient
-  );
+  const configRepository = new ConfigRepository(httpClient);
   const configService = new ConfigService(configRepository);
 
-  const notionRepository = new infrastructure.repository.NotionRepository(
-    httpClient
-  );
+  const notionRepository = new NotionRepository(httpClient);
   const notionService = new NotionService(configService, notionRepository);
 
   const toastService = new ToastService();

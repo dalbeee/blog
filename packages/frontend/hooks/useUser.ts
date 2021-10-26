@@ -4,8 +4,8 @@ import { User, UserLoginDTO } from "@blog/core/dist/domain";
 
 import { UserRepository } from "../core/repository/UserRepository";
 import { UserService } from "../core/service/userService";
-import { useToastContext } from "../store/toastContext";
 import { getHttpClient } from "../core/httpClient/httpClient";
+import { coreAPI } from "../core/coreAPI";
 
 export const useUser = () => {
   const httpClient = getHttpClient();
@@ -13,24 +13,19 @@ export const useUser = () => {
   const userRepository = new UserRepository(httpClient);
   const service = new UserService(userRepository);
 
-  const toastAPI = useToastContext();
+  const core = coreAPI();
 
   const login = async (userDTO: UserLoginDTO): Promise<boolean> => {
     return await service
       .login(userDTO)
       .then(() => {
-        toastAPI.operation.push({
-          title: "알림",
-          content: "로그인에 성공하였습니다",
-        });
+        core.toast.push("로그인에 성공하였습니다");
+
         router.push("/");
         return true;
       })
       .catch(() => {
-        toastAPI.operation.push({
-          title: "알림",
-          content: "로그인에 실패하였습니다",
-        });
+        core.toast.error("로그인이 실패하였습니다");
         return false;
       });
   };
@@ -42,10 +37,7 @@ export const useUser = () => {
   const logout = async (): Promise<boolean> => {
     service.logout();
 
-    toastAPI.operation.push({
-      title: "알림",
-      content: "로그아웃에 성공하였습니다",
-    });
+    core.toast.push("로그아웃 하였습니다");
     router.push("/");
 
     return true;

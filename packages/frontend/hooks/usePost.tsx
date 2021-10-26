@@ -1,13 +1,12 @@
 import { CreatePostDTO } from "@blog/core/dist/domain";
 
 import { coreAPI } from "../core/coreAPI";
-import { useToastContext } from "../store/toastContext";
 import { isServerSide } from "../util/isServerSide";
 
 export const usePost = () => {
   const postService = coreAPI().post;
 
-  const toastAPI = !isServerSide() && useToastContext();
+  const core = !isServerSide() && coreAPI();
 
   const getPost = async (postId: string) => postService.getPost(postId);
 
@@ -17,16 +16,11 @@ export const usePost = () => {
     return await postService
       .createPost(post)
       .then(() => {
-        toastAPI.operation.push({
-          title: "알림",
-          content: "포스팅을 생성했습니다",
-        });
+        core.toast.push("포스팅을 생성하였습니다");
       })
       .catch((e) => {
-        toastAPI.operation.push({
-          title: "error",
-          content: `포스팅 생성에 실패했습니다 ${e}`,
-        });
+        core.toast.error("포스팅 생성에 실패하였습니다");
+
         throw e;
       });
   };
@@ -35,10 +29,7 @@ export const usePost = () => {
     try {
       return postService.deletePost(postId);
     } catch (error) {
-      toastAPI.operation.push({
-        title: "알림",
-        content: "포스팅 삭제에 실패하였습니다",
-      });
+      core.toast.error("포스팅 삭제에 실패하였습니다");
     }
   };
 

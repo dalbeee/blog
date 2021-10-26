@@ -1,11 +1,14 @@
 import { AxiosInstance } from "axios";
 import Router from "next/router";
+import { isServerSide } from "../../util/isServerSide";
+import { coreAPI } from "../coreAPI";
 
-import { useToastContext } from "../../store/toastContext";
 import { AuthService } from "../service/authService";
 
 export const httpClientAuthExceptionMiddleware = (axios: AxiosInstance) => {
-  const toastAPI = useToastContext();
+  if (isServerSide) return;
+
+  const core = coreAPI();
   const authAPI = new AuthService();
 
   axios.interceptors.response.use(
@@ -13,10 +16,8 @@ export const httpClientAuthExceptionMiddleware = (axios: AxiosInstance) => {
     (err) => {
       if (err.status === 401) {
         authAPI.deleteToken();
-        toastAPI.operation.push({
-          title: "error",
-          content: "로그인을 해주세요",
-        });
+        core.toast.warn("로그인이 필요합니다");
+
         Router.push("/login");
       }
       return Promise.reject(err);

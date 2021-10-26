@@ -1,8 +1,10 @@
 import Header from "../components/Header";
 import Head from "next/head";
+import { RecoilRoot } from "recoil";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import "../styles/globals.css";
-import { GetToastComponent, ToastProvider } from "../store/toastContext";
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -20,15 +22,18 @@ function MyApp({ Component, pageProps }) {
         />
       </Head>
 
-      <ToastProvider>
-        <div className="flex justify-center">
+      <RecoilRoot>
+        <div className="relative flex justify-center w-full min-h-content">
           <div className="w-full min-h-content sm:w-3/5 lg:w-4/7">
             <Header />
             <Component {...pageProps} />
-            <GetToastComponent />
           </div>
+          <ToastContainer
+            style={{ whiteSpace: "pre-line" }}
+            position="bottom-right"
+          />
         </div>
-      </ToastProvider>
+      </RecoilRoot>
     </>
   );
 }

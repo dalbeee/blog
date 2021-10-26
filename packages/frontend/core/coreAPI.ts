@@ -7,6 +7,7 @@ import { ConfigService } from "./service/configService";
 import { PostService } from "./service/postService";
 import { UserService } from "./service/userService";
 import { NotionService } from "./service/notionService";
+import { ToastService } from "./service/toastService";
 
 export const coreAPI = () => {
   const httpClient = getHttpClient();
@@ -31,11 +32,14 @@ export const coreAPI = () => {
   );
   const notionService = new NotionService(configService, notionRepository);
 
+  const toastService = new ToastService();
+
   return {
     post: postService,
     user: userService,
     auth: authService,
     config: configService,
     notion: notionService,
+    toast: toastService,
   };
 };

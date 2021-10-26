@@ -1,49 +1,32 @@
-import { useRouter } from "next/router";
-
 import { ConfigDTO } from "@blog/core/dist/domain";
 
 import { coreAPI } from "../core/coreAPI";
-import { useToastContext } from "../store/toastContext";
 
 export const useNotion = () => {
-  const toastAPI = useToastContext();
-  const router = useRouter();
-
-  const notionAPI = coreAPI().notion;
+  const core = coreAPI();
 
   const sync = async () => {
-    await notionAPI
+    await core.notion
       .sync()
       .then(() => {
-        toastAPI.operation.push({
-          title: "info",
-          content: "노션 데이터 동기화를 시작했습니다",
-        });
+        core.toast.push(
+          "노션 동기화를 시작했습니다. 이 작업은 시간이 걸립니다"
+        );
       })
       .catch((e) => {
-        toastAPI.operation.push({
-          title: "info",
-          content: `노션 데이터 동기화에 실패했습니다. ${e.message}`,
-        });
+        core.toast.error(`노션 동기화에 실패하였습니다. ${e.message}`);
       });
   };
 
   const saveConfig = async (data: ConfigDTO[]): Promise<any> => {
-    await notionAPI
+    await core.notion
       .setKeyValue(data)
       .then((r) => {
-        toastAPI.operation.push({
-          title: "info",
-          content: "데이터를 저장했습니다",
-        });
-        notionAPI.initVariables();
-        router.push("/admin/plugin/notion");
+        core.toast.push("데이터를 저장했습니다");
+        core.notion.initVariables();
       })
       .catch(() => {
-        toastAPI.operation.push({
-          title: "info",
-          content: "데이터를 저장에 실패했습니다",
-        });
+        core.toast.push(`데이터 저장에 실패했습니다`);
       });
   };
 

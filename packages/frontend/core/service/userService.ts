@@ -1,6 +1,5 @@
-import { UserLoginDTO } from "@blog/core/dist/domain";
+import { User, UserLoginDTO } from "@blog/core/dist/domain";
 import { UserRepository } from "@blog/core/dist/infrastructure/repository";
-import { User } from "@blog/core/src/@types/user";
 
 import { AuthService } from "./authService";
 

@@ -39,7 +39,7 @@ const CardMain = ({ post }: { post: Post }) => {
             </div>
             <div className="text-right w-full overflow-hidden text-gray-400 whitespace-pre-wrap overflow-ellipsis h-1/3">
               {post.createdAt &&
-                formatDistance(new Date(), parseISO(post.createdAt))}
+                formatDistance(new Date(), parseISO(post.createdAt.toString()))}
             </div>
           </div>
         </div>

@@ -1,19 +1,8 @@
-import { IsNotEmpty } from "class-validator";
 import { BaseEntity } from "../base.entity";
-
-enum Type {
-  Info,
-  Warn,
-  Error,
-}
+import { LoggerType } from "./logger.dto";
 
 export class Logger extends BaseEntity {
-  @IsNotEmpty()
-  title: string;
-
-  @IsNotEmpty()
   message: string;
-
-  @IsNotEmpty()
-  type: Type;
+  type: LoggerType;
+  from: string;
 }

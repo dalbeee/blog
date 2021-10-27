@@ -1,20 +1,19 @@
-import { IsEnum, IsNotEmpty, IsString } from "class-validator";
+import { IsEnum, IsNotEmpty } from "class-validator";
 
-enum Type {
-  Info,
-  Warn,
-  Error,
+export enum LoggerType {
+  error = "error",
+  warn = "warn",
+  info = "info",
 }
 
 export class LoggerDTO {
-  @IsString()
-  @IsNotEmpty()
-  title: string;
-
   @IsNotEmpty()
   message: string;
 
   @IsNotEmpty()
-  @IsEnum(Type)
-  type: Type;
+  @IsEnum(LoggerType)
+  type: LoggerType;
+
+  @IsNotEmpty()
+  from: string;
 }

@@ -1,4 +1,4 @@
-import { Logger } from "../../domain";
+import { Logger } from "../../domain/logger/logger.entity";
 import { HttpClient } from "../http";
 
 export class LoggerRepository {

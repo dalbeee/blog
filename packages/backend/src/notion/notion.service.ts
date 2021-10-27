@@ -17,6 +17,7 @@ import { User } from '@src/user/entity/user.entity';
 import { PostService } from '@src/post/post.service';
 import { Post } from '@src/post/entity/post.entity';
 import { AdminService } from '@src/admin/admin.service';
+import { AxiosRequestHeaders } from 'axios';
 
 @Injectable()
 export class NotionService {
@@ -35,12 +36,10 @@ export class NotionService {
 
   async initService() {
     const url = 'https://api.notion.com/v1';
-    const config = {
-      headers: {
-        'Notion-Version': '2021-08-16',
-        Authorization: `Bearer ${process.env.NOTION_API_KEY}`,
-        withCredentials: true,
-      },
+    const config: AxiosRequestHeaders = {
+      'Notion-Version': '2021-08-16',
+      Authorization: `Bearer ${process.env.NOTION_API_KEY}`,
+      // withCredentials: true,
     };
     const httpClient = new infrastructure.httpClient.Axios(url, config);
     const repository = new notion.repository.BackendRepository(httpClient);

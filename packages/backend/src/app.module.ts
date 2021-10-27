@@ -13,6 +13,7 @@ import { PostModule } from './post/post.module';
 import { NotionModule } from './notion/notion.module';
 import { AdminModule } from './admin/admin.module';
 import { LoggerModule } from './logger/logger.module';
+import { AlertModule } from './alert/alert.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { LoggerModule } from './logger/logger.module';
     NotionModule,
     AdminModule,
     LoggerModule,
+    AlertModule,
   ],
   providers: [
     {

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 
 import { LoggerDTO } from '@blog/core/dist/domain';
 
@@ -10,7 +10,6 @@ export class LoggerController {
 
   @Post()
   async save(@Body() data: LoggerDTO) {
-    console.log(data);
     return await this.loggerService.save(data);
   }
 }

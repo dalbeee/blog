@@ -1,7 +1,7 @@
 {
   "name": "@blog/core",
   "private": true,
-  "version": "0.4.2",
+  "version": "0.5.0",
   "description": "Common package for MonoRepo",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

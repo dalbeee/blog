@@ -1,7 +1,6 @@
 import { infrastructure } from "@blog/core";
 
 import { httpClient5xxExceptionMiddleware } from "./httpClient.5xxExceptionMiddleware";
-import { isServerSide } from "../../util/isServerSide";
 import { httpClientAuthExceptionMiddleware } from "./httpClient.authExceptionMiddleware";
 import { httpClientAuthHeaderMiddleware } from "./httpClient.authHeaderMiddleware";
 import { httpClientUncaughtExceptionMiddleware } from "./httpClient.uncatchedExceptionMiddleware";
@@ -13,7 +12,7 @@ export const getHttpClient = () => {
 
   httpClient.use(httpClientAuthHeaderMiddleware);
   httpClient.use(httpClient5xxExceptionMiddleware);
-  !isServerSide() && httpClient.use(httpClientAuthExceptionMiddleware);
+  httpClient.use(httpClientAuthExceptionMiddleware);
   httpClient.use(httpClientUncaughtExceptionMiddleware);
 
   return httpClient;

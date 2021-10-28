@@ -1,11 +1,18 @@
 import {
+  IsArray,
   IsEmail,
+  IsEnum,
   IsNotEmpty,
   IsOptional,
   IsString,
   Length,
   Matches,
 } from "class-validator";
+
+export enum Role {
+  User = "user",
+  Admin = "admin",
+}
 
 export class UserDTO {
   @IsEmail()
@@ -21,6 +28,11 @@ export class UserDTO {
   @Length(6, 20)
   @Matches(/^\S*$/, { message: "space not allow" })
   password: string;
+
+  @IsArray()
+  @IsOptional()
+  @IsEnum(Role, { each: true })
+  roles?: Role[];
 }
 
 export class UpdateUserDTO {

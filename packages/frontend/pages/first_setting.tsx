@@ -1,4 +1,4 @@
-import { GetStaticProps } from "next";
+import { GetServerSideProps } from "next";
 import { useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import { InputAdornment, TextField } from "@mui/material";
@@ -8,22 +8,37 @@ import { UserDTO } from "@blog/core/dist/domain";
 import { coreAPI } from "../core/coreAPI";
 import { useUser } from "../hooks/useUser";
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
   const core = coreAPI();
 
-  const getConfig = await core.config.getKeyValue("IS_DONE_BLOG_SETTING");
-  const conf = { getConfig };
-  if (conf.getConfig) {
+  try {
+    const getConfig = await core.config.getKeyValue("IS_DONE_BLOG_SETTING");
+    if (getConfig) {
+      return {
+        redirect: {
+          destination: "/",
+          permanent: true,
+        },
+      };
+    }
+
     return {
-      redirect: {
-        destination: "/",
-        permanent: true,
-      },
+      props: {},
+    };
+  } catch (error) {
+    console.log(error);
+    if (error.status === 502) {
+      return {
+        redirect: {
+          destination: "/502",
+          permanent: true,
+        },
+      };
+    }
+    return {
+      props: {},
     };
   }
-  return {
-    props: {},
-  };
 };
 
 const firstSetting = () => {

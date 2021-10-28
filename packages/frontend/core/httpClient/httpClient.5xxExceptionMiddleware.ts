@@ -1,12 +1,9 @@
 import { AxiosInstance } from "axios";
-import { useRouter } from "next/router";
-
+import router from "next/router";
 import { isServerSide } from "../../util/isServerSide";
 
 export const httpClient5xxExceptionMiddleware = (axios: AxiosInstance) => {
   if (isServerSide()) return;
-
-  const router = useRouter();
 
   axios.interceptors.response.use(
     (res) => res,

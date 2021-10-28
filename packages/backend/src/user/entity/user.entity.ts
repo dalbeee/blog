@@ -47,6 +47,7 @@ export class User extends BaseEntity {
   @BeforeInsert()
   private async createUser() {
     await this.passwordHashing();
+    this.roles = this.roles.concat([Role.User]);
   }
 
   @BeforeUpdate()
@@ -63,7 +64,6 @@ export class User extends BaseEntity {
   constructor(partial: Partial<User>) {
     super();
     Object.assign(this, partial);
-
-    this.roles = this.roles || [Role.User];
+    this.roles = this.roles || [];
   }
 }

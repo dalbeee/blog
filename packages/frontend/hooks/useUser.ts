@@ -1,6 +1,6 @@
 import router from "next/router";
 
-import { User, UserDTO, UserLoginDTO } from "@blog/core/dist/domain";
+import { Role, User, UserDTO, UserLoginDTO } from "@blog/core/dist/domain";
 
 import { coreAPI } from "../core/coreAPI";
 
@@ -45,7 +45,7 @@ export const useUser = () => {
 
   const firstSetting = async (user: UserDTO) => {
     return await core.user
-      .createUser(user)
+      .createUser({ ...user, roles: [Role.Admin] })
       .then(() => {
         core.toast.push("사용자를 생성했습니다");
         core.config.setKeyValue([{ key: "IS_DONE_BLOG_SETTING", value: true }]);

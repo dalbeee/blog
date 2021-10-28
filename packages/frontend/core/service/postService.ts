@@ -21,7 +21,7 @@ export class PostService {
     let postDTO: CreatePostDTO;
 
     try {
-      postDTO = await this.validationService.getValidation(
+      postDTO = await this.validationService.validate(
         new CreatePostDTO(),
         post
       );

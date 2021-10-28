@@ -17,6 +17,7 @@ export const httpClientAuthExceptionMiddleware = (axios: AxiosInstance) => {
       if (err.status === 401) {
         authAPI.deleteToken();
         core.toast.warn("로그인이 필요합니다");
+        err.handled = true;
 
         Router.push("/login");
       }

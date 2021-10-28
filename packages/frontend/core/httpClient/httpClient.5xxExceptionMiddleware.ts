@@ -13,9 +13,11 @@ export const httpClient5xxExceptionMiddleware = (axios: AxiosInstance) => {
     (err) => {
       if (err.status === 503) {
         router.push("/503");
+        err.handled = true;
       }
       if (err.status === 502) {
         router.push("/502");
+        err.handled = true;
       }
       return Promise.reject(err);
     }

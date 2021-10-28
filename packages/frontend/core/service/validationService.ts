@@ -1,7 +1,8 @@
 import { validate, ValidationError } from "class-validator";
 
 export class ValidationService {
-  async getValidation<T>(target: T, source: object): Promise<T> {
+  /** new DTO(), sourceObject */
+  async validate<T>(target: T, source: object): Promise<T> {
     const newObject = this.assignObject(target, source);
 
     const validationError = await validate(newObject as Object);
@@ -13,14 +14,14 @@ export class ValidationService {
     }
   }
 
-  assignObject<T>(target: T, source: Object) {
+  private assignObject<T>(target: T, source: Object) {
     return Object.keys(source).reduce((_, v) => {
       target[v] = source[v];
       return target;
     }, target);
   }
 
-  async parseValidationErrorToMessage(error: ValidationError[]) {
+  private async parseValidationErrorToMessage(error: ValidationError[]) {
     const errorMessage = error?.map(
       (item) => Object.values(item?.constraints)?.[0]
     );

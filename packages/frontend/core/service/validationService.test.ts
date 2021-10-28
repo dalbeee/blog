@@ -3,6 +3,7 @@ import { IsNotEmpty, IsString, ValidationError } from "class-validator";
 import { ValidationService } from "./validationService";
 
 const validateService = new ValidationService();
+const validateServiceProto = Object.getPrototypeOf(validateService);
 
 describe("assignObject", () => {
   class TestDTO {
@@ -14,7 +15,7 @@ describe("assignObject", () => {
     const source = {
       a: "hello",
     };
-    const result = validateService.assignObject(new TestDTO(), source);
+    const result = validateServiceProto.assignObject(new TestDTO(), source);
 
     expect(result).toEqual({ a: expect.any(String) });
   });
@@ -24,7 +25,7 @@ describe("assignObject", () => {
       a: "hello",
       b: "world",
     };
-    const result = validateService.assignObject(new TestDTO(), source);
+    const result = validateServiceProto.assignObject(new TestDTO(), source);
     expect(result).not.toEqual({
       a: expect.any(String),
     });
@@ -45,7 +46,10 @@ describe("validationService.getValidation", () => {
       a: "hello",
       b: "world",
     };
-    const result = await validateService.getValidation(new TestDTO(), source);
+    const result = await validateServiceProto.getValidation(
+      new TestDTO(),
+      source
+    );
 
     expect(result).toBeInstanceOf(TestDTO);
   });
@@ -56,7 +60,7 @@ describe("validationService.getValidation", () => {
     };
 
     const result = async () =>
-      await validateService.getValidation(new TestDTO(), source);
+      await validateServiceProto.getValidation(new TestDTO(), source);
 
     await expect(result()).rejects.toEqual(["b should not be empty"]);
   });

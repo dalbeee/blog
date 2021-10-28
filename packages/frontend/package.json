@@ -35,8 +35,7 @@
     "react-markdown": "^7.1.0",
     "react-toastify": "^8.0.3",
     "recoil": "^0.4.1",
-    "turndown": "^7.1.1",
-    "use-toast-provider": "^0.0.6"
+    "turndown": "^7.1.1"
   },
   "devDependencies": {
     "@babel/runtime": "^7.15.4",

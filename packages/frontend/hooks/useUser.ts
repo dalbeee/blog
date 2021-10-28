@@ -1,6 +1,6 @@
 import router from "next/router";
 
-import { User, UserLoginDTO } from "@blog/core/dist/domain";
+import { User, UserDTO, UserLoginDTO } from "@blog/core/dist/domain";
 
 import { coreAPI } from "../core/coreAPI";
 
@@ -43,5 +43,25 @@ export const useUser = () => {
     return core.user.isExpiredToken();
   };
 
-  return { login, logout, getAccessToken, decodeJWT, isExpiredToken };
+  const firstSetting = async (user: UserDTO) => {
+    return await core.user
+      .createUser(user)
+      .then(() => {
+        core.toast.push("사용자를 생성했습니다");
+        core.config.setKeyValue([{ key: "IS_DONE_BLOG_SETTING", value: true }]);
+        router.push("/");
+      })
+      .catch((e) => {
+        core.toast.error(`사용자 생성에 실패했습니다.\n${e?.message || ""}`);
+      });
+  };
+
+  return {
+    login,
+    logout,
+    getAccessToken,
+    decodeJWT,
+    isExpiredToken,
+    firstSetting,
+  };
 };

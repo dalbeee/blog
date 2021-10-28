@@ -1,4 +1,4 @@
-import { UserLoginDTO } from "../../domain";
+import { UserDTO, UserLoginDTO } from "../../domain";
 import { HttpClient } from "../http";
 
 export class UserRepository {
@@ -10,5 +10,9 @@ export class UserRepository {
 
   async login(userDTO: UserLoginDTO) {
     return await this.httpClient.post(`/auth/login`, userDTO);
+  }
+
+  async createUser(user: UserDTO) {
+    return await this.httpClient.post(`/users`, user);
   }
 }

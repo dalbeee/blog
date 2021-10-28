@@ -1,10 +1,12 @@
-import { User, UserLoginDTO } from "@blog/core/dist/domain";
+import { User, UserDTO, UserLoginDTO } from "@blog/core/dist/domain";
 import { UserRepository } from "@blog/core/dist/infrastructure/repository";
 
 import { AuthService } from "./authService";
+import { ValidationService } from "./validationService";
 
 export class UserService {
   authService = new AuthService();
+  validationService = new ValidationService();
   constructor(private readonly userRepository: UserRepository) {}
 
   async login(userDTO: UserLoginDTO): Promise<boolean> {
@@ -32,5 +34,14 @@ export class UserService {
 
   isExpiredToken() {
     return this.authService.isExpiredToken();
+  }
+
+  async createUser(user: UserDTO) {
+    try {
+      const result = await this.validationService.validate(new UserDTO(), user);
+      return await this.userRepository.createUser(result);
+    } catch (error) {
+      throw error;
+    }
   }
 }

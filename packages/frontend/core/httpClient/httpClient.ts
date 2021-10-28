@@ -4,9 +4,10 @@ import { httpClient5xxExceptionMiddleware } from "./httpClient.5xxExceptionMiddl
 import { httpClientAuthExceptionMiddleware } from "./httpClient.authExceptionMiddleware";
 import { httpClientAuthHeaderMiddleware } from "./httpClient.authHeaderMiddleware";
 import { httpClientUncaughtExceptionMiddleware } from "./httpClient.uncatchedExceptionMiddleware";
+import { isServerSide } from "../../util/isServerSide";
 
 export const getHttpClient = () => {
-  const url = typeof window === "undefined" ? "http://nginx/api" : "/api";
+  const url = isServerSide() ? process.env.API_PATH : "/api";
 
   const httpClient = new infrastructure.httpClient.Axios(url);
 

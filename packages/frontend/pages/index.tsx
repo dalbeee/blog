@@ -12,7 +12,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
   try {
     const getConfig = await core.config.getKeyValue("IS_DONE_BLOG_SETTING");
-    if (getConfig) {
+    if (!getConfig) {
       return {
         redirect: {
           destination: "/first_setting",

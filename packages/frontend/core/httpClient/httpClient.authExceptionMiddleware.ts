@@ -14,7 +14,7 @@ export const httpClientAuthExceptionMiddleware = (axios: AxiosInstance) => {
   axios.interceptors.response.use(
     (res) => res,
     (err) => {
-      if (err.status === 401) {
+      if (err?.status === 401) {
         authAPI.deleteToken();
         toastAPI.warn("로그인이 필요합니다");
         err.handled = true;

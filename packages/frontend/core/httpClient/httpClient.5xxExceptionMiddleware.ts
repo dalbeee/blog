@@ -8,11 +8,11 @@ export const httpClient5xxExceptionMiddleware = (axios: AxiosInstance) => {
   axios.interceptors.response.use(
     (res) => res,
     (err) => {
-      if (err.status === 503) {
+      if (err?.status === 503) {
         router.push("/503");
         err.handled = true;
       }
-      if (err.status === 502) {
+      if (err?.status === 502) {
         router.push("/502");
         err.handled = true;
       }

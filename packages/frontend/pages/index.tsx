@@ -16,7 +16,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       return {
         redirect: {
           destination: "/first_setting",
-          statusCode: 301,
+          statusCode: 307,
         },
       };
     }
@@ -26,7 +26,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       return {
         redirect: {
           destination: "/502",
-          statusCode: 301,
+          statusCode: 307,
         },
       };
     }

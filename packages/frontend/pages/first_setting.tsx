@@ -17,7 +17,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       return {
         redirect: {
           destination: "/",
-          permanent: true,
+          statusCode: 301,
         },
       };
     }
@@ -26,12 +26,11 @@ export const getServerSideProps: GetServerSideProps = async () => {
       props: {},
     };
   } catch (error) {
-    console.log(error);
-    if (error.status === 502) {
+    if (error?.status === 502) {
       return {
         redirect: {
           destination: "/502",
-          permanent: true,
+          statusCode: 301,
         },
       };
     }

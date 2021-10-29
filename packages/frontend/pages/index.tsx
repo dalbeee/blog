@@ -12,25 +12,27 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
   try {
     const getConfig = await core.config.getKeyValue("IS_DONE_BLOG_SETTING");
-    const conf = { getConfig };
-    if (!conf.getConfig) {
+    if (getConfig) {
       return {
         redirect: {
           destination: "/first_setting",
-          permanent: true,
+          statusCode: 301,
         },
       };
     }
     return { props: {} };
   } catch (error) {
-    if (error.status === 502) {
+    if (error?.status === 502) {
       return {
         redirect: {
           destination: "/502",
-          permanent: false,
+          statusCode: 301,
         },
       };
     }
+    return {
+      props: {},
+    };
   }
 };
 

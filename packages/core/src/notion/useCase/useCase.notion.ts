@@ -24,12 +24,17 @@ export class NotionUseCase {
     );
 
     const parseQueryResult = (query: DatabaseQueryResult): NotionPost[] => {
-      return query.results.map((result) => ({
+      const result = query.results.filter((item) => {
+        return item.properties?.publishToBlog?.select?.name === "배포";
+      });
+
+      return result.map((result) => ({
         id: result.id,
         title: result.properties.이름.title?.[0]?.plain_text,
         url: result.url,
         createdAt: result.created_time,
         updatedAt: result.last_edited_time,
+        publishToBlog: result.properties?.publishToBlog.select.name,
       }));
     };
 

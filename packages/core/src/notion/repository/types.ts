@@ -31,6 +31,15 @@ export interface DatabaseQueryResultChild {
         plain_text: string;
       }>;
     };
+
+    publishToBlog?: {
+      id: string;
+      type: string;
+      select: {
+        id: string;
+        name: "배포" | null;
+      };
+    };
   };
   url: null | string;
 }

@@ -29,9 +29,10 @@ import { AlertModule } from './alert/alert.module';
     }),
     BullModule.forRoot({
       redis: {
-        host: 'redis',
+        host: process.env.REDIS_URL,
         port: 6379,
       },
+      defaultJobOptions: { timeout: 10 },
     }),
     UsersModule,
     AuthModule,

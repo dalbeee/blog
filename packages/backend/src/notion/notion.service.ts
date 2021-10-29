@@ -41,7 +41,6 @@ export class NotionService {
         'Notion-Version': '2021-08-16',
         Authorization: `Bearer ${process.env.NOTION_API_KEY}`,
       },
-      // withCredentials: true,
     };
     const httpClient = new infrastructure.httpClient.Axios(url, config);
     const repository = new notion.repository.BackendRepository(httpClient);

@@ -19,11 +19,11 @@ import { AlertModule } from './alert/alert.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: process.env.DB_HOST,
+      host: process.env.DB_URL,
       port: parseInt(process.env.DB_PORT) || 3306,
-      username: process.env.USER,
-      password: process.env.PASSWORD,
-      database: process.env.DATABASE,
+      username: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_DATABASE_NAME,
       synchronize: true,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
     }),
@@ -32,7 +32,6 @@ import { AlertModule } from './alert/alert.module';
         host: process.env.REDIS_URL,
         port: 6379,
       },
-      defaultJobOptions: { timeout: 10 },
     }),
     UsersModule,
     AuthModule,

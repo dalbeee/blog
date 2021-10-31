@@ -6,6 +6,8 @@ import {
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BullModule } from '@nestjs/bull';
 import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
+import { join } from 'path/posix';
+import { ServeStaticModule } from '@nestjs/serve-static';
 
 import { UsersModule } from '@src/user/user.module';
 import { AuthModule } from '@src/auth/auth.module';
@@ -32,6 +34,9 @@ import { AlertModule } from './alert/alert.module';
         host: process.env.REDIS_URL,
         port: 6379,
       },
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'),
     }),
     UsersModule,
     AuthModule,

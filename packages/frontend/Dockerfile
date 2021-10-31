@@ -8,6 +8,7 @@ COPY ./packages/frontend/package*.json \
 
 FROM node:lts-alpine as development
 ENV NODE_ENV development
+USER node
 WORKDIR /app
 COPY --chown=node:node --from=config /app .
 EXPOSE 3000

@@ -7,6 +7,9 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { Cache } from 'cache-manager';
+import { Axios } from '@nestjs/common/node_modules/axios';
+import { AxiosRequestConfig } from 'axios';
+import { writeFileSync } from 'fs';
 
 import { notion, infrastructure } from '@blog/core';
 import { NotionPost } from '@blog/core/dist/notion/useCase/types';
@@ -17,11 +20,11 @@ import { User } from '@src/user/entity/user.entity';
 import { PostService } from '@src/post/post.service';
 import { Post } from '@src/post/entity/post.entity';
 import { AdminService } from '@src/admin/admin.service';
-import { AxiosRequestConfig } from 'axios';
 
 @Injectable()
 export class NotionService {
   notionAPI: notion.useCase.NotionUseCase;
+  httpClient: Axios;
 
   constructor(
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
@@ -45,6 +48,7 @@ export class NotionService {
     const httpClient = new infrastructure.httpClient.Axios(url, config);
     const repository = new notion.repository.BackendRepository(httpClient);
     this.notionAPI = new notion.useCase.NotionUseCase(repository);
+    this.httpClient = new Axios({ responseType: 'arraybuffer' });
   }
 
   async initVariables() {
@@ -126,6 +130,32 @@ export class NotionService {
     return result;
   }
 
+  async saveImagesFromPostString(url: string): Promise<string> {
+    return this.httpClient
+      .get(url, {
+        responseType: 'arraybuffer',
+      })
+      .then(async (r) => {
+        let originalFileName: string =
+          r.request?._redirectable?._options?.pathname;
+        originalFileName = originalFileName.replaceAll('/', '_');
+
+        try {
+          writeFileSync(
+            `${process.env.UPLOADS_PATH}${originalFileName}`,
+            r.data as any,
+            'utf-8',
+          );
+          return originalFileName;
+        } catch (error) {
+          throw Error(error.message);
+        }
+      })
+      .catch((e) => {
+        throw new Error(e.message);
+      });
+  }
+
   async syncPostToLocal(user: User, post: NotionPost) {
     let getPost: string;
     try {
@@ -142,16 +172,30 @@ export class NotionService {
       updatedAt: post.updatedAt as unknown as string,
     };
 
-    let result;
+    const imageUrls = await this.notionAPI.findImageUrlsFromRawContent(
+      postDTO.content,
+    );
+
+    await Promise.all(
+      imageUrls.map(async (imageUrl) => {
+        const savedImagePath = await this.saveImagesFromPostString(imageUrl);
+        postDTO.content = postDTO.content.replace(
+          imageUrl,
+          `/uploads/${savedImagePath}`,
+        );
+      }),
+    );
+
+    let existPostAtLocal: Post;
     try {
-      result = await this.findByNotionId(post.id);
+      existPostAtLocal = await this.findByNotionId(post.id);
     } catch (error) {}
 
-    if (result) {
+    if (existPostAtLocal) {
       try {
         await this.postService.patchPost(
           user,
-          result.id,
+          existPostAtLocal.id,
           postDTO as PatchPostDTO,
         );
 

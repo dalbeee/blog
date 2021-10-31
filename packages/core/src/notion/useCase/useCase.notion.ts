@@ -41,4 +41,14 @@ export class NotionUseCase {
     const parsed: NotionPost[] = parseQueryResult(result);
     return parsed;
   }
+
+  async findImageUrlsFromRawContent(
+    rowContent: string
+  ): Promise<Array<string>> {
+    const regex = /\[image\]\((.*)\)/g;
+
+    const result = [...rowContent.matchAll(regex)];
+
+    return result.map((item) => item[1]);
+  }
 }

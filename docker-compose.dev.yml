@@ -14,6 +14,8 @@ services:
       dockerfile: ./packages/frontend/Dockerfile
     volumes:
       - .:/app
+    env_file: ./packages/frontend/.env.dev
+
 
   redis:
     image: redis:6.2.6
@@ -27,6 +29,7 @@ services:
       dockerfile: ./packages/backend/Dockerfile
     volumes:
       - .:/app
+      - ./storage/uploads:/app/packages/backend/uploads
     environment:
       DB_URL: db
       DB_PORT: 3306

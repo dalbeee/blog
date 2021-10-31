@@ -23,8 +23,11 @@ RUN yarn core:build
 RUN rm -rf ./src && rm -rf ./node_modules
 
 FROM node:lts-alpine as build
+ARG SSR_API_URL=$SSR_API_URL
+
 USER node
 WORKDIR /app
+RUN echo {"env:" $SSR_API_URL } > env_result.txt
 COPY --chown=node:node --from=dependency /app .
 COPY --chown=node:node ./packages/frontend /app/packages/frontend
 RUN yarn install --frozen-lockfile
@@ -43,5 +46,7 @@ WORKDIR /app
 COPY --chown=node:node --from=dependency /app .
 COPY --chown=node:node --from=build /app/packages/frontend/.next/ ./packages/frontend/.next/
 COPY --chown=node:node --from=node_modules_production /app/node_modules ./node_modules
+COPY --chown=node:node --from=build /app/env_result* ./
+
 EXPOSE 3000
 CMD yarn frontend

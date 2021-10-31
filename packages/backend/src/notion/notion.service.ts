@@ -176,15 +176,19 @@ export class NotionService {
       postDTO.content,
     );
 
-    await Promise.all(
-      imageUrls.map(async (imageUrl) => {
-        const savedImagePath = await this.saveImagesFromPostString(imageUrl);
-        postDTO.content = postDTO.content.replace(
-          imageUrl,
-          `/uploads/${savedImagePath}`,
-        );
-      }),
-    );
+    try {
+      await Promise.all(
+        imageUrls.map(async (imageUrl) => {
+          const savedImagePath = await this.saveImagesFromPostString(imageUrl);
+          postDTO.content = postDTO.content.replace(
+            imageUrl,
+            `/uploads/${savedImagePath}`,
+          );
+        }),
+      );
+    } catch (error) {
+      throw Error(error.message);
+    }
 
     let existPostAtLocal: Post;
     try {

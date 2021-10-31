@@ -5,24 +5,20 @@ import { Post } from "@blog/core/dist/domain";
 
 import PostController from "../../components/PostController";
 import { usePost } from "../../hooks/usePost";
+import { useRouter } from "next/router";
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const postAPI = usePost();
 
   try {
     const post = await postAPI.getPost(context.params.slug as string);
-
-    const url = context.params.slug;
     return {
-      props: { post, url },
-      revalidate: 5,
+      props: { post },
+      revalidate: 60,
     };
   } catch (error) {
     return {
-      redirect: {
-        destination: "/404",
-        permanent: false,
-      },
+      notFound: true,
     };
   }
 };
@@ -49,6 +45,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 const PostDetail = ({ post }: { post: Post }) => {
+  const router = useRouter();
+  if (router.isFallback) return <div>loading...</div>;
+
   if (!post) return null;
   return (
     <div className="flex justify-center w-full">

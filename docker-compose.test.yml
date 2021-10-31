@@ -8,9 +8,12 @@ services:
 
   frontend:
     build:
+      args:
+        - SSR_API_URL="http://nginx/api"
       target: production
       context: .
       dockerfile: ./packages/frontend/Dockerfile
+    env_file: ./packages/frontend/.env.dev
 
   redis:
       image: redis:6.2.6 
@@ -31,6 +34,8 @@ services:
       SECRET_JWT: jA#()*%!@13
       REDIS_URL: redis
     env_file: ./packages/backend/.env.dev
+    volumes: 
+      - ./storage/uploads:/app/packages/backend/uploads
 
   db:
     image: mysql:8.0.23

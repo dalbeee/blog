@@ -59,10 +59,4 @@ export class PostController {
   deletePostBySlug(@Param('slug') slug: string) {
     return this.postsService.deletePostBySlug(slug);
   }
-
-  @UseGuards(JwtAuthGuard)
-  @Post('test')
-  async test(@Body() post: CreatePostDTO, @CurrentUser() user: User) {
-    return await this.postsService.test(user, post);
-  }
 }

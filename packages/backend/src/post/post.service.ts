@@ -10,7 +10,6 @@ import { User } from '@src/user/entity/user.entity';
 import { Post } from './entity/post.entity';
 import { CreatePostDTO, PatchPostDTO } from '@blog/core/dist/domain';
 import { PostRepository } from './post.repository';
-import { getConnection } from 'typeorm';
 
 @Injectable()
 export class PostService {
@@ -80,24 +79,5 @@ export class PostService {
     } catch (error) {
       throw new ConflictException(error.message);
     }
-  }
-
-  async test(user: User, post: CreatePostDTO) {
-    return await getConnection().transaction(async (manager) => {
-      const row = this.postsRepository.createPost(user, post);
-
-      try {
-        const row2 = this.postsRepository.create({
-          title: 'null',
-          content: 'content',
-        });
-        return await Promise.all([
-          await manager.save(row),
-          await manager.save(row2),
-        ]);
-      } catch (error) {
-        throw new BadRequestException(error.message);
-      }
-    });
   }
 }

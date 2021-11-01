@@ -7,7 +7,7 @@ export const parseNotionPostToMarkdown = (post: NotionBlock): string => {
         .map((item) => {
           const parseItemLink = (item: SubBlock) => {
             const link = item.text?.link?.url;
-            return link ? `(${item.plain_text})[${link}]` : item.plain_text;
+            return link ? `[${item.plain_text}](${link})` : item.plain_text;
           };
 
           const parsedItem = parseItemLink(item);
@@ -38,6 +38,26 @@ export const parseNotionPostToMarkdown = (post: NotionBlock): string => {
         const result = parseSubBlock(subBlock);
         return result;
       }
+      case "bold": {
+        const subBlock = block["bold"].text;
+        const result = parseSubBlock(subBlock);
+        return `**${result}**`;
+      }
+      case "italic": {
+        const subBlock = block["italic"].text;
+        const result = parseSubBlock(subBlock);
+        return `_${result}_`;
+      }
+      case "quote": {
+        const subBlock = block["quote"].text;
+        const result = parseSubBlock(subBlock);
+        return `> ${result}`;
+      }
+      case "numbered_list": {
+        const subBlock = block["numbered_list"].text;
+        const result = parseSubBlock(subBlock);
+        return `1. ${result}`;
+      }
       case "code": {
         const subBlock = block["code"].text;
         const result = parseSubBlock(subBlock);
@@ -46,7 +66,7 @@ export const parseNotionPostToMarkdown = (post: NotionBlock): string => {
       case "image": {
         const subBlock = block["image"];
         const result = subBlock.file.url;
-        return `![image](${result})`;
+        return `![image](${result || "#"})`;
       }
 
       default:

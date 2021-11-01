@@ -180,10 +180,7 @@ export class NotionService {
       await Promise.all(
         imageUrls.map(async (imageUrl) => {
           const savedImagePath = await this.saveImagesFromPostString(imageUrl);
-          postDTO.content = postDTO.content.replace(
-            imageUrl,
-            `/uploads/${savedImagePath}`,
-          );
+          postDTO.content = postDTO.content.replace(imageUrl, savedImagePath);
         }),
       );
     } catch (error) {

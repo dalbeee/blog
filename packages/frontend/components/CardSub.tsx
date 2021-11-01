@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Post } from "@blog/core/dist/domain";
+import { resolveUrl } from "../util/resolveUrl";
 
 const cardSub = ({ post }: { post: Post }) => {
   if (!post) return null;
@@ -11,7 +12,7 @@ const cardSub = ({ post }: { post: Post }) => {
       <Link href={`/posts/${post.slug}`}>
         <div className="relative w-full h-3/5">
           <Image
-            src={post.thumbnail || "/photo1.jpg"}
+            src={`${resolveUrl()}${encodeURI(post.thumbnail)}`}
             objectFit="cover"
             layout="fill"
           />

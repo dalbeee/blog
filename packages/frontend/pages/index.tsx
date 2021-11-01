@@ -1,71 +1,34 @@
-import { GetServerSideProps } from "next";
-import { useState, useEffect } from "react";
+import { GetStaticProps } from "next";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 import { Post } from "@blog/core/dist/domain";
 
 import Content from "../components/Content";
 import { coreAPI } from "../core/coreAPI";
-import { usePost } from "../hooks/usePost";
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   const core = coreAPI();
 
   try {
-    const getConfig = await core.config.getKeyValue("IS_DONE_BLOG_SETTING");
-    if (!getConfig) {
-      return {
-        redirect: {
-          destination: "/first_setting",
-          statusCode: 307,
-        },
-      };
-    }
-    return { props: {} };
+    const posts = await core.post.getPosts();
+    return { props: { posts }, revalidate: 5 };
   } catch (error) {
-    if (error?.status === 502) {
-      return {
-        redirect: {
-          destination: "/502",
-          statusCode: 307,
-        },
-      };
-    }
     return {
-      props: {},
+      props: { posts: [] },
+      revalidate: 5,
     };
   }
 };
 
-// export const getStaticProps: GetStaticProps = async () => {
-//   const core = coreAPI();
-
-//   // try {
-
-//   let posts = (await core.post.getPosts()) || [];
-
-//   return {
-//     props: { posts },
-//     revalidate: 5,
-//   };
-//   // } catch (error) {
-//   //   if (error.status === 502) {
-//   //     return {
-//   //       redirect: {
-//   //         destination: "/502",
-//   //         permanent: false,
-//   //       },
-//   //     };
-//   //   }
-//   // }
-// };
-
-// export default function Home({ posts }: { posts: Post[] }) {
-export default function Home() {
-  const postAPI = usePost();
-  const [posts, setPosts] = useState<Post[]>([]);
+export default function Home({ posts }: { posts: Post[] }) {
+  const core = coreAPI();
+  const router = useRouter();
 
   useEffect(() => {
-    postAPI.getPosts().then((r) => setPosts(r));
+    core.config.getKeyValue("IS_DONE_BLOG_SETTING").then((r) => {
+      if (!r) router.push("/first_setting");
+    });
   }, []);
 
   return <Content posts={posts} />;

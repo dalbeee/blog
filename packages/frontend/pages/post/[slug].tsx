@@ -1,11 +1,14 @@
 import { GetStaticPaths, GetStaticProps } from "next";
 import ReactMarkdown from "react-markdown";
+import Image from "next/image";
+import { Components } from "react-markdown/lib/ast-to-react";
+import { useRouter } from "next/router";
 
 import { Post } from "@blog/core/dist/domain";
 
 import PostController from "../../components/PostController";
 import { usePost } from "../../hooks/usePost";
-import { useRouter } from "next/router";
+import { resolveUrl } from "../../util/resolveUrl";
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const postAPI = usePost();
@@ -49,6 +52,30 @@ const PostDetail = ({ post }: { post: Post }) => {
   if (router.isFallback) return <div>loading...</div>;
 
   if (!post) return null;
+
+  // const img: TransformImage = (uri) => `/uploads${uri}`;
+
+  const renderers: Components = {
+    img: (image: any) => {
+      return (
+        <div
+          className="relative overflow-hidden "
+          style={{ width: "100%", maxHeight: "100%", minHeight: 400 }}
+        >
+          <Image
+            src={`${resolveUrl()}/${encodeURI(image?.src)}`}
+            alt={image?.alt}
+            objectFit="contain"
+            layout="fill"
+            className="w-full h-full"
+            // width="700"
+            // height="700"
+          />
+        </div>
+      );
+    },
+  };
+
   return (
     <div className="flex justify-center w-full">
       <div className="w-11/12" style={{ maxWidth: "860px" }}>
@@ -56,7 +83,11 @@ const PostDetail = ({ post }: { post: Post }) => {
           {post.title}
         </div>
         <PostController />
-        <ReactMarkdown className="w-full py-4 text-gray-700 break-words markdown">
+        <ReactMarkdown
+          className="w-full py-4 text-gray-700 break-words markdown"
+          // transformImageUri={img}
+          components={renderers}
+        >
           {post.content}
         </ReactMarkdown>
         {/* <Comment comments={post.comments} /> */}

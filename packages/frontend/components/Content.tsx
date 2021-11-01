@@ -7,7 +7,7 @@ import CardMain from "./CardMain";
 const Content = ({ posts }: { posts: Post[] }) => {
   // const { post } = usePostContext();
 
-  if (!posts.length)
+  if (!posts?.length)
     return (
       <div className="flex items-center justify-center h-content">
         포스트가 없어요😢
@@ -15,7 +15,7 @@ const Content = ({ posts }: { posts: Post[] }) => {
     );
 
   return (
-    <div className="w-full px-2 h-content min-h-content">
+    <div className="w-full px-2 min-h-content grid grid-cols-1 lg:grid-cols-2 gap-4">
       {/* {!!post.store.posts?.length ? (
         post.store.posts.map((post, index) => ( */}
       {posts.map((post, index) => (

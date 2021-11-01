@@ -1,8 +1,10 @@
 import { formatDistance, parseISO } from "date-fns";
 import Link from "next/link";
 import { memo, useState } from "react";
+import Image from "next/image";
 
 import { Post } from "@blog/core/dist/domain";
+import { resolveUrl } from "../util/resolveUrl";
 
 const CardMain = ({ post }: { post: Post }) => {
   if (!post) return null;
@@ -16,35 +18,36 @@ const CardMain = ({ post }: { post: Post }) => {
   );
 
   return (
-    <Link href={`/post/${post.id}`}>
-      <a>
-        <div className="flex flex-col w-full mb-4 overflow-hidden h-1/3 rounded-xl border-gray-300 border-2">
-          <div className="relative w-full overflow-hidden h-3/5">
+    <div className="flex flex-col p-4 overflow-hidden rounded-xl border-gray-300 border-2">
+      <Link href={`/post/${post.id}`}>
+        <a>
+          <div className="relative w-full overflow-hidden h-48">
             {thumbnail && (
-              <img
-                src={thumbnail}
-                // objectFit="cover"
-                // layout="fill"
-                style={{ objectFit: "cover", overflow: "hidden" }}
+              // <img
+              <Image
+                src={`${resolveUrl()}/${encodeURI(thumbnail)}`}
+                objectFit="contain"
+                layout="fill"
+                // style={{ objectFit: "cover", overflow: "hidden" }}
                 className="w-full h-full"
               />
             )}
           </div>
-          <div className="bg-gray-100 h-2/5 px-2">
-            <div className="w-full text-xl text-gray-700 truncate h-1/3">
+          <div className="h-40 px-2">
+            <div className="w-full text-md text-gray-700 truncate">
               {post.title}
             </div>
-            <div className="w-full overflow-hidden text-gray-400 whitespace-pre-wrap overflow-ellipsis h-1/3">
+            <div className="w-full overflow-hidden text-gray-400 whitespace-pre-wrap overflow-ellipsis h-28">
               {post.content}
             </div>
-            <div className="text-right w-full overflow-hidden text-gray-400 whitespace-pre-wrap overflow-ellipsis h-1/3">
+            <div className="text-right w-full overflow-hidden text-gray-400 whitespace-pre-wrap overflow-ellipsis  ">
               {post.createdAt &&
                 formatDistance(new Date(), parseISO(post.createdAt.toString()))}
             </div>
           </div>
-        </div>
-      </a>
-    </Link>
+        </a>
+      </Link>
+    </div>
   );
 };
 

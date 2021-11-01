@@ -37,6 +37,7 @@
     "class-validator": "^0.13.1",
     "dotenv": "^10.0.0",
     "faker": "^5.5.3",
+    "marked": "^3.0.8",
     "mysql2": "^2.3.2",
     "passport": "^0.5.0",
     "passport-jwt": "^4.0.0",

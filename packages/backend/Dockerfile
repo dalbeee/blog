@@ -6,6 +6,7 @@ COPY ./packages/backend/package*.json \
     ./packages/backend/
 
 FROM node:lts-alpine as development
+USER node
 ENV NODE_ENV development
 WORKDIR /app
 COPY --chown=node:node --from=config /app .

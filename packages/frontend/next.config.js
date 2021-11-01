@@ -1,3 +1,11 @@
+const withBundleAnalyzer =
+  process.env.ANALYZE &&
+  require("@next/bundle-analyzer")({
+    enabled: !!process.env.ANALYZE,
+  });
+
+module.exports = process.env.ANALYZE && withBundleAnalyzer({});
+
 module.exports = {
   webpackDevMiddleware: (config) => {
     config.watchOptions = {
@@ -7,14 +15,6 @@ module.exports = {
     return config;
   },
   images: {
-    domains: ["http://localhost"],
+    domains: [process.env.NEXT_PUBLIC_LOCAL_HOST],
   },
-  // future: {
-  //   webpack5: true,
-  // },
 };
-
-const withBundleAnalyzer = require("@next/bundle-analyzer")({
-  // enabled: process.env.ANALYZE === "true",
-});
-module.exports = withBundleAnalyzer({});

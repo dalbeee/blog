@@ -9,7 +9,14 @@ services:
   frontend:
     build:
       args:
-        - SSR_API_URL="http://nginx/api"
+        - SSR_API_URL=http://10.0.0.172/api
+        - NEXT_PUBLIC_HTTP_PROTOCOL=http://
+        - NEXT_PUBLIC_LOCAL_HOST=10.0.0.171
+        - NEXT_PUBLIC_LOCAL_HOST_PORT=3000
+        # - SSR_API_URL=http://nginx/api
+        # - NEXT_PUBLIC_HTTP_PROTOCOL=http://
+        # - NEXT_PUBLIC_LOCAL_HOST=backend
+        # - NEXT_PUBLIC_LOCAL_HOST_PORT=3000
       target: production
       context: .
       dockerfile: ./packages/frontend/Dockerfile
@@ -25,6 +32,8 @@ services:
       target: production
       context: .
       dockerfile: ./packages/backend/Dockerfile
+    ports:
+      - "3000:3000"
     environment:
       DB_URL: db
       DB_PORT: 3306

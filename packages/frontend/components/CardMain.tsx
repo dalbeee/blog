@@ -38,7 +38,7 @@ const CardMain = ({ post }: { post: Post }) => {
               {post.title}
             </div>
             <div className="w-full overflow-hidden text-gray-400 whitespace-pre-wrap overflow-ellipsis h-28">
-              {post.content}
+              {post.description}
             </div>
             <div className="text-right w-full overflow-hidden text-gray-400 whitespace-pre-wrap overflow-ellipsis  ">
               {post.createdAt &&

@@ -1,0 +1,15 @@
+{
+  "moduleFileExtensions": ["js", "json", "ts"],
+  "roots": ["."],
+
+  "testRegex": "logger.e2e-spec.ts$",
+  "transform": {
+    "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "testEnvironment": "node",
+  "moduleNameMapper": {
+    "^@blog/core$": "<rootDir>/../../core/src/index.ts",
+    "@src/(.*)": "<rootDir>/../src/$1"
+  },
+  "transformIgnorePatterns": ["./node_modules/"]
+}

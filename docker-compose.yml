@@ -8,16 +8,16 @@ services:
       - "80:80"
     depends_on:
       - backend
-      - frontend
+      # - frontend
 
-  frontend:
-    ports:
-      - "3000"
-    environment:
-      IS_RUNNING_IN_DOCKER: 1
-      NEXT_TELEMETRY_DISABLED: 1
-    depends_on:
-      - backend
+  # frontend:
+  #   ports:
+  #     - "3000"
+  #   environment:
+  #     IS_RUNNING_IN_DOCKER: 1
+  #     NEXT_TELEMETRY_DISABLED: 1
+  #   depends_on:
+  #     - backend
 
   backend:
     build:

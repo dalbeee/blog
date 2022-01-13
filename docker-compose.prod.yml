@@ -11,22 +11,24 @@ services:
       target: production
       context: .
       dockerfile: ./packages/frontend/Dockerfile
-    # env_file: ./front/.env.prod
+    env_file: .env.prod
 
   backend:
     build:
       target: production
       context: .
       dockerfile: ./packages/backend/Dockerfile
-    # env_file: ./back/.env.prod
+    env_file: .env.prod
+      
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      DB_URL: db
 
-  # db:
-    # command: --default-authentication-plugin=mysql_native_password
-    # environment:
-      # MONGO_INITDB_DATABASE: dev
-      # MONGO_INITDB_ROOT_USERNAME: root
-      # MONGO_INITDB_ROOT_PASSWORD: test
+  db:
+    command: --default-authentication-plugin=mysql_native_password
+    env_file: ./.env.prod
 
-      # MYSQL_ROOT_PASSWORD: example
-      # MYSQL_DATABASE: test
-
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}

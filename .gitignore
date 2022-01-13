@@ -81,3 +81,6 @@ yarn-error.log*
 .vercel
 .env
 .env*
+
+docker-compose.args.yml
+docker-compose.prod-env.yml

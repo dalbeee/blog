@@ -17,30 +17,22 @@ import { AdminModule } from './admin/admin.module';
 import { LoggerModule } from './logger/logger.module';
 // import { AlertModule } from './alert/alert.module';
 
-console.log(
-  process.env.DB_HOST,
-  process.env.DB_PORT,
-  process.env.DB_USER,
-  process.env.DB_PASSWORD,
-  'tester',
-);
-
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: process.env.DB_URL || '10.0.0.170',
-      port: parseInt(process.env.DB_PORT) || 3306,
-      username: process.env.DB_USER || 'root',
-      password: process.env.DB_PASSWORD || 'B#q@P9fvAum2',
-      database: process.env.DB_DATABASE_NAME || 'blog',
+      host: process.env.DB_URL,
+      port: parseInt(process.env.DB_PORT),
+      username: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_DATABASE_NAME,
       // synchronize: process.env.NODE_ENV !== 'production',
       synchronize: true,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
     }),
     BullModule.forRoot({
       redis: {
-        host: process.env.REDIS_URL || '10.0.0.173',
+        host: process.env.REDIS_URL,
         port: 6379,
       },
     }),

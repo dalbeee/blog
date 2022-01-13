@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Post } from "../core/domain";
 
-import { Post } from "@blog/core/dist/domain";
 import { resolveUrl } from "../util/resolveUrl";
 
 const cardSub = ({ post }: { post: Post }) => {

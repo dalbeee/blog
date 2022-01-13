@@ -5,7 +5,7 @@ import { useUser } from "../../hooks/useUser";
 import Custom403 from "../../pages/403";
 import Loading from "../page/Loading";
 import { coreAPI } from "../../core/coreAPI";
-import { User } from "@blog/core/dist/domain";
+import { User } from "../../core/domain";
 
 const AuthRouter: FC<{ role?: string }> = ({ children, role }) => {
   const userAPI = useUser();

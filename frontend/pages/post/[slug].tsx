@@ -4,11 +4,10 @@ import Image from "next/image";
 import { Components } from "react-markdown/lib/ast-to-react";
 import { useRouter } from "next/router";
 
-import { Post } from "@blog/core/dist/domain";
-
 import PostController from "../../components/PostController";
 import { usePost } from "../../hooks/usePost";
 import { resolveUrl } from "../../util/resolveUrl";
+import { Post } from "../../core/domain";
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const postAPI = usePost();

@@ -1,6 +1,5 @@
 import { memo } from "react";
-
-import { Post } from "@blog/core/dist/domain";
+import { Post } from "../core/domain";
 
 import CardMain from "./CardMain";
 

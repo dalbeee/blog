@@ -3,8 +3,8 @@ import Link from "next/link";
 import { memo, useState } from "react";
 import Image from "next/image";
 
-import { Post } from "@blog/core/dist/domain";
 import { resolveUrl } from "../util/resolveUrl";
+import { Post } from "../core/domain";
 
 const CardMain = ({ post }: { post: Post }) => {
   if (!post) return null;
@@ -25,7 +25,7 @@ const CardMain = ({ post }: { post: Post }) => {
             {thumbnail && (
               // <img
               <Image
-                src={`${resolveUrl()}/${encodeURI(thumbnail)}`}
+                src={`${resolveUrl()}${encodeURI(thumbnail)}`}
                 objectFit="contain"
                 layout="fill"
                 // style={{ objectFit: "cover", overflow: "hidden" }}

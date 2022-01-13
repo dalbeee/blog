@@ -9,26 +9,31 @@ services:
   frontend:
     build:
       target: production
-      context: .
-      dockerfile: ./packages/frontend/Dockerfile
-    env_file: .env.prod
+      context: ./frontend
+    # env_file: .env.prod
+    environment:
+      NEXT_PUBLIC_LOCAL_HOST: "10.0.0.171"
 
   backend:
     build:
       target: production
-      context: .
-      dockerfile: ./packages/backend/Dockerfile
-    env_file: .env.prod
+      context: ./backend
+    # env_file: .env.prod
       
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      DB_PASSWORD: test
+      DB_DATABASE_NAME: db
       DB_URL: db
+      DB_USER: root
+      REDIS_URL: '10.0.0.173'
+      SECRET_JWT: "@!#)%(1"
+      
 
   db:
     command: --default-authentication-plugin=mysql_native_password
     env_file: ./.env.prod
-
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      # MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      # MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: test
+      MYSQL_DATABASE: db

@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { Cache } from 'cache-manager';
 
-import { AxiosRequestConfig } from 'axios';
+import { AxiosRequestConfig, Axios } from 'axios';
 import { writeFileSync } from 'fs';
 
 import { PostRepository } from '@src/post/post.repository';
@@ -21,12 +21,12 @@ import { PatchPostDTO } from './domain/dto/patch-post.dto';
 import { CreatePostDTO } from './domain/dto/create-post.dto';
 import { NotionUseCase } from './notion.usecase';
 import { NotionRepository } from './notion.repository';
-import { Axios } from './axios';
+import { Axios as HttpClientAxios } from '../share/http-client/axios';
 
 @Injectable()
 export class NotionService {
   notionAPI: NotionUseCase;
-  httpClient: Axios;
+  httpClient: Axios | HttpClientAxios;
 
   constructor(
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
@@ -47,11 +47,10 @@ export class NotionService {
         Authorization: `Bearer ${process.env.NOTION_API_KEY}`,
       },
     };
-    const httpClient = new Axios(url, config);
+    const httpClient = new HttpClientAxios(url, config);
     const repository = new NotionRepository(httpClient);
     this.notionAPI = new NotionUseCase(repository);
-    // this.httpClient = new Axios({ responseType: 'arraybuffer' });
-    this.httpClient = httpClient;
+    this.httpClient = new Axios({});
   }
 
   async initVariables() {
@@ -134,32 +133,30 @@ export class NotionService {
   }
 
   async saveImagesFromPostString(url: string): Promise<string> {
-    return (
-      this.httpClient
-        // .get(url, {
-        //   responseType: 'arraybuffer',
-        // })
-        .get(url)
-        .then(async (r) => {
-          let originalFileName: string =
-            r.request?._redirectable?._options?.pathname;
-          originalFileName = originalFileName.replaceAll('/', '_');
+    return this.httpClient
+      .get(url, {
+        responseType: 'arraybuffer',
+      })
+      .then(async (r) => {
+        let originalFileName: string =
+          r.request?._redirectable?._options?.pathname;
+        originalFileName = originalFileName.replaceAll('/', '_');
 
-          try {
-            writeFileSync(
-              `${process.env.UPLOADS_PATH}${originalFileName}`,
-              r.data as any,
-              'utf-8',
-            );
-            return originalFileName;
-          } catch (error) {
-            throw Error(error.message);
-          }
-        })
-        .catch((e) => {
-          throw new Error(e.message);
-        })
-    );
+        try {
+          writeFileSync(
+            `${process.env.UPLOADS_PATH}/${originalFileName}`,
+            r.data as any,
+            'utf-8',
+          );
+          return originalFileName;
+        } catch (error) {
+          throw Error(error.message);
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+        throw new Error('save images failed');
+      });
   }
 
   async syncPostToLocal(user: User, post: NotionPost) {

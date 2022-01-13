@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
-
-import { UserLoginDTO } from "@blog/core/dist/domain";
+import { useState } from "react";
+import { UserLoginDTO } from "../core/domain";
 
 import { useUser } from "../hooks/useUser";
 

@@ -2,9 +2,8 @@ import { InputAdornment, TextField } from "@mui/material";
 import { useState } from "react";
 import LoadingButton from "@mui/lab/LoadingButton";
 
-import { ConfigDTO } from "@blog/core/dist/infrastructure/repository";
-
 import { useNotion } from "../../../../hooks/useNotion";
+import { ConfigDTO } from "../../../../core/domain";
 
 const Notion = ({ notionAPiKey, notionDatabaseId }) => {
   const notionAPI = useNotion();

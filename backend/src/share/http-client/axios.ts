@@ -1,6 +1,8 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
-export class Axios {
+import { HttpClient } from './http-client-interface';
+
+export class Axios implements HttpClient {
   client: AxiosInstance;
 
   constructor(

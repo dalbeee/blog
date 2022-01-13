@@ -1,4 +1,4 @@
-import { Axios } from './axios';
+import { Axios } from '@src/share/http-client/axios';
 import { DatabaseQueryResult } from './domain/types/database-query-result';
 import { NotionBlock } from './domain/types/notion-block';
 

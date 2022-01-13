@@ -13,8 +13,6 @@ services:
       context: ./frontend
     volumes:
       - ./frontend:/app
-    environment:
-      - NEXT_PUBLIC_LOCAL_HOST=localhost:3000
     env_file: ./.env.dev
 
 

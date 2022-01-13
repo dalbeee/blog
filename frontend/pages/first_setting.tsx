@@ -3,10 +3,10 @@ import { useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import { InputAdornment, TextField } from "@mui/material";
 
-import { UserDTO } from "@blog/core/dist/domain";
 
 import { coreAPI } from "../core/coreAPI";
 import { useUser } from "../hooks/useUser";
+import { UserDTO } from "../core/domain";
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const core = coreAPI();

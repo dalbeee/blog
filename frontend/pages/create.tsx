@@ -2,8 +2,6 @@ import React, { forwardRef, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 
-import { CreatePostDTO } from "@blog/core/dist/domain";
-
 import {
   EditorPropsWithHandlers,
   TuiEditorWithForwardedProps,
@@ -12,6 +10,7 @@ import {
 import UploadFilePond from "../components/UploadFilePond";
 import { usePost } from "../hooks/usePost";
 import AuthRouter from "../components/router/AuthRouter";
+import { CreatePostDTO } from "../core/domain";
 
 const EditorWithNoSSR = dynamic<TuiEditorWithForwardedProps>(
   () =>

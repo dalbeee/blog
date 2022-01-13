@@ -1,4 +1,4 @@
-import { Axios } from '@src/notion/axios';
+import { Axios } from '@src/share/http-client/axios';
 
 export class AlertRepository {
   SLACK_WEBHOOK_API_KEY: string;

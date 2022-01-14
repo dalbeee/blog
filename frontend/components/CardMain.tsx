@@ -1,10 +1,9 @@
 import { formatDistance, parseISO } from "date-fns";
 import Link from "next/link";
 import { memo, useState } from "react";
-import Image from "next/image";
 
-import { resolveUrl } from "../util/resolveUrl";
 import { Post } from "../core/domain";
+import ImageComponent from "./core/ImageProvider";
 
 const CardMain = ({ post }: { post: Post }) => {
   if (!post) return null;
@@ -22,16 +21,7 @@ const CardMain = ({ post }: { post: Post }) => {
       <Link href={`/post/${post.id}`}>
         <a>
           <div className="relative w-full overflow-hidden h-48">
-            {thumbnail && (
-              // <img
-              <Image
-                src={`${resolveUrl()}${encodeURI(thumbnail)}`}
-                objectFit="contain"
-                layout="fill"
-                // style={{ objectFit: "cover", overflow: "hidden" }}
-                className="w-full h-full"
-              />
-            )}
+            {thumbnail && <ImageComponent url={thumbnail} />}
           </div>
           <div className="h-40 px-2">
             <div className="w-full text-md text-gray-700 truncate">

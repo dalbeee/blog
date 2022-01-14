@@ -1,13 +1,12 @@
 import { GetStaticPaths, GetStaticProps } from "next";
 import ReactMarkdown from "react-markdown";
-import Image from "next/image";
 import { Components } from "react-markdown/lib/ast-to-react";
 import { useRouter } from "next/router";
 
 import PostController from "../../components/PostController";
 import { usePost } from "../../hooks/usePost";
-import { resolveUrl } from "../../util/resolveUrl";
 import { Post } from "../../core/domain";
+import ImageProvider from "../../components/core/ImageProvider";
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const postAPI = usePost();
@@ -52,8 +51,6 @@ const PostDetail = ({ post }: { post: Post }) => {
 
   if (!post) return null;
 
-  // const img: TransformImage = (uri) => `/uploads${uri}`;
-
   const renderers: Components = {
     img: (image: any) => {
       return (
@@ -61,15 +58,7 @@ const PostDetail = ({ post }: { post: Post }) => {
           className="relative overflow-hidden "
           style={{ width: "100%", maxHeight: "100%", minHeight: 400 }}
         >
-          <Image
-            src={`${resolveUrl()}/${encodeURI(image?.src)}`}
-            alt={image?.alt}
-            objectFit="contain"
-            layout="fill"
-            className="w-full h-full"
-            // width="700"
-            // height="700"
-          />
+          <ImageProvider url={`/${image?.src}`} />
         </div>
       );
     },

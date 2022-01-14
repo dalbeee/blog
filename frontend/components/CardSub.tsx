@@ -1,8 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import { Post } from "../core/domain";
 
-import { resolveUrl } from "../util/resolveUrl";
+import ImageProvider from "./core/ImageProvider";
 
 const cardSub = ({ post }: { post: Post }) => {
   if (!post) return null;
@@ -11,11 +10,7 @@ const cardSub = ({ post }: { post: Post }) => {
     <div className="flex flex-col w-full mb-4 overflow-hidden h-1/3 rounded-xl">
       <Link href={`/posts/${post.slug}`}>
         <div className="relative w-full h-3/5">
-          <Image
-            src={`${resolveUrl()}${encodeURI(post.thumbnail)}`}
-            objectFit="cover"
-            layout="fill"
-          />
+          <ImageProvider url={post.thumbnail} />
         </div>
         <div className="relative bg-gray-100 h-2/5">
           <div className="w-full text-2xl text-gray-700 h-1/3 ">

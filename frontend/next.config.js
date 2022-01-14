@@ -15,6 +15,6 @@ module.exports = {
     return config;
   },
   images: {
-    domains: [process.env.NEXT_PRIVATE_SSR_API_URL],
+    domains: [process.env.NEXT_CONFIG_LOCAL_HOST],
   },
 };

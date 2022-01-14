@@ -4,75 +4,57 @@ services:
   nginx:
     volumes:
       - ./nginx/dev.conf:/etc/nginx/conf.d/default.conf
-      # - ./nginx/front-only.conf:/etc/nginx/conf.d/default.conf
-      - ./storage/uploads:/mnt/storage/uploads
-
+      
+  nginx-serve-static:
+    build:
+      context: ./nginx-serve-static/
+    volumes:
+      - ./storage/uploads/:/app/uploads/
+      
   frontend:
     build:
       target: development
       context: ./frontend
     volumes:
-      - ./frontend:/app
-    env_file: ./.env.dev
-
-
-  redis:
-    image: redis:6.2.6
-    ports:
-      - "6379"
+      - ./frontend/:/app/
+    env_file: .env.dev
 
   backend:
     build:
       target: development
       context: ./backend
     volumes:
-      - ./backend:/app
-      - ./storage/uploads:/app/uploads
-    environment:
-      DB_URL: db
-      DB_PORT: 3306
-      DB_USER: root
-      DB_PASSWORD: secret-pw
-      DB_DATABASE_NAME: nest-blog
-      SECRET_JWT: jA#()*%!@13
-      REDIS_URL: redis
-    env_file: ./.env.dev
+      - ./backend/:/app/
+      - ./storage/uploads/:/app/uploads/
+    env_file: .env.dev
 
-  # backend_test:
-  #   build:
-  #     target: testing
-  #     context: .
-  #     dockerfile: ./backend/Dockerfile
-  #   volumes:
-  #     - .:/app
-  #   environment:
-  #     DB_HOST: db_test
-  #     DB_PORT: 3306
-  #     USER: root
-  #     PASSWORD: secret-pw
-  #     DATABASE: nest-blog
-  #     SECRET_JWT: jA#()*%!@13
-   # env_file: ./.env.dev
+  backend_test:
+    build:
+      target: testing
+      context: ./backend
+    volumes:
+      - ./:/app/
+    env_file: .env.dev
 
+  redis:
+    image: redis:6.2.6
+    ports:
+      - "6379"
 
   db:
     image: mysql:8.0.23
     command: --default-authentication-plugin=mysql_native_password
     ports:
       - "3306:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: secret-pw
-      MYSQL_DATABASE: nest-blog
+    env_file: .env.dev
     cap_add:
       - SYS_NICE
 
-  # db_test:
-  #   image: mysql:8.0.23
-  #   command: --default-authentication-plugin=mysql_native_password
-  #   ports:
-  #     - "3307:3306"
-  #   environment:
-  #     MYSQL_ROOT_PASSWORD: secret-pw
-  #     MYSQL_DATABASE: nest-blog
-  #   cap_add:
-  #     - SYS_NICE
+  db_test:
+    image: mysql:8.0.23
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - "3307:3306"
+    env_file: .env.dev
+    cap_add:
+      - SYS_NICE

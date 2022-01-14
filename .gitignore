@@ -83,5 +83,5 @@ yarn-error.log*
 .env*
 
 docker-compose.args.yml
-docker-compose.prod-env.yml
+docker-compose.prod.args.yml
 !.env.example

@@ -6,8 +6,6 @@ import {
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BullModule } from '@nestjs/bull';
 import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
-import { join } from 'path/posix';
-import { ServeStaticModule } from '@nestjs/serve-static';
 
 import { UsersModule } from '@src/user/user.module';
 import { AuthModule } from '@src/auth/auth.module';
@@ -21,23 +19,20 @@ import { LoggerModule } from './logger/logger.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: process.env.DB_URL,
-      port: parseInt(process.env.DB_PORT),
-      username: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_DATABASE_NAME,
+      host: process.env.NEST_CONFIG_DB_URL,
+      port: +process.env.NEST_CONFIG_DB_PORT,
+      username: process.env.NEST_CONFIG_DB_USER,
+      password: process.env.NEST_CONFIG_DB_PASSWORD,
+      database: process.env.NEST_CONFIG_DB_DATABASE_NAME,
       // synchronize: process.env.NODE_ENV !== 'production',
       synchronize: true,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
     }),
     BullModule.forRoot({
       redis: {
-        host: process.env.REDIS_URL,
-        port: 6379,
+        host: process.env.NEST_CONFIG_DB_REDIS_URL,
+        port: +process.env.NEST_CONFIG_DB_REDIS_PORT,
       },
-    }),
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'uploads'),
     }),
     UsersModule,
     AuthModule,

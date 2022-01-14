@@ -144,7 +144,7 @@ export class NotionService {
 
         try {
           writeFileSync(
-            `${process.env.UPLOADS_PATH}/${originalFileName}`,
+            `${process.env.NEST_CONFIG_UPLOADS_PATH}/${originalFileName}`,
             r.data as any,
             'utf-8',
           );

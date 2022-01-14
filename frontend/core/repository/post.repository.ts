@@ -9,9 +9,7 @@ export class PostRepository {
   }
 
   async getPosts(): Promise<Post[]> {
-    const result = await this.httpClient.get(`/posts`);
-    console.log(result);
-    return result;
+    return await this.httpClient.get(`/posts`);
   }
 
   async createPost(post: CreatePostDTO): Promise<Post> {

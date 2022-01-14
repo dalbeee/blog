@@ -1,15 +1,12 @@
-import { isServerSide } from "../../util/isServerSide";
+import { resolveUrl } from "../../util/resolveUrl";
 import { Axios } from "./axios";
-
 import { httpClient5xxExceptionMiddleware } from "./httpClient.5xxExceptionMiddleware";
 import { httpClientAuthExceptionMiddleware } from "./httpClient.authExceptionMiddleware";
 import { httpClientAuthHeaderMiddleware } from "./httpClient.authHeaderMiddleware";
 import { httpClientUncaughtExceptionMiddleware } from "./httpClient.uncatchedExceptionMiddleware";
 
 export const getHttpClient = () => {
-  const url = isServerSide()
-    ? process.env.SSR_API_URL
-    : process.env.NEXT_PUBLIC_API_URL || "/api";
+  const url = resolveUrl();
 
   const httpClient = new Axios(url);
 

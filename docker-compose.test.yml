@@ -4,55 +4,33 @@ services:
   nginx:
     volumes:
       - ./nginx/production.conf:/etc/nginx/conf.d/default.conf
-      - ./storage/uploads:/mnt/storage/uploads
-
+  
   frontend:
     build:
-      args:
-        - SSR_API_URL=http://10.0.0.172/api
-        - NEXT_PUBLIC_HTTP_PROTOCOL=http://
-        - NEXT_PUBLIC_LOCAL_HOST=10.0.0.171
-        - NEXT_PUBLIC_LOCAL_HOST_PORT=3000
-        # - SSR_API_URL=http://nginx/api
-        # - NEXT_PUBLIC_HTTP_PROTOCOL=http://
-        # - NEXT_PUBLIC_LOCAL_HOST=backend
-        # - NEXT_PUBLIC_LOCAL_HOST_PORT=3000
       target: production
-      context: .
-      dockerfile: ./packages/frontend/Dockerfile
-    env_file: ./packages/frontend/.env.dev
+      context: ./frontend
+    env_file: .env.test
+        
+  backend:
+    build:
+      target: production
+      context: ./backend
+    ports:
+      - "3000:3000"
+    env_file: .env.test
+    volumes: 
+      - ./storage/uploads/:/app/uploads/
 
   redis:
       image: redis:6.2.6 
       ports:
         - "6379"
         
-  backend:
-    build:
-      target: production
-      context: .
-      dockerfile: ./packages/backend/Dockerfile
-    ports:
-      - "3000:3000"
-    environment:
-      DB_URL: db
-      DB_PORT: 3306
-      DB_USER: root
-      DB_PASSWORD: secret-pw
-      DB_DATABASE_NAME: nest-blog
-      SECRET_JWT: jA#()*%!@13
-      REDIS_URL: redis
-    env_file: ./packages/backend/.env.dev
-    volumes: 
-      - ./storage/uploads:/app/packages/backend/uploads
-
   db:
     image: mysql:8.0.23
     command: --default-authentication-plugin=mysql_native_password
     ports:
       - "3306:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: secret-pw
-      MYSQL_DATABASE: nest-blog
+    env_file: .env.test
     cap_add:
       - SYS_NICE

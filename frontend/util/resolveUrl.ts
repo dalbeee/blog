@@ -1,4 +1,7 @@
+import { isServerSide } from "./isServerSide";
+
 export const resolveUrl = () => {
-  const result = `${process.env.NEXT_PUBLIC_HTTP_PROTOCOL}${process.env.NEXT_PUBLIC_LOCAL_HOST}:${process.env.NEXT_PUBLIC_LOCAL_HOST_PORT}`;
-  return result;
+  return isServerSide()
+    ? process.env.NEXT_PRIVATE_SSR_API_URL
+    : process.env.NEXT_PUBLIC_CSR_API_URL;
 };

@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { GetServerSideProps } from "next";
+import { FC } from "react";
 
 import AdminLayout from "../../../components/admin/Layout";
 import Notion from "../../../components/admin/plugin/notion/Notion";
-import Loading from "../../../components/page/Loading";
-import AuthRouter from "../../../components/router/AuthRouter";
+import AuthRouter from "../../../components/core/router/AuthRouter";
 import { coreAPI } from "../../../core/coreAPI";
 
 interface Data {
@@ -11,30 +11,23 @@ interface Data {
   NOTION_DATABASE_ID: string;
 }
 
-const notion = () => {
-  const [data, setData] = useState<Data>({} as Data);
-  const [isFetched, setIsFetched] = useState(false);
+export const getServerSideProps: GetServerSideProps = async () => {
   const configAPI = coreAPI().notion;
+  const result = await configAPI.getConfigData();
 
-  useEffect(() => {
-    const getData = async () => {
-      const result = await configAPI.getConfigData();
+  return {
+    props: { props: result },
+  };
+};
 
-      setData(result);
-      setIsFetched(true);
-    };
-    getData();
-  }, []);
-
-  if (!isFetched) return <Loading />;
-
+const notion: FC<{ props: Data }> = ({ props }) => {
   return (
     <>
       <AuthRouter role="admin">
         <AdminLayout>
           <Notion
-            notionAPiKey={data?.NOTION_API_KEY}
-            notionDatabaseId={data?.NOTION_DATABASE_ID}
+            notionAPiKey={props?.NOTION_API_KEY}
+            notionDatabaseId={props?.NOTION_DATABASE_ID}
           />
         </AdminLayout>
       </AuthRouter>

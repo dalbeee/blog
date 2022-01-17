@@ -3,10 +3,10 @@ import { useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import { InputAdornment, TextField } from "@mui/material";
 
-
 import { coreAPI } from "../core/coreAPI";
 import { useUser } from "../hooks/useUser";
 import { UserDTO } from "../core/domain";
+import { useRouter } from "next/router";
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const core = coreAPI();
@@ -46,7 +46,7 @@ const firstSetting = () => {
     username: "",
     password: "",
   });
-
+  const router = useRouter();
   const [isShowPassword, setIsShowPassword] = useState(false);
 
   const [isFetching, setIsFetching] = useState(false);
@@ -61,6 +61,7 @@ const firstSetting = () => {
     setIsFetching(true);
     await useUser().firstSetting(keys);
     setIsFetching(false);
+    router.push("/");
   };
 
   return (

@@ -1,13 +1,13 @@
 import { InputAdornment, TextField } from "@mui/material";
 import { useState } from "react";
 import LoadingButton from "@mui/lab/LoadingButton";
+import Switch from "@mui/material/Switch";
 
 import { useNotion } from "../../../../hooks/useNotion";
 import { ConfigDTO } from "../../../../core/domain";
 
-const Notion = ({ notionAPiKey, notionDatabaseId }) => {
+const Notion = ({ notionAPiKey, notionDatabaseId, activeStatus }) => {
   const notionAPI = useNotion();
-
   const [keys, setKeys] = useState({
     NOTION_API_KEY: "",
     NOTION_DATABASE_ID: "",
@@ -42,6 +42,8 @@ const Notion = ({ notionAPiKey, notionDatabaseId }) => {
       <div className="flex flex-col px-2 w-full">
         <div className="w-full flex-col flex justify-center items-center border-2 rounded-xl py-4">
           <div className="w-5/6">
+            <Switch checked={activeStatus} />
+
             <TextField
               fullWidth
               className="py-2"

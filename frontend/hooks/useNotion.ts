@@ -29,5 +29,13 @@ export const useNotion = () => {
       });
   };
 
-  return { sync, saveConfig };
+  const getConfigData = () => {
+    return core.notion.getConfigData();
+  };
+
+  const activeStatus = () => {
+    return core.notion.activeStatus();
+  };
+
+  return { sync, saveConfig, activeStatus, getConfigData };
 };

@@ -48,6 +48,9 @@ export const useUser = () => {
       .then(() => {
         core.toast.push("사용자를 생성했습니다");
         core.config.setKeyValue([{ key: "IS_DONE_BLOG_SETTING", value: true }]);
+        core.config.setKeyValue([
+          { key: "ADMIN_USER_EMAIL", value: user.email },
+        ]);
         router.push("/");
       })
       .catch((e) => {

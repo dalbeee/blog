@@ -30,7 +30,7 @@
         - [x]  create post
         - [x]  patch post
         - [ ]  delete post
-- [ ]  triggering interval notion sync using cron
+- [x]  triggering interval notion sync using cron
 - [ ]  admin
     - [x]  config
 - [x]  pagination

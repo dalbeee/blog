@@ -13,6 +13,7 @@ import { PostModule } from './post/post.module';
 import { NotionModule } from './notion/notion.module';
 import { AdminModule } from './admin/admin.module';
 import { LoggerModule } from './logger/logger.module';
+import { ScheduleModule } from '@nestjs/schedule';
 // import { AlertModule } from './alert/alert.module';
 
 @Module({
@@ -34,6 +35,7 @@ import { LoggerModule } from './logger/logger.module';
         port: +process.env.NEST_CONFIG_DB_REDIS_PORT,
       },
     }),
+    ScheduleModule.forRoot(),
     UsersModule,
     AuthModule,
     PostModule,

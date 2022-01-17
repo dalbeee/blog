@@ -44,4 +44,8 @@ export class NotionService {
   async initVariables() {
     return await this.notionRepository.initVariables();
   }
+
+  async activeStatus() {
+    return await this.notionRepository.activeState();
+  }
 }

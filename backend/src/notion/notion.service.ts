@@ -15,13 +15,13 @@ import { PostRepository } from '@src/post/post.repository';
 import { User } from '@src/user/entity/user.entity';
 import { PostService } from '@src/post/post.service';
 import { Post } from '@src/post/entity/post.entity';
-import { AdminService } from '@src/admin/admin.service';
 import { NotionPost } from './domain/types/notion-post';
 import { PatchPostDTO } from './domain/dto/patch-post.dto';
 import { CreatePostDTO } from './domain/dto/create-post.dto';
 import { NotionUseCase } from './notion.usecase';
 import { NotionRepository } from './notion.repository';
 import { Axios as HttpClientAxios } from '../share/http-client/axios';
+import { NotionConfigService } from './notion.config.service';
 
 @Injectable()
 export class NotionService {
@@ -32,7 +32,7 @@ export class NotionService {
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private readonly postRepository: PostRepository,
     private readonly postService: PostService,
-    private readonly adminService: AdminService,
+    private readonly notionConfigService: NotionConfigService,
   ) {
     this.initVariables().then(() => {
       this.initService();
@@ -44,7 +44,7 @@ export class NotionService {
     const config: AxiosRequestConfig = {
       headers: {
         'Notion-Version': '2021-08-16',
-        Authorization: `Bearer ${process.env.NOTION_API_KEY}`,
+        Authorization: `Bearer ${await this.notionConfigService.notionApiKey()}`,
       },
     };
     const httpClient = new HttpClientAxios(url, config);
@@ -54,21 +54,13 @@ export class NotionService {
   }
 
   async initVariables() {
-    process.env.NOTION_API_KEY = (
-      await this.adminService.getKeyValue('NOTION_API_KEY')
-    )?.value;
-
-    process.env.NOTION_DATABASE_ID = (
-      await this.adminService.getKeyValue('NOTION_DATABASE_ID')
-    )?.value;
-
     this.initService();
     return true;
   }
 
   async findPostsFromServer(): Promise<NotionPost[]> {
     return await this.notionAPI.findPostsFromServer(
-      process.env.NOTION_DATABASE_ID,
+      await this.notionConfigService.notionDatabaseId(),
     );
   }
 
@@ -154,7 +146,6 @@ export class NotionService {
         }
       })
       .catch((e) => {
-        console.log(e);
         throw new Error('save images failed');
       });
   }

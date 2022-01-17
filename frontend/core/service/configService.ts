@@ -1,4 +1,5 @@
 import { ConfigDTO } from "../domain";
+import { Config } from "../domain/config/entity";
 import { ConfigRepository } from "../repository";
 
 export class ConfigService {
@@ -19,11 +20,11 @@ export class ConfigService {
     return object;
   }
 
-  async getKeyValue(key: string) {
+  async getKeyValue(key: string): Promise<Config> {
     return this.configRepository.getKeyValue(key);
   }
 
-  async setKeyValue(data: ConfigDTO[]) {
+  async setKeyValue(data: ConfigDTO[]): Promise<Config> {
     return this.configRepository.setKeyValue(data);
   }
 }

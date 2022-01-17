@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { Post } from "../core/domain";
+import { Post } from "../../core/domain";
 
-import ImageProvider from "./core/ImageProvider";
+import ImageProvider from "../core/providers/ImageProvider";
 
 const cardSub = ({ post }: { post: Post }) => {
   if (!post) return null;

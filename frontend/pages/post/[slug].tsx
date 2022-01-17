@@ -3,10 +3,10 @@ import ReactMarkdown from "react-markdown";
 import { Components } from "react-markdown/lib/ast-to-react";
 import { useRouter } from "next/router";
 
-import PostController from "../../components/PostController";
+import PostController from "../../components/board/PostController";
 import { usePost } from "../../hooks/usePost";
 import { Post } from "../../core/domain";
-import ImageProvider from "../../components/core/ImageProvider";
+import ImageProvider from "../../components/core/providers/ImageProvider";
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const postAPI = usePost();

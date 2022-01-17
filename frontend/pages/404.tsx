@@ -1,4 +1,4 @@
-import Http404 from "../components/page/Http404";
+import Http404 from "../components/core/pages/Http404";
 
 const _404 = () => {
   return (

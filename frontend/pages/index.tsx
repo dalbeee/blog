@@ -2,7 +2,7 @@ import { GetStaticProps } from "next";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 
-import Content from "../components/Content";
+import Board from "../components/board/Board";
 import { coreAPI } from "../core/coreAPI";
 import { Post } from "../core/domain";
 
@@ -30,5 +30,5 @@ export default function Home({ posts }: { posts: Post[] }) {
     });
   }, []);
 
-  return <Content posts={posts} />;
+  return <Board posts={posts} />;
 }

@@ -5,7 +5,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import "../styles/globals.css";
-import SuspenseProvider from "../components/SuspenseProvider";
+import SuspenseProvider from "../components/core/providers/SuspenseProvider";
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -19,8 +19,9 @@ function MyApp({ Component, pageProps }) {
 
       <RecoilRoot>
         <div className="relative flex justify-center w-full min-h-content">
-          <div className="w-full min-h-content sm:w-3/5 lg:w-4/7">
+          <div className="flex flex-col w-full min-h-content sm:w-3/5 lg:w-4/7">
             <Header />
+
             <SuspenseProvider>
               <Component {...pageProps} />
             </SuspenseProvider>

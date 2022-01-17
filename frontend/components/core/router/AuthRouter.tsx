@@ -1,11 +1,11 @@
 import { useRouter } from "next/router";
 import { FC, useEffect, useState } from "react";
 
-import { useUser } from "../../hooks/useUser";
-import Custom403 from "../../pages/403";
-import Loading from "../page/Loading";
-import { coreAPI } from "../../core/coreAPI";
-import { User } from "../../core/domain";
+import { useUser } from "../../../hooks/useUser";
+import Http403 from "../../core/pages/Http403";
+import SuspensePage from "../pages/SuspensePage";
+import { coreAPI } from "../../../core/coreAPI";
+import { User } from "../../../core/domain";
 
 const AuthRouter: FC<{ role?: string }> = ({ children, role }) => {
   const userAPI = useUser();
@@ -16,7 +16,7 @@ const AuthRouter: FC<{ role?: string }> = ({ children, role }) => {
 
   const [isFetched, setIsFetched] = useState(false);
 
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState<null | string>(null);
 
   useEffect(() => {
     const getToken = userAPI.getAccessToken();
@@ -32,9 +32,9 @@ const AuthRouter: FC<{ role?: string }> = ({ children, role }) => {
     }
   }, [isFetched]);
 
-  if (!isFetched) return <Loading />;
+  if (!isFetched) return <SuspensePage />;
 
-  if (role && !user?.roles?.includes(role)) return <Custom403 />;
+  if (role && !user?.roles?.includes(role)) return <Http403 />;
 
   return <>{children}</>;
 };

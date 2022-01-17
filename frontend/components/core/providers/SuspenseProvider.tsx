@@ -1,19 +1,17 @@
 import { useRouter } from "next/router";
 import React, { FC, useEffect, useState } from "react";
-import CircularProgress from "@mui/material/CircularProgress";
+import SuspensePage from "../pages/SuspensePage";
 
-const SuspenseProvider: FC<any> = ({ children }) => {
+const SuspenseProvider: FC<
+  React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
+> = ({ children, ...args }) => {
   const router = useRouter();
 
   const [loading, setLoading] = useState(false);
 
-  const handleStart = () => {
-    setLoading(true);
-  };
+  const handleStart = () => setLoading(true);
 
-  const handleComplete = () => {
-    router.isReady && setLoading(false);
-  };
+  const handleComplete = () => setLoading(false);
 
   useEffect(() => {
     router.events.on("routeChangeStart", handleStart);
@@ -30,13 +28,11 @@ const SuspenseProvider: FC<any> = ({ children }) => {
   if (loading) {
     return (
       <>
-        <div className="relative flex justify-center w-full min-h-content">
-          <div className="z-50 flex fixed h-screen w-full justify-center items-center">
-            <CircularProgress />
-          </div>
-          <div className="opacity-30 backdrop-blur-xl items-center bg-white/30 blur-3xl">
+        <div {...args}>
+          <div className="opacity-30 backdrop-blur-xl  bg-white/30 blur-3xl">
             {children}
           </div>
+          <SuspensePage />
         </div>
       </>
     );

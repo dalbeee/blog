@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 
-import { usePost } from "../hooks/usePost";
+import { usePost } from "../../hooks/usePost";
 
 const PostController = () => {
   const router = useRouter();

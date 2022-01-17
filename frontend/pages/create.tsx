@@ -9,7 +9,7 @@ import {
 } from "../hooks/useTuiEditor";
 import UploadFilePond from "../components/UploadFilePond";
 import { usePost } from "../hooks/usePost";
-import AuthRouter from "../components/router/AuthRouter";
+import AuthRouter from "../components/core/router/AuthRouter";
 import { CreatePostDTO } from "../core/domain";
 
 const EditorWithNoSSR = dynamic<TuiEditorWithForwardedProps>(

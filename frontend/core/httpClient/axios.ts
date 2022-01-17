@@ -28,8 +28,13 @@ export class Axios implements HttpClientInterface {
       }
     );
   }
-  get(url: string): Promise<any> {
+  async get(url: string): Promise<any> {
     return this.client.get(url);
+    return await new Promise((res) =>
+      setTimeout(() => {
+        res(this.client.get(url));
+      }, 1000)
+    );
   }
   post(url: string, data: object): Promise<any> {
     return this.client.post(url, data);

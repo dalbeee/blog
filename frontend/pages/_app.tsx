@@ -5,6 +5,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import "../styles/globals.css";
+import SuspenseProvider from "../components/SuspenseProvider";
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -20,7 +21,9 @@ function MyApp({ Component, pageProps }) {
         <div className="relative flex justify-center w-full min-h-content">
           <div className="w-full min-h-content sm:w-3/5 lg:w-4/7">
             <Header />
-            <Component {...pageProps} />
+            <SuspenseProvider>
+              <Component {...pageProps} />
+            </SuspenseProvider>
           </div>
           <ToastContainer
             style={{ whiteSpace: "pre-line" }}

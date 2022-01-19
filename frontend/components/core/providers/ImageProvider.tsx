@@ -23,14 +23,20 @@ const ImageByNativeImageTag: FC<{ url: string }> = ({ url }) => {
 };
 
 const ImageProvider: FC<{ url: string }> = ({ url }) => {
-  const imageUrl = process.env.NEXT_PUBLIC_SERVE_STATIC_URL + encodeURI(url);
+  const host =
+    process.env.NEXT_PUBLIC_ALL_IMAGE_PROVIDER === "next"
+      ? process.env.NEXT_PUBLIC_ALL_HTTP_SCHEMA +
+        process.env.NEXT_PUBLIC_CONFIG_IMAGE_HOST
+      : "";
+  const imageUrl =
+    host + process.env.NEXT_PUBLIC_ALL_STATIC_URL + encodeURI(url);
 
-  if (process.env.NEXT_PUBLIC_IMAGE_PROVIDER === "native")
+  if (process.env.NEXT_PUBLIC_ALL_IMAGE_PROVIDER === "native")
     return <ImageByNativeImageTag url={imageUrl} />;
-  if (process.env.NEXT_PUBLIC_IMAGE_PROVIDER === "next")
+  if (process.env.NEXT_PUBLIC_ALL_IMAGE_PROVIDER === "next")
     return <ImageByNextTag url={imageUrl} />;
 
-  throw Error("process.env.NEXT_PUBLIC_SERVE_STATIC_URL is not defined");
+  throw Error("process.env.NEXT_PUBLIC_ALL_STATIC_URL is not defined");
 };
 
 export default ImageProvider;

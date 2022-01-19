@@ -15,6 +15,6 @@ module.exports = {
     return config;
   },
   images: {
-    domains: [process.env.NEXT_CONFIG_LOCAL_HOST],
+    domains: [process.env.NEXT_PUBLIC_CONFIG_IMAGE_HOST],
   },
 };

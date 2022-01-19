@@ -3,41 +3,24 @@ import { useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import { InputAdornment, TextField } from "@mui/material";
 
-import { coreAPI } from "../core/coreAPI";
 import { useUser } from "../hooks/useUser";
 import { UserDTO } from "../core/domain";
 import { useRouter } from "next/router";
+import { hasBlogInstalled } from "../util/hasBlogInstalled";
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const core = coreAPI();
-
-  try {
-    const getConfig = await core.config.getKeyValue("IS_DONE_BLOG_SETTING");
-    if (getConfig) {
-      return {
-        redirect: {
-          destination: "/",
-          statusCode: 307,
-        },
-      };
-    }
-
+  if (await hasBlogInstalled()) {
     return {
-      props: {},
-    };
-  } catch (error) {
-    if (error?.status === 502) {
-      return {
-        redirect: {
-          destination: "/502",
-          statusCode: 307,
-        },
-      };
-    }
-    return {
-      props: {},
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
     };
   }
+
+  return {
+    props: {},
+  };
 };
 
 const firstSetting = () => {

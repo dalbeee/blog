@@ -33,7 +33,7 @@ services:
       target: testing
       context: ./backend
     volumes:
-      - ./:/app/
+      - ./backend/:/app/
     env_file: .env.dev
 
   redis:

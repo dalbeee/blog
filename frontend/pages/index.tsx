@@ -1,42 +1,24 @@
-import { GetStaticProps } from "next";
+import { GetServerSideProps } from "next";
 
 import Board from "../components/board/Board";
 import { coreAPI } from "../core/coreAPI";
 import { Post } from "../core/domain";
+import { hasBlogInstalled } from "../util/hasBlogInstalled";
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
   const core = coreAPI();
 
-  const checkBlogStatus = async () =>
-    await core.config
-      .getKeyValue("IS_DONE_BLOG_SETTING")
-      .then((r) => {
-        return r?.value !== "undefined";
-      })
-      .catch((e) => {
-        return e?.status !== 502 && false;
-      });
-
-  if (!checkBlogStatus()) {
+  if (!(await hasBlogInstalled())) {
     return {
       redirect: {
         destination: "/first_setting",
-        statusCode: 307,
+        permanent: false,
       },
-      props: {},
-      revalidate: 5,
     };
   }
 
-  try {
-    const posts = await core.post.getPosts();
-    return { props: { posts }, revalidate: 5 };
-  } catch (error) {
-    return {
-      props: { posts: [] },
-      revalidate: 5,
-    };
-  }
+  const posts = await core.post.getPosts();
+  return { props: { posts: posts || [] } };
 };
 
 export default function Home({ posts }: { posts: Post[] }) {

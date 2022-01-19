@@ -3,10 +3,9 @@ import { Test } from '@nestjs/testing';
 import * as request from 'supertest';
 import { getConnection } from 'typeorm';
 
-import { UserDTO } from '@blog/core/dist/domain';
-
 import { AppModule } from '@src/app.module';
 import { getUserAndJwt } from './util/getUserAndJwt';
+import { UserDTO } from '@src/user/dto/user.dto';
 
 let app: INestApplication;
 

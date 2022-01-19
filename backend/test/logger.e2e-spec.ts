@@ -5,7 +5,7 @@ import * as request from 'supertest';
 import * as faker from 'faker';
 
 import { AppModule } from '@src/app.module';
-import { LoggerDTO, LoggerType } from '@blog/core/dist/domain';
+import { LoggerDTO, LoggerType } from '@src/logger/dto/logger.dto';
 
 let app: INestApplication;
 

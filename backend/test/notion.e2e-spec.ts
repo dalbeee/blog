@@ -4,8 +4,8 @@ import { getConnection } from 'typeorm';
 import * as request from 'supertest';
 
 import { AppModule } from '@src/app.module';
-import { UserDTO } from '@blog/core/dist/domain';
 import { getUserAndJwt } from './util/getUserAndJwt';
+import { UserDTO } from '@src/user/dto/user.dto';
 
 let app: INestApplication;
 

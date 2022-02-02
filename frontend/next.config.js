@@ -1,20 +1,22 @@
-// const nextSafe = require("next-safe");
+const withPlugins = require("next-compose-plugins");
+
 const isDockerBuildTime = !!process.env.ANALYZE;
 const isDev = process.env.NODE_ENV !== "production";
 const isProduction = process.env.NODE_ENV === "production";
+const imageHost = process.env.NEXT_PUBLIC_CONFIG_IMAGE_HOST;
 
-const withBundleAnalyzer = isDockerBuildTime
-  ? require("@next/bundle-analyzer")({
-      enabled: true,
-    })
-  : () => {};
+const withBundleAnalyzerLoader = () =>
+  isDockerBuildTime
+    ? require("@next/bundle-analyzer")({
+        enabled: true,
+      })
+    : {};
 
 const securityHeaders = [
   {
     key: "X-XSS-Protection",
     value: "1; mode=block",
   },
-
   {
     key: "X-Frame-Options",
     value: "SAMEORIGIN",
@@ -43,17 +45,16 @@ const config = {
     return config;
   },
   images: {
-    domains: [process.env.NEXT_PUBLIC_CONFIG_IMAGE_HOST],
+    domains: [imageHost],
   },
   async headers() {
-    return [
-      {
-        source: "/:path*",
-        // headers: nextSafe({ isDev  }),
-        headers: isProduction && securityHeaders,
-      },
-    ];
+    const applySecurity = {
+      source: "/:path*",
+      // headers: nextSafe({ isDev  })
+      headers: securityHeaders,
+    };
+    return isProduction ? [applySecurity] : [];
   },
 };
 
-module.exports = withBundleAnalyzer({ ...config });
+module.exports = withPlugins([withBundleAnalyzerLoader()], { ...config });

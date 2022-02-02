@@ -1,10 +1,16 @@
 import { GetServerSideProps } from "next";
+import dynamic from "next/dynamic";
 import { FC } from "react";
 
-import AdminLayout from "../../../components/admin/Layout";
-import Notion from "../../../components/admin/plugin/notion/Notion";
-import AuthRouter from "../../../components/core/router/AuthRouter";
 import { useNotion } from "../../../hooks/useNotion";
+
+const AdminLayout = dynamic(() => import("../../../components/admin/Layout"));
+const Notion = dynamic(
+  () => import("../../../components/admin/plugin/notion/Notion")
+);
+const AuthRouter = dynamic(
+  () => import("../../../components/core/router/AuthRouter")
+);
 
 export interface NotionData {
   NOTION_API_KEY?: string;

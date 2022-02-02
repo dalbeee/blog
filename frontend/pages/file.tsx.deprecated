@@ -1,4 +1,8 @@
-import GetUploadedFiles from "../components/GetUploadedFiles";
+import dynamic from "next/dynamic";
+
+const GetUploadedFiles = dynamic(
+  () => import("../components/GetUploadedFiles")
+);
 
 const file = () => {
   return (

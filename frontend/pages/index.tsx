@@ -1,9 +1,11 @@
 import { GetServerSideProps } from "next";
+import dynamic from "next/dynamic";
 
-import Board from "../components/board/Board";
 import { coreAPI } from "../core/coreAPI";
 import { Post } from "../core/domain";
 import { hasBlogInstalled } from "../util/hasBlogInstalled";
+
+const Board = dynamic(() => import("../components/board/Board"));
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const core = coreAPI();

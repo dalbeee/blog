@@ -2,7 +2,6 @@ import { Controller, Get, UseGuards } from '@nestjs/common';
 
 import { JwtAuthGuard } from '@src/auth/guard/jwtAuth.guard';
 import { NotionService } from './notion.service';
-import { Role, Roles } from '@src/auth/decorator/role';
 import { RolesGuard } from '@src/auth/guard/role.guard';
 import { NotionCronService } from './notion.cron.service';
 
@@ -18,9 +17,6 @@ export class NotionController {
     return this.notionCronService.getCronActivate();
   }
 
-  @UseGuards(RolesGuard)
-  @UseGuards(JwtAuthGuard)
-  @Roles(Role.Admin)
   @Get('/sync/trigger')
   async crawler() {
     this.notionCronService.addNotionCron();

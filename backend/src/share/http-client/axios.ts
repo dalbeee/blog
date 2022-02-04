@@ -4,17 +4,18 @@ import { HttpClient } from './http-client-interface';
 
 export class Axios implements HttpClient {
   client: AxiosInstance;
+  config: AxiosRequestConfig;
 
   constructor(
     private readonly url: string,
     axiosConfig: AxiosRequestConfig = {},
   ) {
-    const config: AxiosRequestConfig = {
+    this.config = {
       baseURL: this.url,
       ...axiosConfig,
     };
 
-    const client = axios.create(config);
+    const client = axios.create();
     this.client = client;
 
     client.interceptors.response.use(
@@ -29,19 +30,19 @@ export class Axios implements HttpClient {
       },
     );
   }
-  get(url: string): Promise<any> {
-    return this.client.get(url);
+  get(url: string, options?: AxiosRequestConfig): Promise<any> {
+    return this.client.get(url, { ...this.config, ...options });
   }
-  post(url: string, data: object): Promise<any> {
-    return this.client.post(url, data);
-  }
-
-  patch(url: string, data: object): Promise<any> {
-    return this.client.patch(url, data);
+  post(url: string, data: object, options?: AxiosRequestConfig): Promise<any> {
+    return this.client.post(url, data, { ...this.config, ...options });
   }
 
-  delete(url: string): Promise<any> {
-    return this.client.delete(url);
+  patch(url: string, data: object, options?: AxiosRequestConfig): Promise<any> {
+    return this.client.patch(url, data, { ...this.config, ...options });
+  }
+
+  delete(url: string, options?: AxiosRequestConfig): Promise<any> {
+    return this.client.delete(url, { ...this.config, ...options });
   }
 
   use(middleware: Function) {

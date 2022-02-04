@@ -47,13 +47,8 @@ export class PostService {
   }
 
   async createPost(user: User, post: CreatePostDTO): Promise<Post> {
-    try {
-      const newPost = this.postsRepository.createPost(user, post);
-
-      return await this.postsRepository.save(newPost);
-    } catch (error) {
-      throw new BadRequestException(error.message);
-    }
+    const newPost = this.postsRepository.createPost(user, post);
+    return await this.postsRepository.save(newPost);
   }
 
   async patchPost(
@@ -75,10 +70,6 @@ export class PostService {
   }
 
   async deletePostBySlug(slug: string) {
-    try {
-      return await this.postsRepository.delete({ slug });
-    } catch (error) {
-      throw new ConflictException(error.message);
-    }
+    return await this.postsRepository.delete({ slug });
   }
 }

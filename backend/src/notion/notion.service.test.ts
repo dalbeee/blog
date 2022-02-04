@@ -37,10 +37,6 @@ beforeAll(async () => {
   app.init();
   notionService = app.get<NotionService>(NotionService);
   mockPostRepository = app.get(getRepositoryToken(PostRepository));
-
-  notionService.findPostsFromServer = jest
-    .fn()
-    .mockResolvedValue(mockServerPosts);
 });
 
 afterAll(async () => app.close());

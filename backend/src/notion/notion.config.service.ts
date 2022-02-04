@@ -1,38 +1,33 @@
 import { CacheTTL, CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
 import { Cache } from 'cache-manager';
 
-import { AdminService } from '@src/admin/admin.service';
-import { Axios } from '@src/share/http-client/axios';
-import { UserService } from '@src/user/user.service';
-import { NotionUseCase } from './notion.usecase';
+import { ConfigService } from '@src/config/config.service';
 
 @Injectable()
 @CacheTTL(60)
 export class NotionConfigService {
-  notionAPI: NotionUseCase;
-  httpClient: Axios;
+  repository: { [key: string]: string };
 
   constructor(
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
-    private readonly adminService: AdminService,
-    private readonly userService: UserService,
+    private readonly configService: ConfigService,
   ) {}
 
-  async notionDatabaseId() {
-    return (await this.adminService.getKeyValue('NOTION_DATABASE_ID'))?.value;
+  async isValidConfiguration() {
+    const keys = ['NOTION_API_KEY', 'NOTION_DATABASE_ID', 'ADMIN_USER_EMAIL'];
+    const values = await Promise.all(
+      keys.map((key) => this.configService.getKeyValue(key)),
+    );
+
+    const result = values.map((value, index) => {
+      return value === undefined && keys[index];
+    });
+
+    if (result.some((item) => !!item)) throw Error(`key not found : ${result}`);
+    return true;
   }
 
-  async notionApiKey() {
-    return (await this.adminService.getKeyValue('NOTION_API_KEY'))?.value;
-  }
-
-  async notionUser() {
-    const email = (await this.adminService.getKeyValue('ADMIN_USER_EMAIL'))
-      ?.value;
-    if (email) {
-      return await this.userService.findByEmail(email);
-    }
-
-    return null;
+  async getNotionConfigByKey(key: string) {
+    return this.configService.getKeyValue(key);
   }
 }

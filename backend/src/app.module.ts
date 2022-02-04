@@ -14,6 +14,7 @@ import { NotionModule } from './notion/notion.module';
 import { AdminModule } from './admin/admin.module';
 import { LoggerModule } from './logger/logger.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { ConfigModule } from './config/config.module';
 // import { AlertModule } from './alert/alert.module';
 
 @Module({
@@ -40,9 +41,10 @@ import { ScheduleModule } from '@nestjs/schedule';
     AuthModule,
     PostModule,
     NotionModule,
-    AdminModule,
+    // AdminModule,
     LoggerModule,
     // AlertModule,
+    ConfigModule,
   ],
   providers: [
     {

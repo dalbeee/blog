@@ -15,12 +15,7 @@ export class CommentsService {
   ) {}
 
   async getAll() {
-    try {
-      return await this.commentRepository.find({ relations: ['user'] });
-    } catch (error) {
-      console.log('error from comment > getAll', error.message);
-      throw new Error(error.message);
-    }
+    return await this.commentRepository.find({ relations: ['user'] });
   }
 
   async createCommentToPostBySlug(
@@ -28,51 +23,34 @@ export class CommentsService {
     postSlug: string,
     comment: CommentDTO,
   ) {
-    try {
-      const getPostResult = await this.postRepository.findOne({
-        slug: postSlug,
-      });
-      const commentRow = this.commentRepository.create(comment);
-      commentRow.user = user;
-      commentRow.post = getPostResult;
+    const getPostResult = await this.postRepository.findOne({
+      slug: postSlug,
+    });
+    const commentRow = this.commentRepository.create(comment);
+    commentRow.user = user;
+    commentRow.post = getPostResult;
 
-      return await this.commentRepository.save(commentRow);
-    } catch (error) {
-      console.log('error from comment > createComment', error.message);
-
-      throw new Error(error.message);
-    }
+    return await this.commentRepository.save(commentRow);
   }
 
   async createComment(user: User, comment: CommentDTO) {
-    try {
-      const row = this.commentRepository.create(comment);
-      row.user = user;
-      return await this.commentRepository.save(row);
-    } catch (error) {
-      console.log('error from comment > createComment', error.message);
-
-      throw new Error(error.message);
-    }
+    const row = this.commentRepository.create(comment);
+    row.user = user;
+    return await this.commentRepository.save(row);
   }
 
   async deleteComment(user: User, commentId: string) {
-    try {
-      const getCommentResult = await this.commentRepository.findOne(
-        {
-          id: commentId,
-        },
-        { relations: ['user'] },
-      );
+    const getCommentResult = await this.commentRepository.findOne(
+      {
+        id: commentId,
+      },
+      { relations: ['user'] },
+    );
 
-      if (!getCommentResult) throw new HttpException('comment not found', 400);
-      if (getCommentResult.user !== user)
-        throw new HttpException('authenticate error', 401);
+    if (!getCommentResult) throw new HttpException('comment not found', 400);
+    if (getCommentResult.user !== user)
+      throw new HttpException('authenticate error', 401);
 
-      return await this.commentRepository.delete(commentId);
-    } catch (error) {
-      console.log('error from comment > createComment', error.message);
-      throw new HttpException({ message: error.message }, error.status);
-    }
+    return await this.commentRepository.delete(commentId);
   }
 }

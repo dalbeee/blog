@@ -2,8 +2,10 @@ import {
   BadRequestException,
   ConflictException,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
+import { Role } from '@src/auth/decorator/role';
 import { UpdateUserDTO } from './dto/user-update.dto';
 import { UserDTO } from './dto/user.dto';
 
@@ -12,11 +14,9 @@ import { UserRepository } from './user.repository';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly userRepository: UserRepository) {}
+  private readonly logger = new Logger('UserService');
 
-  // async findAll(): Promise<User[]> {
-  //   return await this.userRepository.find();
-  // }
+  constructor(private readonly userRepository: UserRepository) {}
 
   async findByName(username: string): Promise<User> {
     try {
@@ -25,7 +25,7 @@ export class UserService {
         // { relations: ['posts', 'comments'] },
       );
     } catch (error) {
-      throw new NotFoundException();
+      throw new Error();
     }
   }
 
@@ -43,9 +43,10 @@ export class UserService {
   async createUser(user: UserDTO): Promise<User> {
     try {
       const row = this.userRepository.create(user);
+      row.roles = [Role.Admin];
       return await this.userRepository.save(row);
     } catch (error) {
-      throw new ConflictException(error.message);
+      throw new ConflictException();
     }
   }
 
@@ -54,27 +55,26 @@ export class UserService {
       try {
         const findRow = await this.findByEmail(updateUserDTO.email);
         if (findRow) throw new ConflictException('email not available');
-      } catch (error) {}
+      } catch (error) {
+        this.logger.log(error);
+      }
     }
 
     if (updateUserDTO?.username) {
-      try {
-        const findRow = await this.findByName(updateUserDTO.username);
-        if (findRow) throw new ConflictException('username not available');
-      } catch (error) {}
+      const findRow = await this.findByName(updateUserDTO.username);
+      if (findRow) throw new ConflictException('username not available');
     }
 
     try {
       const updateRow: User = Object.assign(user, updateUserDTO);
       return await this.userRepository.save(updateRow);
     } catch (error) {
-      throw new ConflictException(error.message);
+      throw new ConflictException(error);
     }
   }
 
   async deleteUser(email: string, user: User) {
     if (user.email !== email) throw new BadRequestException();
-
     const result = await this.userRepository.softDelete({ email });
     return result;
   }

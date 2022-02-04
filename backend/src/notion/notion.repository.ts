@@ -1,15 +1,35 @@
-import { Axios } from '@src/share/http-client/axios';
+import { HttpService } from '@nestjs/axios';
+import { Injectable } from '@nestjs/common';
+import { map } from 'rxjs';
+
 import { DatabaseQueryResult } from './domain/types/database-query-result';
 import { NotionBlock } from './domain/types/notion-block';
+import { NotionConfigService } from './notion.config.service';
 
+@Injectable()
 export class NotionRepository {
-  constructor(private readonly httpClient: Axios) {}
+  constructor(
+    private readonly httpService: HttpService,
+    private readonly notionConfigService: NotionConfigService,
+  ) {}
 
   async getPost(url: string): Promise<NotionBlock> {
-    return await this.httpClient.get(`/blocks/${url}/children`);
+    const res = await this.httpService
+      .get(`/blocks/${url}/children`)
+      .pipe(map((r) => r.data))
+      .toPromise();
+    return res;
   }
 
-  async getPosts(databaseId: string): Promise<DatabaseQueryResult> {
-    return await this.httpClient.post(`/databases/${databaseId}/query`, {});
+  async getPosts(): Promise<DatabaseQueryResult> {
+    const databaseId = await this.notionConfigService.getNotionConfigByKey(
+      'NOTION_DATABASE_ID',
+    );
+
+    const res = await this.httpService
+      .post(`/databases/${databaseId}/query`, {})
+      .pipe(map((r) => r.data))
+      .toPromise();
+    return res;
   }
 }

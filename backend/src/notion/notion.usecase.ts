@@ -1,22 +1,22 @@
+import { Injectable } from '@nestjs/common';
 import { DatabaseQueryResult } from './domain/types/database-query-result';
 import { NotionPost } from './domain/types/notion-post';
 import { NotionRepository } from './notion.repository';
 import { parseNotionPostToMarkdown } from './util';
 
+@Injectable()
 export class NotionUseCase {
-  constructor(private readonly repository: NotionRepository) {}
+  constructor(private readonly notionRepository: NotionRepository) {}
 
   async findPostFromServerToString(url: string): Promise<string> {
-    const result = await this.repository.getPost(url);
+    const result = await this.notionRepository.getPost(url);
 
     const parseMarkDown = parseNotionPostToMarkdown(result);
     return parseMarkDown;
   }
 
-  async findPostsFromServer(databaseId: string): Promise<NotionPost[]> {
-    const result: DatabaseQueryResult = await this.repository.getPosts(
-      databaseId,
-    );
+  async findPostsFromServer() {
+    const result: DatabaseQueryResult = await this.notionRepository.getPosts();
 
     const parseQueryResult = (query: DatabaseQueryResult): NotionPost[] => {
       const result = query.results.filter((item) => {

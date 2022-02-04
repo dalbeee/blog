@@ -32,7 +32,9 @@ export class AdminService {
   }
 
   async getKeyValue(key: string) {
-    return await this.adminRepository.findOne({ key });
+    const res = await this.adminRepository.findOne({ key });
+    if (!res) console.log(`key not found : ${key}`);
+    return res;
   }
 
   async deleteKeyValue() {}

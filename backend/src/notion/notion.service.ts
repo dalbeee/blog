@@ -4,11 +4,11 @@ import {
   HttpException,
   Inject,
   Injectable,
-  InternalServerErrorException,
+  Logger,
 } from '@nestjs/common';
 import { Cache } from 'cache-manager';
 
-import { AxiosRequestConfig, Axios } from 'axios';
+import axios, { AxiosRequestConfig, AxiosRequestHeaders, Axios } from 'axios';
 import { writeFileSync } from 'fs';
 
 import { PostRepository } from '@src/post/post.repository';
@@ -19,20 +19,21 @@ import { NotionPost } from './domain/types/notion-post';
 import { PatchPostDTO } from './domain/dto/patch-post.dto';
 import { CreatePostDTO } from './domain/dto/create-post.dto';
 import { NotionUseCase } from './notion.usecase';
-import { NotionRepository } from './notion.repository';
-import { Axios as HttpClientAxios } from '../share/http-client/axios';
 import { NotionConfigService } from './notion.config.service';
+// import { Axios } from '@src/share/http-client/axios';
 
 @Injectable()
 export class NotionService {
-  notionAPI: NotionUseCase;
-  httpClient: Axios | HttpClientAxios;
+  private readonly logger = new Logger(NotionService.name);
+  private httpClient: Axios;
+  private config: AxiosRequestConfig;
 
   constructor(
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private readonly postRepository: PostRepository,
     private readonly postService: PostService,
     private readonly notionConfigService: NotionConfigService,
+    private readonly notionUseCase: NotionUseCase,
   ) {
     this.initVariables().then(() => {
       this.initService();
@@ -41,16 +42,21 @@ export class NotionService {
 
   async initService() {
     const url = 'https://api.notion.com/v1';
-    const config: AxiosRequestConfig = {
-      headers: {
-        'Notion-Version': '2021-08-16',
-        Authorization: `Bearer ${await this.notionConfigService.notionApiKey()}`,
-      },
+    const headers: AxiosRequestHeaders = {
+      'Notion-Version': '2021-08-16',
+      Authorization: `Bearer ${await this.notionConfigService.getNotionConfigByKey(
+        'NOTION_API_KEY',
+      )}`,
     };
-    const httpClient = new HttpClientAxios(url, config);
-    const repository = new NotionRepository(httpClient);
-    this.notionAPI = new NotionUseCase(repository);
-    this.httpClient = new Axios({});
+
+    const config: AxiosRequestConfig = {
+      ...headers,
+      responseType: 'arraybuffer',
+    };
+
+    this.httpClient = axios.create();
+
+    this.config = config;
   }
 
   async initVariables() {
@@ -58,18 +64,8 @@ export class NotionService {
     return true;
   }
 
-  async findPostsFromServer(): Promise<NotionPost[]> {
-    return await this.notionAPI.findPostsFromServer(
-      await this.notionConfigService.notionDatabaseId(),
-    );
-  }
-
   async findPostFromServerToString(url: string): Promise<string> {
-    try {
-      return await this.notionAPI.findPostFromServerToString(url);
-    } catch (error) {
-      throw new HttpException(error?.message, error?.status);
-    }
+    return await this.notionUseCase.findPostFromServerToString(url);
   }
 
   async findByNotionId(notionId: string): Promise<Post> {
@@ -86,67 +82,69 @@ export class NotionService {
   }
 
   async findPostsWithOutOfSyncByUpdatedAtField(): Promise<NotionPost[]> {
-    const result: NotionPost[] = [];
+    try {
+      const result: NotionPost[] = [];
+      const serverPosts = await this.notionUseCase.findPostsFromServer();
+      const localPosts = await this.findPosts().then((r) => r[0]);
 
-    const serverPosts = await this.findPostsFromServer();
-    const localPosts = await this.findPosts().then((r) => r[0]);
+      serverPosts.forEach((serverPost) => {
+        const findLocalPost = localPosts.find((localPost) => {
+          return (
+            localPost.notionId === serverPost.id &&
+            localPost.updatedAt.toISOString() !== serverPost.updatedAt
+          );
+        });
+        // TODO define error type in notionService / findPostsWithOutOfSyncUpdatedAtField
+        if (!findLocalPost) return;
 
-    serverPosts.forEach((serverPost) => {
-      const findLocalPost = localPosts.find((localPost) => {
-        return (
-          localPost.notionId === serverPost.id &&
-          localPost.updatedAt.toISOString() !== serverPost.updatedAt
+        const targetNotionPost = serverPosts.find(
+          (serverPost) => serverPost.id === findLocalPost.notionId,
         );
+        result.push(targetNotionPost);
       });
-      // TODO define error type in notionService / findPostsWithOutOfSyncUpdatedAtField
-      if (!findLocalPost) return;
 
-      const targetNotionPost = serverPosts.find(
-        (serverPost) => serverPost.id === findLocalPost.notionId,
-      );
-      result.push(targetNotionPost);
-    });
-
-    return result;
+      return result;
+    } catch (error) {
+      throw new Error('findPostsWithOutOfSyncByUpdatedAtField');
+    }
   }
 
   async findPostsNotYetSavedLocal(): Promise<NotionPost[]> {
-    const serverPosts = await this.findPostsFromServer();
-    const localPosts = await this.findPosts().then((r) => r[0]);
+    try {
+      const serverPosts = await this.notionUseCase.findPostsFromServer();
+      const localPosts = await this.findPosts().then((r) => r[0]);
 
-    const result: NotionPost[] = [];
-    serverPosts.forEach((serverPost) => {
-      const isSavedPost = localPosts.some(
-        (localPost) => localPost.notionId === serverPost.id,
-      );
-      !isSavedPost && result.push(serverPost);
-    });
-    return result;
+      const result: NotionPost[] = [];
+      serverPosts.forEach((serverPost) => {
+        const isSavedPost = localPosts.some(
+          (localPost) => localPost.notionId === serverPost.id,
+        );
+        !isSavedPost && result.push(serverPost);
+      });
+      return result;
+    } catch (error) {
+      throw error || new Error('findPostsNotYetSavedLocal');
+    }
   }
 
   async saveImagesFromPostString(url: string): Promise<string> {
     return this.httpClient
-      .get(url, {
-        responseType: 'arraybuffer',
-      })
+      .get(url, { responseType: 'arraybuffer' })
       .then(async (r) => {
         let originalFileName: string =
           r.request?._redirectable?._options?.pathname;
+
         originalFileName = originalFileName.replaceAll('/', '_');
 
-        try {
-          writeFileSync(
-            `${process.env.NEST_CONFIG_UPLOADS_PATH}/${originalFileName}`,
-            r.data as any,
-            'utf-8',
-          );
-          return originalFileName;
-        } catch (error) {
-          throw Error(error.message);
-        }
+        writeFileSync(
+          `${process.env.NEST_CONFIG_UPLOADS_PATH}/${originalFileName}`,
+          r.data as any,
+          'utf-8',
+        );
+        return originalFileName;
       })
       .catch((e) => {
-        throw new Error('save images failed');
+        throw e || new Error('save images failed');
       });
   }
 
@@ -166,20 +164,16 @@ export class NotionService {
       updatedAt: post.updatedAt as unknown as string,
     };
 
-    const imageUrls = await this.notionAPI.findImageUrlsFromRawContent(
+    const imageUrls = await this.notionUseCase.findImageUrlsFromRawContent(
       postDTO.content,
     );
 
-    try {
-      await Promise.all(
-        imageUrls.map(async (imageUrl) => {
-          const savedImagePath = await this.saveImagesFromPostString(imageUrl);
-          postDTO.content = postDTO.content.replace(imageUrl, savedImagePath);
-        }),
-      );
-    } catch (error) {
-      throw Error(error.message);
-    }
+    await Promise.all(
+      imageUrls.map(async (imageUrl) => {
+        const savedImagePath = await this.saveImagesFromPostString(imageUrl);
+        postDTO.content = postDTO.content.replace(imageUrl, savedImagePath);
+      }),
+    );
 
     let existPostAtLocal: Post;
     try {
@@ -200,8 +194,7 @@ export class NotionService {
           message: `exist post ${post.id}. patched OK`,
         };
       } catch (error) {
-        console.log('update error', error.message);
-        throw new InternalServerErrorException(error.message);
+        this.logger.error(error.message, error.stack);
       }
     } else {
       try {
@@ -213,8 +206,7 @@ export class NotionService {
           message: `post ${post.id}. created OK`,
         };
       } catch (error) {
-        console.log('create error', error.message);
-        throw new InternalServerErrorException(error.message);
+        this.logger.error(error.message, error.stack);
       }
     }
   }

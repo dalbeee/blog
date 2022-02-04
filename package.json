@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "build:backend": "docker-compose -f docker-compose.yml -f docker-compose.prod.yml -f docker-compose.prod.args.yml build backend && docker tag blog_backend 10.0.0.102/library/blog-backend && docker push 10.0.0.102/library/blog-backend",
+    "build:frontend": "docker-compose -f docker-compose.yml -f docker-compose.prod.yml -f docker-compose.prod.args.yml build frontend && docker tag blog_backend 10.0.0.102/library/blog-frontend && docker push 10.0.0.102/library/blog-frontend",
+    "build:nginx-serve-static": "docker-compose -f docker-compose.yml -f docker-compose.prod.yml -f docker-compose.prod.args.yml build nginx-serve-static && docker tag blog_backend 10.0.0.102/library/blog-nginx-serve-static && docker push 10.0.0.102/library/blog-nginx-serve-static",
+    "build": "yarn build:backend && yarn build:frontend"
+  }
+}

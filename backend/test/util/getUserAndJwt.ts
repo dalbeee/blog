@@ -1,12 +1,12 @@
 import { INestApplication } from '@nestjs/common';
+import { UserDTO } from '@src/user/dto/user.dto';
+import { User } from '@src/user/entity/user.entity';
 import * as faker from 'faker';
 import * as request from 'supertest';
 
-import { UserDTO } from '@blog/core/dist/domain';
-
 export const getUserAndJwt = async (
   app: INestApplication,
-): Promise<[UserDTO, string]> => {
+): Promise<{ user: UserDTO; token: string }> => {
   const user: UserDTO = {
     email: faker.internet.email(),
     username: faker.datatype.string(10),
@@ -20,5 +20,5 @@ export const getUserAndJwt = async (
   });
 
   const token = jwt.body.access_token;
-  return [user, token];
+  return { user, token };
 };

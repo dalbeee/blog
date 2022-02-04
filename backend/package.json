@@ -21,6 +21,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json --watchAll --runInBand"
   },
   "dependencies": {
+    "@nestjs/axios": "^0.0.5",
     "@nestjs/bull": "^0.4.2",
     "@nestjs/common": "^8.2.5",
     "@nestjs/core": "^8.2.5",
@@ -37,7 +38,7 @@
     "class-transformer": "0.5.1",
     "class-validator": "^0.13.2",
     "dotenv": "^11.0.0",
-    "faker": "^6.6.6",
+    "faker": "5.5.3",
     "marked": "^4.0.10",
     "mysql2": "^2.3.3",
     "passport": "^0.5.2",

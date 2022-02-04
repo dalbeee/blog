@@ -16,7 +16,7 @@ RUN chown -R node:node /app
 USER node
 WORKDIR /app
 COPY --chown=node:node --from=config /app .
-CMD yarn start:test:e2e
+CMD yarn test:e2e
 
 FROM node:lts-alpine as source
 USER node

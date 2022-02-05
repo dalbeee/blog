@@ -45,9 +45,11 @@ FROM node:lts-alpine as production
 ENV NODE_ENV production
 USER node
 WORKDIR /app
-COPY --chown=node:node --from=source /app .
+COPY --chown=node:node --from=config /app .
 COPY --chown=node:node --from=build /app/.next/ ./.next/
+COPY --chown=node:node --from=build /app/next.config.js ./next.config.js
 COPY --chown=node:node --from=build /app/env_result* ./
 COPY --chown=node:node --from=node_modules_production /app/node_modules ./node_modules
+
 EXPOSE 3000
 CMD yarn start

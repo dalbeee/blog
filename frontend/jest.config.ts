@@ -11,14 +11,14 @@ const config: Config.InitialOptions = {
 export default async (): Promise<Config.InitialOptions> => {
   return {
     verbose: true,
-    moduleFileExtensions: ["js", "json", "ts"],
+    moduleFileExtensions: ["js", "ts", "tsx"],
     roots: ["."],
+    testEnvironment: "jsdom",
 
-    testRegex: ".[^e2e].*test.ts$",
+    testRegex: "^.*\\.spec.(ts|tsx)$",
     transform: {
-      "^.+\\.(t|j)s$": "ts-jest",
+      "^.+\\.(ts|tsx)$": "ts-jest",
     },
-    // testEnvironment: 'node',
     moduleNameMapper: {
       "@src/(.*)": "<rootDir>/src/$1",
       // "^@blog/core$": "<rootDir>/../core/src/index.ts",

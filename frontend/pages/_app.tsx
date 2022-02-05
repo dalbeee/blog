@@ -6,6 +6,8 @@ import "react-toastify/dist/ReactToastify.css";
 
 import "../styles/globals.css";
 import SuspenseProvider from "../components/core/providers/SuspenseProvider";
+import FunctionalHttpErrorBoundary from "../components/core/FunctionalHttpErrorBoundary";
+import HttpErrorRouter from "../components/core/HttpErrorRouter";
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -18,19 +20,23 @@ function MyApp({ Component, pageProps }) {
       </Head>
 
       <RecoilRoot>
-        <div className="relative flex justify-center w-full min-h-content">
-          <div className="flex flex-col w-full min-h-content sm:w-3/5 lg:w-4/7">
-            <Header />
+        <FunctionalHttpErrorBoundary>
+          <HttpErrorRouter status={pageProps?.status}>
+            <div className="relative flex justify-center w-full min-h-content">
+              <div className="flex flex-col w-full min-h-content sm:w-3/5 lg:w-4/7">
+                <Header />
 
-            <SuspenseProvider>
-              <Component {...pageProps} />
-            </SuspenseProvider>
-          </div>
-          <ToastContainer
-            style={{ whiteSpace: "pre-line" }}
-            position="bottom-right"
-          />
-        </div>
+                <SuspenseProvider>
+                  <Component {...pageProps} />
+                </SuspenseProvider>
+              </div>
+              <ToastContainer
+                style={{ whiteSpace: "pre-line" }}
+                position="bottom-right"
+              />
+            </div>
+          </HttpErrorRouter>
+        </FunctionalHttpErrorBoundary>
       </RecoilRoot>
     </>
   );

@@ -1,30 +1,90 @@
-import { ConfigDTO } from "../domain";
-import { Config } from "../domain/config/entity";
-import { ConfigRepository } from "../repository";
+import fsAsync from "fs/promises";
+import fs from "fs";
 
-export class ConfigService {
-  constructor(private readonly configRepository: ConfigRepository) {}
+type ExportType = "JSON" | "ENV";
 
-  async getData() {
-    const notionApiKey = await this.getKeyValue("NOTION_API_KEY");
-    const notionDatabaseId = await this.getKeyValue("NOTION_DATABASE_ID");
+interface Props {
+  configPath?: string;
+  exportType?: ExportType | null;
+}
 
-    const req = await Promise.all([notionApiKey, notionDatabaseId]);
+class ConfigService {
+  private configPath: string;
+  private exportType: ExportType;
 
-    const object = req.reduce((acc, item) => {
-      if (!item) return acc;
-      acc[item.key] = item.value;
-      return acc;
-    }, {});
+  private data: { [key: string]: any };
 
-    return object;
+  constructor({ configPath, exportType }: Props = {}) {
+    if (exportType === null) {
+      throw new Error('exportType must be "JSON" or "ENV"');
+    }
+    this.data = {};
+    this.configPath = configPath;
+    this.exportType = exportType;
+    this.loadDataFromFile();
   }
 
-  async getKeyValue(key: string): Promise<Config> {
-    return this.configRepository.getKeyValue(key);
+  private loadDataFromFile() {
+    let readFile;
+    try {
+      readFile = fs.readFileSync(this.configPath, "utf8");
+    } catch (error) {
+      return;
+    }
+    if (this.exportType === "JSON") {
+      const readData = readFile && JSON.parse(readFile);
+      Object.keys(readData).reduce((acc: Object, key: string): any => {
+        this.data[key] = readData[key];
+        return acc;
+      }, this.data);
+    } else if (this.exportType === "ENV") {
+      readFile.split("\n").reduce((acc: Object, key: string): any => {
+        const [keyName, keyValue] = key.split("=");
+        this.data[keyName] = keyValue;
+        return acc;
+      }, this.data);
+    }
   }
 
-  async setKeyValue(data: ConfigDTO[]): Promise<Config> {
-    return this.configRepository.setKeyValue(data);
+  private async persistData() {
+    if (this.exportType === "ENV") {
+      const data = Object.keys(this.data)
+        .reduce((acc: any[], key: string) => {
+          acc.push(`${key}=${this.data[key]}`);
+          return acc;
+        }, [])
+        .join("\n");
+
+      await fsAsync.writeFile(this.configPath, data);
+    } else if (this.exportType === "JSON") {
+      await fsAsync.writeFile(this.configPath, JSON.stringify(this.data));
+    }
+  }
+
+  async set(key: string, value: any) {
+    this.data[key] = value;
+
+    await this.persistData();
+    return this.data;
+  }
+
+  async getAll() {
+    return this.data;
+  }
+
+  async get(key: string) {
+    const data = this.data[key];
+    if (!data) throw new Error("not found key");
+    return data;
+  }
+
+  async remove(key: string) {
+    delete this.data[key];
+
+    await this.persistData();
   }
 }
+
+const configPath = "./data/config.json";
+const exportType = "JSON";
+export const configService = new ConfigService({ configPath, exportType });

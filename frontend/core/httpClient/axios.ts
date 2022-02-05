@@ -15,26 +15,9 @@ export class Axios implements HttpClientInterface {
 
     const client = axios.create(config);
     this.client = client;
-
-    client.interceptors.response.use(
-      (response) => {
-        return response.data;
-      },
-      (error) => {
-        // console.log("response", error);
-        // console.log("data", error.response.data);
-        // devConsole("error from axios layer : ", error?.response);
-        return Promise.reject(error.response);
-      }
-    );
   }
   async get(url: string): Promise<any> {
     return this.client.get(url);
-    return await new Promise((res) =>
-      setTimeout(() => {
-        res(this.client.get(url));
-      }, 1000)
-    );
   }
   post(url: string, data: object): Promise<any> {
     return this.client.post(url, data);

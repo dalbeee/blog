@@ -1,7 +1,7 @@
 import { GetServerSideProps } from "next";
 import dynamic from "next/dynamic";
 
-import { hasBlogInstalled } from "../util/hasBlogInstalled";
+import { hasBlogInstalled } from "../util/blogConfig";
 
 const FirstSetting = dynamic(() => import("../components/FirstSetting"));
 

@@ -1,7 +1,7 @@
 import { LoadingButton } from "@mui/lab";
 import { InputAdornment, TextField } from "@mui/material";
-import { useRouter } from "next/router";
 import React, { useState } from "react";
+
 import { UserDTO } from "../core/domain";
 import { useUser } from "../hooks/useUser";
 
@@ -11,9 +11,9 @@ const FirstSetting = () => {
     username: "",
     password: "",
   });
-  const router = useRouter();
-  const [isShowPassword, setIsShowPassword] = useState(false);
 
+  const [error, setError] = useState<any>(null);
+  const [isShowPassword, setIsShowPassword] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
 
   const handleChange = (e) => {
@@ -24,9 +24,12 @@ const FirstSetting = () => {
 
   const handleSubmit = async () => {
     setIsFetching(true);
-    await useUser().firstSetting(keys);
+    try {
+      await useUser().firstSetting(keys);
+    } catch (error) {
+      setError(() => error);
+    }
     setIsFetching(false);
-    router.push("/");
   };
 
   return (
@@ -71,6 +74,14 @@ const FirstSetting = () => {
               ),
             }}
           />
+          <div className="">
+            {error?.length &&
+              error.map((er, index) => (
+                <div className="" key={index}>
+                  {er}
+                </div>
+              ))}
+          </div>
           <div className="pt-10">
             <LoadingButton
               fullWidth

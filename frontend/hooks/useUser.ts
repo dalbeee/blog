@@ -47,15 +47,19 @@ export const useUser = () => {
       .createUser({ ...user, roles: [Role.Admin] })
       .then(() => {
         core.toast.push("사용자를 생성했습니다");
-        core.config.setKeyValue([{ key: "IS_DONE_BLOG_SETTING", value: true }]);
-        core.config.setKeyValue([
-          { key: "ADMIN_USER_EMAIL", value: user.email },
-        ]);
-        router.push("/");
+        // core.config.set("IS_DONE_BLOG_SETTING", true);
+        // core.config.set("ADMIN_USER_EMAIL", user.email);
+        router.push("/bloginstall");
       })
       .catch((e) => {
-        core.toast.error(`사용자 생성에 실패했습니다.\n${e?.message || ""}`);
-      });
+        if (e?.status === 409) {
+          router.push("/bloginstall");
+        } else {
+          core.toast.error(`사용자 생성에 실패했습니다.\n${e?.message || ""}`);
+          throw e;
+        }
+      })
+      .finally(() => {});
   };
 
   return {

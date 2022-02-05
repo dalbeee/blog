@@ -1,1 +1,1 @@
-export * from "./parsePostToMarkdown";
+export * from './parsePostToMarkdown';

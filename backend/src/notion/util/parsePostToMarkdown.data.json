@@ -1,0 +1,3027 @@
+{
+  "object": "list",
+  "results": [
+    {
+      "object": "block",
+      "id": "c7ed1713-bce8-4d9a-8b36-ffe983a6ca66",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "image",
+      "image": {
+        "caption": [],
+        "type": "file",
+        "file": {
+          "url": "https://s3.us-west-2.amazonaws.com/secure.notion-static.com/1ac9e3b4-8e09-404d-b0b5-9a41460ff9f3/nextjs.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220205%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220205T072749Z&X-Amz-Expires=3600&X-Amz-Signature=260a1bd319749998fd1ea411b14beead50486995063de41097453334b06e5824&X-Amz-SignedHeaders=host&x-id=GetObject",
+          "expiry_time": "2022-02-05T08:27:49.780Z"
+        }
+      }
+    },
+    {
+      "object": "block",
+      "id": "3c8f60c2-f5d7-455b-aa99-c2984b877d65",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "divider",
+      "divider": {}
+    },
+    {
+      "object": "block",
+      "id": "9a7042b3-b8e8-47a0-860a-7cb0944961dc",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "paragraph",
+      "paragraph": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "nextjs 는 client side, server side로 이루어져 있어 비동기 요청의 에러처리를 할 때 양쪽을 모두 고려해야합니다. 같은 모델로 http response status에 따른 에러처리를 하는 방법을 구현하고 정리해보았습니다",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "nextjs 는 client side, server side로 이루어져 있어 비동기 요청의 에러처리를 할 때 양쪽을 모두 고려해야합니다. 같은 모델로 http response status에 따른 에러처리를 하는 방법을 구현하고 정리해보았습니다",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "1e551177-467d-4c59-a133-9a72f4b612fd",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "paragraph",
+      "paragraph": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "이 예제는 ",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "이 예제는 ",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": "https://github.com/dalbeee/example/tree/main/http-error-handling",
+              "link": {
+                "url": "https://github.com/dalbeee/example/tree/main/http-error-handling"
+              }
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "https://github.com/dalbeee/example/tree/main/http-error-handling",
+            "href": "https://github.com/dalbeee/example/tree/main/http-error-handling"
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": " 에서 확인하실 수 있습니다",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": " 에서 확인하실 수 있습니다",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "33a8f2ce-3cda-42f2-b6e0-bc530b9e7f5e",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "divider",
+      "divider": {}
+    },
+    {
+      "object": "block",
+      "id": "83cff1c2-12cc-4765-9077-bbccd3a6e982",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "quote",
+      "quote": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "⚠️ 이 컨텐츠의 모든 내용은 공부한것들을 정리한 내용입니다. 더 좋은 내용이 있으면 공유해주시면 좋겠습니다 😊",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "⚠️ 이 컨텐츠의 모든 내용은 공부한것들을 정리한 내용입니다. 더 좋은 내용이 있으면 공유해주시면 좋겠습니다 😊",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "77c87d25-972a-4144-a4f4-7831982f4748",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "heading_1",
+      "heading_1": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "client side rendering",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "client side rendering",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "3604b8a3-764d-4b1c-90a8-3edffee52304",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "paragraph",
+      "paragraph": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "client side 의 경우, 가장 흔하게 에러를 처리하는 방법은 error boundary 일것입니다. 하지만 리액트의 공식문서를 보면 이벤트 핸들러, 비동기코드, 서버사이드렌더링은 ",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "client side 의 경우, 가장 흔하게 에러를 처리하는 방법은 error boundary 일것입니다. 하지만 리액트의 공식문서를 보면 이벤트 핸들러, 비동기코드, 서버사이드렌더링은 ",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": "error boundary에서 포착하지 않는다",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": true,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "error boundary에서 포착하지 않는다",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": "고 합니다 ",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "고 합니다 ",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": "(문서)",
+              "link": {
+                "url": "https://ko.reactjs.org/docs/error-boundaries.html"
+              }
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "(문서)",
+            "href": "https://ko.reactjs.org/docs/error-boundaries.html"
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": ". 저는 http fetch와 같은 비동기요청에서 발생하는 promise rejection 으로부터 에러 핸들링을 하고싶기 때문에 ",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": ". 저는 http fetch와 같은 비동기요청에서 발생하는 promise rejection 으로부터 에러 핸들링을 하고싶기 때문에 ",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": "unhandledrejection",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": true,
+              "color": "default"
+            },
+            "plain_text": "unhandledrejection",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": " 이벤트를 사용했습니다. 브라우저가 가지고있는 ",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": " 이벤트를 사용했습니다. 브라우저가 가지고있는 ",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": "window",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": true,
+              "color": "default"
+            },
+            "plain_text": "window",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": " 객체는 ",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": " 객체는 ",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": "unhandledrejection",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": true,
+              "color": "default"
+            },
+            "plain_text": "unhandledrejection",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": " 이벤트를 가지고 있고, 이벤트 버블링에 따라 상위 코드로 전파가 되는것을 이용해 에러를 캐치하는 상위 컴포넌트를 만듭니다 ",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": " 이벤트를 가지고 있고, 이벤트 버블링에 따라 상위 코드로 전파가 되는것을 이용해 에러를 캐치하는 상위 컴포넌트를 만듭니다 ",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": "(문서)",
+              "link": {
+                "url": "https://developer.mozilla.org/en-US/docs/Web/API/Window/unhandledrejection_event"
+              }
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "(문서)",
+            "href": "https://developer.mozilla.org/en-US/docs/Web/API/Window/unhandledrejection_event"
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": ". ",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": ". ",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "1898a985-addb-4f2e-b4f1-a4a2830e1363",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "paragraph",
+      "paragraph": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "이 외에도 잘 알려져있는 라이브러리인 ",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "이 외에도 잘 알려져있는 라이브러리인 ",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": "react-error-boundary",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": true,
+              "color": "default"
+            },
+            "plain_text": "react-error-boundary",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": " 를 이용해도 됩니다.",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": " 를 이용해도 됩니다.",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "0727c952-68c8-40b5-b5a0-071a44608a5c",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "paragraph",
+      "paragraph": {
+        "text": []
+      }
+    },
+    {
+      "object": "block",
+      "id": "8613d005-4790-4cc2-8538-bdda62362bf1",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "paragraph",
+      "paragraph": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "이 예제에서는",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": true,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "이 예제에서는",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": ", 이렇게 만들었습니다. 😊",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": ", 이렇게 만들었습니다. 😊",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "f254d194-f2fc-4c95-9845-ea1fefbea1f9",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "numbered_list_item",
+      "numbered_list_item": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "에러 캐치 컴포넌트 작성",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "에러 캐치 컴포넌트 작성",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "ce2da34d-5d25-4067-9700-59b81c0544d8",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "numbered_list_item",
+      "numbered_list_item": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "http status를 전달할 함수 작성",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "http status를 전달할 함수 작성",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "31eba86f-1c91-4a14-a7fe-ebec681f63dc",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "numbered_list_item",
+      "numbered_list_item": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "2. 의 함수 사용",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "2. 의 함수 사용",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "bfcda43b-d3eb-49b5-a094-8ccdfae6dddb",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "heading_2",
+      "heading_2": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "http error boundary 작성하기",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "http error boundary 작성하기",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "072653e3-a27f-4835-9b49-729959a7b2dc",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "paragraph",
+      "paragraph": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "에러를 캐치할 컴포넌트를 작성합니다. 클래스형, 함수형 어떤것도 사용 할 수 있습니다.",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "에러를 캐치할 컴포넌트를 작성합니다. 클래스형, 함수형 어떤것도 사용 할 수 있습니다.",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "a318cc11-0e18-4d41-801a-5db3f0bfbda6",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "heading_3",
+      "heading_3": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "클래스 컴포넌트로 작성",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "클래스 컴포넌트로 작성",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "72fb58f0-7fa2-4692-be1a-58ccd809443b",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "paragraph",
+      "paragraph": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "클래스 컴포넌트로 작성하는 경우, 컴포넌트 생명주기에 따라서 ",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "클래스 컴포넌트로 작성하는 경우, 컴포넌트 생명주기에 따라서 ",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": "eventListener",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": true,
+              "color": "default"
+            },
+            "plain_text": "eventListener",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": " 의 호출과 삭제가 이루어져야합니다. 리액트 클래스 컴포넌트의 생명주기에 따라 eventListener 를 사용해 필요한 promise rejection 에러를 캐치할 수 있습니다. ",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": " 의 호출과 삭제가 이루어져야합니다. 리액트 클래스 컴포넌트의 생명주기에 따라 eventListener 를 사용해 필요한 promise rejection 에러를 캐치할 수 있습니다. ",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "0b0e7711-68f9-44ef-af84-bdd6c474ab02",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "paragraph",
+      "paragraph": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "다른 페이지로 이동 시, 에러 초기화를 하여 컴포넌트가 정상적으로 랜더링되게 하여야하는데, nextjs 가 제공하는 ",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "다른 페이지로 이동 시, 에러 초기화를 하여 컴포넌트가 정상적으로 랜더링되게 하여야하는데, nextjs 가 제공하는 ",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": "next/router",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": true,
+              "color": "default"
+            },
+            "plain_text": "next/router",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": " 에서 ",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": " 에서 ",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": "unhandledrejection",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": true,
+              "color": "default"
+            },
+            "plain_text": "unhandledrejection",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": " 과 마찬가지로 이벤트를 받아 처리했습니다. ",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": " 과 마찬가지로 이벤트를 받아 처리했습니다. ",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "df28a6e7-ab1c-4d16-9dad-caf020a450bb",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "code",
+      "code": {
+        "caption": [],
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "import NextError from \"next/error\";\nimport Router from \"next/router\";\nimport React, { PropsWithChildren } from \"react\";\n\nimport { HttpException } from \"../share/errors/httpException\";\n\ntype ErrorBoundaryProps = PropsWithChildren<{}>;\n\ninterface ErrorBoundaryState {\n  error: HttpException | null;\n}\n\nconst errorBoundaryState: ErrorBoundaryState = {\n  error: null,\n};\n\nexport default class HttpErrorBoundary extends React.Component<\n  ErrorBoundaryProps,\n  ErrorBoundaryState\n> {\n  constructor(props: ErrorBoundaryProps) {\n    super(props);\n    this.state = errorBoundaryState;\n  }\n\n  componentDidMount() {\n    window.addEventListener(\"unhandledrejection\", this.handleRejectedPromise);\n    Router.events.on(\"routeChangeComplete\", this.resetState);\n  }\n\n  componentWillUnmount() {\n    window.removeEventListener(\n      \"unhandledrejection\",\n      this.handleRejectedPromise\n    );\n    Router.events.off(\"routeChangeComplete\", this.resetState);\n  }\n\n  private resetState = () => {\n    this.setState(errorBoundaryState);\n    window.addEventListener(\"unhandledrejection\", this.handleRejectedPromise);\n  };\n\n  private setError = (error: HttpException) => {\n    this.setState({ error });\n  };\n\n  private handleRejectedPromise = (event: PromiseRejectionEvent) => {\n    event.preventDefault();\n    this.setError(event.reason);\n  };\n\n  render() {\n    const { error } = this.state;\n\n    if (error instanceof HttpException) {\n      return <NextError statusCode={error.status} />;\n    }\n\n    return <>{this.props.children}</>;\n  }\n}",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "import NextError from \"next/error\";\nimport Router from \"next/router\";\nimport React, { PropsWithChildren } from \"react\";\n\nimport { HttpException } from \"../share/errors/httpException\";\n\ntype ErrorBoundaryProps = PropsWithChildren<{}>;\n\ninterface ErrorBoundaryState {\n  error: HttpException | null;\n}\n\nconst errorBoundaryState: ErrorBoundaryState = {\n  error: null,\n};\n\nexport default class HttpErrorBoundary extends React.Component<\n  ErrorBoundaryProps,\n  ErrorBoundaryState\n> {\n  constructor(props: ErrorBoundaryProps) {\n    super(props);\n    this.state = errorBoundaryState;\n  }\n\n  componentDidMount() {\n    window.addEventListener(\"unhandledrejection\", this.handleRejectedPromise);\n    Router.events.on(\"routeChangeComplete\", this.resetState);\n  }\n\n  componentWillUnmount() {\n    window.removeEventListener(\n      \"unhandledrejection\",\n      this.handleRejectedPromise\n    );\n    Router.events.off(\"routeChangeComplete\", this.resetState);\n  }\n\n  private resetState = () => {\n    this.setState(errorBoundaryState);\n    window.addEventListener(\"unhandledrejection\", this.handleRejectedPromise);\n  };\n\n  private setError = (error: HttpException) => {\n    this.setState({ error });\n  };\n\n  private handleRejectedPromise = (event: PromiseRejectionEvent) => {\n    event.preventDefault();\n    this.setError(event.reason);\n  };\n\n  render() {\n    const { error } = this.state;\n\n    if (error instanceof HttpException) {\n      return <NextError statusCode={error.status} />;\n    }\n\n    return <>{this.props.children}</>;\n  }\n}",
+            "href": null
+          }
+        ],
+        "language": "javascript"
+      }
+    },
+    {
+      "object": "block",
+      "id": "1a8c9432-6298-4684-b73e-9379f1ae42d8",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "heading_3",
+      "heading_3": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "함수형 컴포넌트로 작성",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "함수형 컴포넌트로 작성",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "f99c8463-a192-4936-ae60-0492813161b1",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "paragraph",
+      "paragraph": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "에러를 처리하게 될 함수형 컴포넌트가 클래스 컴포넌트의 ",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "에러를 처리하게 될 함수형 컴포넌트가 클래스 컴포넌트의 ",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": "componentDidCatch",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": true,
+              "color": "default"
+            },
+            "plain_text": "componentDidCatch",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": " 같은 에러처리 방법을 아직 지원하지 않기 때문에, ",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": " 같은 에러처리 방법을 아직 지원하지 않기 때문에, ",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": "비동기 작업",
+              "link": null
+            },
+            "annotations": {
+              "bold": true,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "비동기 작업",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": "인 http fetching 실패 시 에러를 던져도 함수형 컴포넌트에서는 캐치를 할 수 없습니다. 하지만 ",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "인 http fetching 실패 시 에러를 던져도 함수형 컴포넌트에서는 캐치를 할 수 없습니다. 하지만 ",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": "unhandledrejection",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": true,
+              "color": "default"
+            },
+            "plain_text": "unhandledrejection",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": " 을 사용하면 함수형 컴포넌트에서도 에러를 처리할 수 있습니다. ",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": " 을 사용하면 함수형 컴포넌트에서도 에러를 처리할 수 있습니다. ",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "27b49706-0262-48c9-8ca6-73840ebdc1ef",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "code",
+      "code": {
+        "caption": [],
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "import NextError from \"next/error\";\nimport { useRouter } from \"next/router\";\nimport { FC, useCallback, useEffect, useState } from \"react\";\n\nimport { HttpException } from \"../share/errors/httpException\";\n\nconst FunctionalHttpErrorBoundary: FC<any> = ({ children }) => {\n  const [error, setError] = useState<HttpException | null>(null);\n  const router = useRouter();\n\n  const handleRejectedPromise = useCallback((event: PromiseRejectionEvent) => {\n    event.preventDefault();\n    setError(event.reason);\n  }, []);\n\n  const resetError = () => {\n    setError(null);\n  };\n\n  const handleAddEvents = useCallback(() => {\n    window.addEventListener(\"unhandledrejection\", handleRejectedPromise);\n    router.events.on(\"routeChangeStart\", resetError);\n  }, [handleRejectedPromise, router.events]);\n\n  const handleRemoveEvents = useCallback(() => {\n    window.removeEventListener(\"unhandledrejection\", handleRejectedPromise);\n    router.events.off(\"routeChangeStart\", resetError);\n  }, [handleRejectedPromise, router.events]);\n\n  useEffect(() => {\n    handleAddEvents();\n    return () => {\n      handleRemoveEvents();\n    };\n  }, [handleAddEvents, handleRemoveEvents]);\n\n  useEffect(() => {}, [error]);\n\n  if (error instanceof HttpException)\n    return <NextError statusCode={error.status} />;\n\n  return <div>{children}</div>;\n};\n\nexport default FunctionalHttpErrorBoundary;",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "import NextError from \"next/error\";\nimport { useRouter } from \"next/router\";\nimport { FC, useCallback, useEffect, useState } from \"react\";\n\nimport { HttpException } from \"../share/errors/httpException\";\n\nconst FunctionalHttpErrorBoundary: FC<any> = ({ children }) => {\n  const [error, setError] = useState<HttpException | null>(null);\n  const router = useRouter();\n\n  const handleRejectedPromise = useCallback((event: PromiseRejectionEvent) => {\n    event.preventDefault();\n    setError(event.reason);\n  }, []);\n\n  const resetError = () => {\n    setError(null);\n  };\n\n  const handleAddEvents = useCallback(() => {\n    window.addEventListener(\"unhandledrejection\", handleRejectedPromise);\n    router.events.on(\"routeChangeStart\", resetError);\n  }, [handleRejectedPromise, router.events]);\n\n  const handleRemoveEvents = useCallback(() => {\n    window.removeEventListener(\"unhandledrejection\", handleRejectedPromise);\n    router.events.off(\"routeChangeStart\", resetError);\n  }, [handleRejectedPromise, router.events]);\n\n  useEffect(() => {\n    handleAddEvents();\n    return () => {\n      handleRemoveEvents();\n    };\n  }, [handleAddEvents, handleRemoveEvents]);\n\n  useEffect(() => {}, [error]);\n\n  if (error instanceof HttpException)\n    return <NextError statusCode={error.status} />;\n\n  return <div>{children}</div>;\n};\n\nexport default FunctionalHttpErrorBoundary;",
+            "href": null
+          }
+        ],
+        "language": "javascript"
+      }
+    },
+    {
+      "object": "block",
+      "id": "171ed4a6-0b49-4c4a-872a-d6a3546bbc8f",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "heading_2",
+      "heading_2": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "error thrower 작성",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "error thrower 작성",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "3b64522f-99af-46c4-99b0-0fb2084a4bac",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "paragraph",
+      "paragraph": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "http 요청 시 적당한 곳에서 status 를 넘겨 줄 함수를 작성합니다. 에러클래스들은 Error 를 확장하여 status 필드를 가지고 있는 클래스입니다. http client layer 에서 에러를 던지는게 적절하다고 생각해서 http response의 status에 따라 해당 에러를 던집니다. 이 예제에서는 내장 함수 ",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "http 요청 시 적당한 곳에서 status 를 넘겨 줄 함수를 작성합니다. 에러클래스들은 Error 를 확장하여 status 필드를 가지고 있는 클래스입니다. http client layer 에서 에러를 던지는게 적절하다고 생각해서 http response의 status에 따라 해당 에러를 던집니다. 이 예제에서는 내장 함수 ",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": "fetch",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": true,
+              "color": "default"
+            },
+            "plain_text": "fetch",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": "를 사용했지만, 어떤 http client를 사용해도 상관 없습니다 😊",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "를 사용했지만, 어떤 http client를 사용해도 상관 없습니다 😊",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "54b537ac-9301-4db1-88ff-d4994607927f",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "code",
+      "code": {
+        "caption": [],
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "// HttpException\nexport class HttpException extends Error{\n\tstatus: number\n\tconstructor(message:string = \"http exception\", status:number){\n\t\tsuper(message);\n\t\tthis.status = status;\n\t}\n}\n\n// BadRequestException\nexport class BadRequestException extends HttpException {\n  constructor(message = \"Bad request\") {\n    super(message, 400);\n  }\n}\n\n// ...\n\n// httpClient\nconst httpClient = (url: string) => {\n  const api: typeof fetch = async (data, options) => {\n    return fetch(data, options).then((r) => {\n      if (!r.ok) {\n        switch (r.status) {\n          case 400:\n            throw new BadRequestException();\n          case 401:\n            throw new UnauthorizedException();\n          case 404:\n            throw new NotFoundException();\n          default:\n            throw new InternalServerError();\n        }\n      }\n      return r.json();\n    });\n  };\n\n  const get = (uri: string) => api(`${url}${uri}`, { method: \"GET\" });\n\n  const post = (uri: string, data: unknown) =>\n    fetch(`${url}${uri}`, { method: \"POST\", body: JSON.stringify(data) });\n\n  return { get, post };\n};\n\nexport default httpClient(\"http://localhost:3001\");",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "// HttpException\nexport class HttpException extends Error{\n\tstatus: number\n\tconstructor(message:string = \"http exception\", status:number){\n\t\tsuper(message);\n\t\tthis.status = status;\n\t}\n}\n\n// BadRequestException\nexport class BadRequestException extends HttpException {\n  constructor(message = \"Bad request\") {\n    super(message, 400);\n  }\n}\n\n// ...\n\n// httpClient\nconst httpClient = (url: string) => {\n  const api: typeof fetch = async (data, options) => {\n    return fetch(data, options).then((r) => {\n      if (!r.ok) {\n        switch (r.status) {\n          case 400:\n            throw new BadRequestException();\n          case 401:\n            throw new UnauthorizedException();\n          case 404:\n            throw new NotFoundException();\n          default:\n            throw new InternalServerError();\n        }\n      }\n      return r.json();\n    });\n  };\n\n  const get = (uri: string) => api(`${url}${uri}`, { method: \"GET\" });\n\n  const post = (uri: string, data: unknown) =>\n    fetch(`${url}${uri}`, { method: \"POST\", body: JSON.stringify(data) });\n\n  return { get, post };\n};\n\nexport default httpClient(\"http://localhost:3001\");",
+            "href": null
+          }
+        ],
+        "language": "javascript"
+      }
+    },
+    {
+      "object": "block",
+      "id": "dc7155f6-6aa4-4684-bcb3-2903c93e2682",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "paragraph",
+      "paragraph": {
+        "text": []
+      }
+    },
+    {
+      "object": "block",
+      "id": "4385b8bf-7c73-4bb9-ba33-9957ed9d6183",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "divider",
+      "divider": {}
+    },
+    {
+      "object": "block",
+      "id": "09f47bc0-226e-4d7e-b5b8-4dcd051e1d16",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "heading_1",
+      "heading_1": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "server side rendering",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "server side rendering",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "8e5ae490-f8a1-42b1-ac96-050c0a68fb5c",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "paragraph",
+      "paragraph": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "nextjs 의 serverside 연산은 내부적으로 ",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "nextjs 의 serverside 연산은 내부적으로 ",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": "getServerSideProps",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": true,
+              "color": "default"
+            },
+            "plain_text": "getServerSideProps",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": " 나 ",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": " 나 ",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": "getStaticProps",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": true,
+              "color": "default"
+            },
+            "plain_text": "getStaticProps",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": "를 거치기 때문에 이 위치가 에러를 처리하기 좋은 곳입니다. 여기서 http fetching 이 던진 에러를 받아서 에러를 처리하면 되는데요, 이 때 fetching 에서 에러를 던지는 방법에 따라 핸들러를 다르게 구성할 수 있습니다. ",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "를 거치기 때문에 이 위치가 에러를 처리하기 좋은 곳입니다. 여기서 http fetching 이 던진 에러를 받아서 에러를 처리하면 되는데요, 이 때 fetching 에서 에러를 던지는 방법에 따라 핸들러를 다르게 구성할 수 있습니다. ",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "ffbe741f-a5bf-40dd-8399-c5d7e4e2a255",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "paragraph",
+      "paragraph": {
+        "text": []
+      }
+    },
+    {
+      "object": "block",
+      "id": "1c83c865-2e91-4e78-9380-dd9d66419231",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "paragraph",
+      "paragraph": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "이 예제에서는",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": true,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "이 예제에서는",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": ", 이렇게 만들었습니다 😊",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": ", 이렇게 만들었습니다 😊",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "d279e58b-2d51-4c5d-8478-b706d27ca085",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "numbered_list_item",
+      "numbered_list_item": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "http status 를 필드로 가진 custom Error 클래스 생성",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "http status 를 필드로 가진 custom Error 클래스 생성",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "212b31c2-9af9-49fd-b736-fba62f49b710",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "numbered_list_item",
+      "numbered_list_item": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "http client layer 에서 적절한 1.의 에러 던지기",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "http client layer 에서 적절한 1.의 에러 던지기",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "8e5cd3b4-c82f-4c17-a9bd-d758af661e12",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "numbered_list_item",
+      "numbered_list_item": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "비즈니스 로직에서 try-catch 를 분리하여 http status 를 보내는 컴포넌트 생성 (재사용하기위해 HOC 컴포넌트로 생성)",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "비즈니스 로직에서 try-catch 를 분리하여 http status 를 보내는 컴포넌트 생성 (재사용하기위해 HOC 컴포넌트로 생성)",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "b3512713-d711-47c3-8a44-3cb1a8e32f07",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "numbered_list_item",
+      "numbered_list_item": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "next/error",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": true,
+              "color": "default"
+            },
+            "plain_text": "next/error",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": " 컴포넌트를 사용해서 http status별로 라우팅하는 HttpErrorRouter 생성",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": " 컴포넌트를 사용해서 http status별로 라우팅하는 HttpErrorRouter 생성",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "734c48b5-de12-4c1c-82b7-c315c7131dd8",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "numbered_list_item",
+      "numbered_list_item": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "적절한 곳에 4. 을 넣고 prop 전달",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "적절한 곳에 4. 을 넣고 prop 전달",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "f392c84b-10fc-4c25-b795-ec7b3b16094b",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "numbered_list_item",
+      "numbered_list_item": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "서버연산이 필요한 곳에서 3. 을 합성해서 사용하기",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "서버연산이 필요한 곳에서 3. 을 합성해서 사용하기",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "d6f487e0-0d5f-40e8-8dc3-7c8951410c58",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "paragraph",
+      "paragraph": {
+        "text": []
+      }
+    },
+    {
+      "object": "block",
+      "id": "89548f92-3a86-4167-b619-b34863465204",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "paragraph",
+      "paragraph": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "GetServerSideProps",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": true,
+              "color": "default"
+            },
+            "plain_text": "GetServerSideProps",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": " , ",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": " , ",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": "GetStaticProps",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": true,
+              "color": "default"
+            },
+            "plain_text": "GetStaticProps",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": "의 반환형식에는 http status 404를 처리하는 notFound, 30x 를 처리하는 redirect 메서드는 있지만, 그 외의 httpStatus 에는 대응할 수 없습니다. 그래서, ",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "의 반환형식에는 http status 404를 처리하는 notFound, 30x 를 처리하는 redirect 메서드는 있지만, 그 외의 httpStatus 에는 대응할 수 없습니다. 그래서, ",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": "GetServerSideProps",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": true,
+              "color": "default"
+            },
+            "plain_text": "GetServerSideProps",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": " , ",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": " , ",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": "GetStaticProps",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": true,
+              "color": "default"
+            },
+            "plain_text": "GetStaticProps",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": " 의 return props 에 http status 를 전달한 후, 컴포넌트에서 처리하는 방법을 선택했어요. ",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": " 의 return props 에 http status 를 전달한 후, 컴포넌트에서 처리하는 방법을 선택했어요. ",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "c0ac4c3d-09dc-4a90-a2a5-19b44543ba51",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "paragraph",
+      "paragraph": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "SSR, SSG에서는 http client 가 반환하는 status 만으로도 에러처리가 가능하지만, CSR에서는 error를 던져서 ErrorBoundary 클래스 컴포넌트로 에러를 처리했기 때문에 양쪽의 에러처리를 동일하게 할 수 있는 throw Error 를 활용합니다.",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "SSR, SSG에서는 http client 가 반환하는 status 만으로도 에러처리가 가능하지만, CSR에서는 error를 던져서 ErrorBoundary 클래스 컴포넌트로 에러를 처리했기 때문에 양쪽의 에러처리를 동일하게 할 수 있는 throw Error 를 활용합니다.",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "a8460f1c-dc8c-40d2-ba2e-1754d4683416",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "paragraph",
+      "paragraph": {
+        "text": []
+      }
+    },
+    {
+      "object": "block",
+      "id": "c785bb05-b16d-4ef1-bd6c-229b6d7f788a",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "heading_2",
+      "heading_2": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "error thrower 작성",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "error thrower 작성",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "4b7f87c3-cd4b-4063-8e4c-0d488b0ba78e",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "paragraph",
+      "paragraph": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "client side 와 같은 컴포넌트입니다.",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "client side 와 같은 컴포넌트입니다.",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "eccfb722-b574-49b0-96d5-46e1509d6632",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "code",
+      "code": {
+        "caption": [],
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "// HttpException\nexport class HttpException extends Error{\n\tstatus: number\n\tconstructor(message:string = \"http exception\", status:number){\n\t\tsuper(message);\n\t\tthis.status = status;\n\t}\n}\n\n// BadRequestException\nexport class BadRequestException extends HttpException {\n  constructor(message = \"Bad request\") {\n    super(message, 400);\n  }\n}\n\n// ...\n\n// httpClient\nconst httpClient = (url: string) => {\n  const api: typeof fetch = async (data, options) => {\n    return fetch(data, options).then((r) => {\n      if (!r.ok) {\n        switch (r.status) {\n          case 400:\n            throw new BadRequestException();\n          case 401:\n            throw new UnauthorizedException();\n          case 404:\n            throw new NotFoundException();\n          default:\n            throw new InternalServerError();\n        }\n      }\n      return r.json();\n    });\n  };\n\n  const get = (uri: string) => api(`${url}${uri}`, { method: \"GET\" });\n\n  const post = (uri: string, data: unknown) =>\n    fetch(`${url}${uri}`, { method: \"POST\", body: JSON.stringify(data) });\n\n  return { get, post };\n};\n\nexport default httpClient(\"http://localhost:3001\");",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "// HttpException\nexport class HttpException extends Error{\n\tstatus: number\n\tconstructor(message:string = \"http exception\", status:number){\n\t\tsuper(message);\n\t\tthis.status = status;\n\t}\n}\n\n// BadRequestException\nexport class BadRequestException extends HttpException {\n  constructor(message = \"Bad request\") {\n    super(message, 400);\n  }\n}\n\n// ...\n\n// httpClient\nconst httpClient = (url: string) => {\n  const api: typeof fetch = async (data, options) => {\n    return fetch(data, options).then((r) => {\n      if (!r.ok) {\n        switch (r.status) {\n          case 400:\n            throw new BadRequestException();\n          case 401:\n            throw new UnauthorizedException();\n          case 404:\n            throw new NotFoundException();\n          default:\n            throw new InternalServerError();\n        }\n      }\n      return r.json();\n    });\n  };\n\n  const get = (uri: string) => api(`${url}${uri}`, { method: \"GET\" });\n\n  const post = (uri: string, data: unknown) =>\n    fetch(`${url}${uri}`, { method: \"POST\", body: JSON.stringify(data) });\n\n  return { get, post };\n};\n\nexport default httpClient(\"http://localhost:3001\");",
+            "href": null
+          }
+        ],
+        "language": "javascript"
+      }
+    },
+    {
+      "object": "block",
+      "id": "58c46469-72df-4e64-8da1-837e653d5649",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "paragraph",
+      "paragraph": {
+        "text": []
+      }
+    },
+    {
+      "object": "block",
+      "id": "c9276b42-82b9-4a9a-bbea-d5c8ba7bb694",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "heading_2",
+      "heading_2": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "HOC 컴포넌트 작성",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "HOC 컴포넌트 작성",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "c0c009bd-6251-4723-9557-a80a11f186d2",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "paragraph",
+      "paragraph": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "이제 SSR, SSG에서 에러처리를 전담할 HOC 컴포넌트를 만듭니다. 비즈니스 로직이 실패할 경우 HttpException을 던질테고, 가지고 있는 status 를 다시 그대로 props로 던지는 간단한 컴포넌트입니다.",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "이제 SSR, SSG에서 에러처리를 전담할 HOC 컴포넌트를 만듭니다. 비즈니스 로직이 실패할 경우 HttpException을 던질테고, 가지고 있는 status 를 다시 그대로 props로 던지는 간단한 컴포넌트입니다.",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "7f63bc3a-d7c8-4475-9864-563d8b1cb77c",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "code",
+      "code": {
+        "caption": [],
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "import { GetServerSideProps, GetServerSidePropsContext } from \"next\";\n\nimport { HttpException } from \"../share/errors/httpException\";\n\nexport const WithServerSideHttpHandler =\n  (fn: GetServerSideProps): GetServerSideProps =>\n  async (ctx: GetServerSidePropsContext) => {\n    try {\n      return await fn(ctx);\n    } catch (error) {\n      if (error instanceof HttpException) {\n        return { props: { status: error.status } };\n      }\n    }\n\n    return { props: {} };\n  };",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "import { GetServerSideProps, GetServerSidePropsContext } from \"next\";\n\nimport { HttpException } from \"../share/errors/httpException\";\n\nexport const WithServerSideHttpHandler =\n  (fn: GetServerSideProps): GetServerSideProps =>\n  async (ctx: GetServerSidePropsContext) => {\n    try {\n      return await fn(ctx);\n    } catch (error) {\n      if (error instanceof HttpException) {\n        return { props: { status: error.status } };\n      }\n    }\n\n    return { props: {} };\n  };",
+            "href": null
+          }
+        ],
+        "language": "javascript"
+      }
+    },
+    {
+      "object": "block",
+      "id": "4bc227f6-70f1-4d95-88d1-25dfbf51842f",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "paragraph",
+      "paragraph": {
+        "text": []
+      }
+    },
+    {
+      "object": "block",
+      "id": "e4a7b861-f1ee-4e9e-afb1-3db783550468",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "heading_2",
+      "heading_2": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "에러 라우터 컴포넌트 작성",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "에러 라우터 컴포넌트 작성",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "e2ff3e15-0f54-47cb-96f1-923755f63b57",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "paragraph",
+      "paragraph": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "withServerSideErrorHandler",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": true,
+              "color": "default"
+            },
+            "plain_text": "withServerSideErrorHandler",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": " 가 보내준 status 를 처리하여 에러페이지로 보내주는 컴포넌트를 생성합니다. nextjs 의 ",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": " 가 보내준 status 를 처리하여 에러페이지로 보내주는 컴포넌트를 생성합니다. nextjs 의 ",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": "next/Error",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": true,
+              "color": "default"
+            },
+            "plain_text": "next/Error",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": " 컴포넌트는 statusCode prop 에 따라 미리 설정된 에러페이지로 보내주는 컴포넌트입니다. 이렇게 하면 http status에 따라 각각 다른 에러페이지를 보여주는 컴포넌트를 간단하게 만들 수 있습니다 😊",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": " 컴포넌트는 statusCode prop 에 따라 미리 설정된 에러페이지로 보내주는 컴포넌트입니다. 이렇게 하면 http status에 따라 각각 다른 에러페이지를 보여주는 컴포넌트를 간단하게 만들 수 있습니다 😊",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "628e0e1b-331e-4e98-9357-b51f79490900",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "code",
+      "code": {
+        "caption": [],
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "// HttpErrorRouter\n\nimport Error from \"next/error\";\nimport { FC } from \"react\";\n\nconst HttpErrorRouter: FC<{ status?: number }> = ({ status, children }) => {\n  if (status !== undefined && status >= 400)\n    return <Error statusCode={status} />;\n\n  return <>{children}</>;\n};\n\nexport default ErrorRouter;",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "// HttpErrorRouter\n\nimport Error from \"next/error\";\nimport { FC } from \"react\";\n\nconst HttpErrorRouter: FC<{ status?: number }> = ({ status, children }) => {\n  if (status !== undefined && status >= 400)\n    return <Error statusCode={status} />;\n\n  return <>{children}</>;\n};\n\nexport default ErrorRouter;",
+            "href": null
+          }
+        ],
+        "language": "javascript"
+      }
+    },
+    {
+      "object": "block",
+      "id": "4f54a9b7-6a15-4e43-9f93-ac5924118b7d",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "paragraph",
+      "paragraph": {
+        "text": []
+      }
+    },
+    {
+      "object": "block",
+      "id": "ee90449b-df46-4fda-87a8-9b7973c419bf",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "paragraph",
+      "paragraph": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "저는 ",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "저는 ",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": "HttpErrorRouter",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": true,
+              "color": "default"
+            },
+            "plain_text": "HttpErrorRouter",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": "를 전역에서 사용하고 싶기 때문에, _app 컴포넌트에 에러라우터를 연결했습니다. _app 컴포넌트에 ",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "를 전역에서 사용하고 싶기 때문에, _app 컴포넌트에 에러라우터를 연결했습니다. _app 컴포넌트에 ",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": "HttpErrorRouter",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": true,
+              "color": "default"
+            },
+            "plain_text": "HttpErrorRouter",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": " 를 연결하고 props을 보내줍니다. ",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": " 를 연결하고 props을 보내줍니다. ",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "57ee4a50-aae2-49d6-af70-e748b2fd80ff",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "paragraph",
+      "paragraph": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "pageProps",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": true,
+              "color": "default"
+            },
+            "plain_text": "pageProps",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": " 는 next serverside 에서 넘어온 props 를 가지고 있습니다. ",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": " 는 next serverside 에서 넘어온 props 를 가지고 있습니다. ",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": "withServerSideErrorHandler",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": true,
+              "color": "default"
+            },
+            "plain_text": "withServerSideErrorHandler",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": " 에서 status 를 보내줬으니 이걸 ",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": " 에서 status 를 보내줬으니 이걸 ",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": "HttpErrorRouter",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": true,
+              "color": "default"
+            },
+            "plain_text": "HttpErrorRouter",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": " 로 전달하기만 하면 됩니다.",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": " 로 전달하기만 하면 됩니다.",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "d7a916fe-fda2-4f16-9526-15f3eb6d6df8",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "code",
+      "code": {
+        "caption": [],
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "// _app.tsx\nimport type { AppProps } from \"next/app\";\nimport HttpErrorRouter from \"../components/HttpErrorRouter\";\n\nimport \"../styles/globals.css\";\n\nfunction MyApp({ Component, pageProps }: AppProps) {\n  return (\n    <HttpErrorRouter status={pageProps?.status}>\n      <Component {...pageProps} />\n    </HttpErrorRouter>\n  );\n}",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "// _app.tsx\nimport type { AppProps } from \"next/app\";\nimport HttpErrorRouter from \"../components/HttpErrorRouter\";\n\nimport \"../styles/globals.css\";\n\nfunction MyApp({ Component, pageProps }: AppProps) {\n  return (\n    <HttpErrorRouter status={pageProps?.status}>\n      <Component {...pageProps} />\n    </HttpErrorRouter>\n  );\n}",
+            "href": null
+          }
+        ],
+        "language": "javascript"
+      }
+    },
+    {
+      "object": "block",
+      "id": "7a6c7f98-f82b-414d-8297-ce1ed3d8f52b",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "paragraph",
+      "paragraph": {
+        "text": []
+      }
+    },
+    {
+      "object": "block",
+      "id": "a7bcf578-b8ae-49ed-be00-4e64cdf49d58",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "heading_2",
+      "heading_2": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "HOC 컴포넌트 합성",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "HOC 컴포넌트 합성",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "5fd0dc03-88bb-4f49-b01d-bdfa2bbb6d49",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "paragraph",
+      "paragraph": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "마지막으로 ",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "마지막으로 ",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": "getServersideProps",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": true,
+              "color": "default"
+            },
+            "plain_text": "getServersideProps",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": " 나 ",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": " 나 ",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": "getStaticProps",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": true,
+              "color": "default"
+            },
+            "plain_text": "getStaticProps",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": " 가 필요한 곳에서 ",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": " 가 필요한 곳에서 ",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": "withServerSideErrorHandler",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": true,
+              "color": "default"
+            },
+            "plain_text": "withServerSideErrorHandler",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": " 를 합성해주면 됩니다. fetch 할 때마다 ",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": " 를 합성해주면 됩니다. fetch 할 때마다 ",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": "withServerSideErrorHandler",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": true,
+              "color": "default"
+            },
+            "plain_text": "withServerSideErrorHandler",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": "  컴포넌트를 사용하기 싫다면 상위에서 선언하면 되겠죠? ",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "  컴포넌트를 사용하기 싫다면 상위에서 선언하면 되겠죠? ",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "a9844be0-c85f-4fd8-8aa8-b206e000f9d4",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "code",
+      "code": {
+        "caption": [],
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "export const getServerSideProps: GetServerSideProps = withServerSideErrorHandler(\n  async () => {\n    const users = await user.findUsers();\n    return { props: { users } };\n  }\n);\n\nconst users: FC<{ users: User[] }> = ({ users }) => {\n  return (\n    // ...\n  );\n};\n\nexport default users;",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "export const getServerSideProps: GetServerSideProps = withServerSideErrorHandler(\n  async () => {\n    const users = await user.findUsers();\n    return { props: { users } };\n  }\n);\n\nconst users: FC<{ users: User[] }> = ({ users }) => {\n  return (\n    // ...\n  );\n};\n\nexport default users;",
+            "href": null
+          }
+        ],
+        "language": "javascript"
+      }
+    },
+    {
+      "object": "block",
+      "id": "adb496e2-2595-4726-8c50-629e33539d99",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "paragraph",
+      "paragraph": {
+        "text": []
+      }
+    },
+    {
+      "object": "block",
+      "id": "0d9cfffd-9cce-4c58-9052-657378b2defa",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "heading_1",
+      "heading_1": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "server side, cliient side 공통 컴포넌트 사용",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "server side, cliient side 공통 컴포넌트 사용",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "98277876-3417-49e3-bb23-a42089e1e3c4",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "paragraph",
+      "paragraph": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "_app에서 ",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "_app에서 ",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": "HttpErrorBoundary",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": true,
+              "color": "default"
+            },
+            "plain_text": "HttpErrorBoundary",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": "와 ",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "와 ",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": "HttpErrorRouter",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": true,
+              "color": "default"
+            },
+            "plain_text": "HttpErrorRouter",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": " 를 사용하기만 하면 됩니다. 아래와 같이 사용하면 client side 에서는 ErrorBoundary 에서 http status 를 처리하게 되고, server side 에서는 HttpErrorRouter 에서 처리하게 됩니다. ",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": " 를 사용하기만 하면 됩니다. 아래와 같이 사용하면 client side 에서는 ErrorBoundary 에서 http status 를 처리하게 되고, server side 에서는 HttpErrorRouter 에서 처리하게 됩니다. ",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "91c74a70-f9dc-476d-8d10-44f047da94d6",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "code",
+      "code": {
+        "caption": [],
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "import type { AppProps } from \"next/app\";\nimport HttpErrorRouter from \"../components/HttpErrorRouter\";\nimport HttpErrorBoundary from \"../components/HttpErrorBoundary\";\n\nfunction MyApp({ Component, pageProps }: AppProps) {\n  return (\n    <>\n      <HttpErrorBoundary>\n        <HttpErrorRouter status={pageProps?.status}>\n            <Component {...pageProps} />\n        </HttpErrorRouter>\n      </HttpErrorBoundary>\n    </>\n  );\n}\n\nexport default MyApp;",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "import type { AppProps } from \"next/app\";\nimport HttpErrorRouter from \"../components/HttpErrorRouter\";\nimport HttpErrorBoundary from \"../components/HttpErrorBoundary\";\n\nfunction MyApp({ Component, pageProps }: AppProps) {\n  return (\n    <>\n      <HttpErrorBoundary>\n        <HttpErrorRouter status={pageProps?.status}>\n            <Component {...pageProps} />\n        </HttpErrorRouter>\n      </HttpErrorBoundary>\n    </>\n  );\n}\n\nexport default MyApp;",
+            "href": null
+          }
+        ],
+        "language": "javascript"
+      }
+    },
+    {
+      "object": "block",
+      "id": "605c0d08-3582-4f2b-9b1c-6bd9525a9c25",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "paragraph",
+      "paragraph": {
+        "text": []
+      }
+    },
+    {
+      "object": "block",
+      "id": "f0c44d23-b3e9-48a8-9d47-4119dbfff726",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "divider",
+      "divider": {}
+    },
+    {
+      "object": "block",
+      "id": "c57a35dc-4989-4c05-9bdf-526da2d296ca",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "heading_1",
+      "heading_1": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "📣 참고",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "📣 참고",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "0ed1abe1-eefd-4b69-8982-d39490749ef9",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "bookmark",
+      "bookmark": {
+        "caption": [],
+        "url": "https://nextjs.org/docs/advanced-features/custom-error-page#reusing-the-built-in-error-page"
+      }
+    },
+    {
+      "object": "block",
+      "id": "7994d2ad-e3d9-48f7-ade4-5b4fdb44d87b",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "bookmark",
+      "bookmark": {
+        "caption": [],
+        "url": "https://reactjs.org/docs/hooks-faq.html#do-hooks-cover-all-use-cases-for-classes"
+      }
+    },
+    {
+      "object": "block",
+      "id": "7d8a9ecd-3268-4336-8bbe-62fc6d7c52e7",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "bookmark",
+      "bookmark": {
+        "caption": [],
+        "url": "https://eddiewould.com/2021/28/28/handling-rejected-promises-error-boundary-react/"
+      }
+    },
+    {
+      "object": "block",
+      "id": "acbfdf2c-9da0-4b71-8367-5bd02916995c",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "bookmark",
+      "bookmark": {
+        "caption": [],
+        "url": "https://jbee.io/react/error-declarative-handling-3/"
+      }
+    },
+    {
+      "object": "block",
+      "id": "8cffdc7f-430b-4510-8ac6-941448cc4168",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "bookmark",
+      "bookmark": {
+        "caption": [],
+        "url": "https://kentcdodds.com/blog/use-react-error-boundary-to-handle-errors-in-react"
+      }
+    },
+    {
+      "object": "block",
+      "id": "7bb757db-ef5f-48bb-8d05-8168980b2145",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "bookmark",
+      "bookmark": {
+        "caption": [],
+        "url": "https://velog.io/@mementomori/Error-handling"
+      }
+    },
+    {
+      "object": "block",
+      "id": "73b1cbbe-5142-4551-95ce-ff211dd7c4d2",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "bookmark",
+      "bookmark": {
+        "caption": [],
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/Window/unhandledrejection_event"
+      }
+    }
+  ],
+  "next_cursor": null,
+  "has_more": false
+}

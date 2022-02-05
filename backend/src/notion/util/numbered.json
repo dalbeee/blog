@@ -1,0 +1,263 @@
+{
+  "object": "list",
+  "results": [
+    {
+      "object": "block",
+      "id": "1c83c865-2e91-4e78-9380-dd9d66419231",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "paragraph",
+      "paragraph": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "이 예제에서는",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": true,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "이 예제에서는",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": ", 이렇게 만들었습니다 😊",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": ", 이렇게 만들었습니다 😊",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "d279e58b-2d51-4c5d-8478-b706d27ca085",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "numbered_list_item",
+      "numbered_list_item": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "http status 를 필드로 가진 custom Error 클래스 생성",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "http status 를 필드로 가진 custom Error 클래스 생성",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "212b31c2-9af9-49fd-b736-fba62f49b710",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "numbered_list_item",
+      "numbered_list_item": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "http client layer 에서 적절한 1.의 에러 던지기",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "http client layer 에서 적절한 1.의 에러 던지기",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "8e5cd3b4-c82f-4c17-a9bd-d758af661e12",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "numbered_list_item",
+      "numbered_list_item": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "비즈니스 로직에서 try-catch 를 분리하여 http status 를 보내는 컴포넌트 생성 (재사용하기위해 HOC 컴포넌트로 생성)",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "비즈니스 로직에서 try-catch 를 분리하여 http status 를 보내는 컴포넌트 생성 (재사용하기위해 HOC 컴포넌트로 생성)",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "b3512713-d711-47c3-8a44-3cb1a8e32f07",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "numbered_list_item",
+      "numbered_list_item": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "next/error",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": true,
+              "color": "default"
+            },
+            "plain_text": "next/error",
+            "href": null
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": " 컴포넌트를 사용해서 http status별로 라우팅하는 HttpErrorRouter 생성",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": " 컴포넌트를 사용해서 http status별로 라우팅하는 HttpErrorRouter 생성",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "734c48b5-de12-4c1c-82b7-c315c7131dd8",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "numbered_list_item",
+      "numbered_list_item": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "적절한 곳에 4. 을 넣고 prop 전달",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "적절한 곳에 4. 을 넣고 prop 전달",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "f392c84b-10fc-4c25-b795-ec7b3b16094b",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "numbered_list_item",
+      "numbered_list_item": {
+        "text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "서버연산이 필요한 곳에서 3. 을 합성해서 사용하기",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "서버연산이 필요한 곳에서 3. 을 합성해서 사용하기",
+            "href": null
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "id": "d6f487e0-0d5f-40e8-8dc3-7c8951410c58",
+      "created_time": "2022-02-04T07:33:00.000Z",
+      "last_edited_time": "2022-02-04T07:33:00.000Z",
+      "has_children": false,
+      "archived": false,
+      "type": "paragraph",
+      "paragraph": {
+        "text": []
+      }
+    }
+  ],
+  "next_cursor": null,
+  "has_more": false
+}

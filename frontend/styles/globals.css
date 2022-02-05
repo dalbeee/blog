@@ -24,7 +24,7 @@
   }
 
   .markdown * + * {
-    @apply mt-0 mb-4;
+    @apply mt-0 mb-0;
   }
 
   .markdown a {
@@ -32,19 +32,27 @@
   }
 
   .markdown ul {
-    @apply pl-8 text-base;
+    @apply pl-8 text-base rounded-xl;
   }
 
   .markdown ol {
-    @apply pl-8 text-base list-decimal;
+    @apply pl-8 pr-4 py-2 text-base list-decimal bg-gray-100 rounded-xl ;
+  }
+  
+  .markdown li > ol{
+    @apply py-0;
   }
 
-  /* .markdown li {
-    @apply inline-block p-3 text-2xl font-semibold bg-gray-600 bg-yellow-100 rounded-xl;
-  } */
+  .markdown li {
+    @apply text-sm py-1 rounded-xl;
+  }
 
-  .markdown li + li {
-    @apply mt-1;
+   .markdown li > ol > li {
+    @apply py-0;
+  } 
+  
+  .markdown li > p {
+    @apply mt-0 py-0;
   }
 
   .markdown li > p + p {
@@ -88,15 +96,15 @@
   }
 
   .markdown code {
-    @apply p-1 text-red-500 bg-gray-200 rounded-lg;
+    @apply text-red-400 text-sm tracking-tight;
   }
 
   .markdown pre {
-    @apply p-4 bg-gray-100 rounded;
+    @apply p-2 bg-gray-100 rounded-xl;
   }
 
   .markdown pre > code {
-    @apply block p-2 overflow-visible overflow-x-auto leading-tight text-gray-600 bg-transparent bg-gray-200 rounded-none;
+    @apply text-gray-600 block p-2 overflow-visible overflow-x-auto leading-tight bg-transparent;
   }
 
   .markdown kbd {

@@ -11,15 +11,6 @@ export type SubBlockType =
   | 'image'
   | null;
 
-type Annotation =
-  | 'bold'
-  | 'italic'
-  | 'strikethrough'
-  | 'underline'
-  | 'code'
-  | 'color'
-  | null;
-
 interface Annotations {
   bold: boolean;
   italic: boolean;
@@ -27,12 +18,13 @@ interface Annotations {
   underline: boolean;
   code: boolean;
   color: boolean;
+
   [key: string]: unknown;
 }
 
-export interface SubBlock {
-  type: string;
-  text: {
+export interface TextSubBlock {
+  type: SubBlockType;
+  text?: {
     content: null | string;
     link: null | {
       url: string;
@@ -41,4 +33,17 @@ export interface SubBlock {
   annotations?: Annotations;
   plain_text: string | null;
   href: null | string;
+}
+
+export interface SubBlock {
+  type: SubBlockType;
+  text?: {
+    content: null | string;
+    link: null | {
+      url: string;
+    };
+    annotations?: Annotations;
+    plain_text: string | null;
+    href: null | string;
+  }[];
 }

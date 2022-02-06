@@ -1,8 +1,8 @@
 import { NotionBlock } from '../domain/types/notion-block';
-import { SubBlock } from '../domain/types/sub-block';
+import { SubBlock, TextSubBlock } from '../domain/types/sub-block';
 import { Block } from '../domain/types/block';
 
-const parseDataFromSubBlock = (subBlock: SubBlock) => {
+const parseDataFromTextSubBlock = (subBlock: TextSubBlock) => {
   if (subBlock.text?.link?.url) {
     const link = subBlock.text?.link?.url;
     return `[${subBlock.plain_text}](${link})`;
@@ -16,10 +16,10 @@ const parseDataFromSubBlock = (subBlock: SubBlock) => {
   return subBlock.plain_text;
 };
 
-const parseSubBlockExLink = (subBlocks: SubBlock[]) => {
+const parsingTextSubBlock = (subBlocks: TextSubBlock[]) => {
   return subBlocks
     .map((subBlock) => {
-      const result = parseDataFromSubBlock(subBlock);
+      const result = parseDataFromTextSubBlock(subBlock);
       return result;
     })
     .join('');
@@ -39,50 +39,49 @@ const parsingBlock = (blocks: Block[]) => {
     .map((block) => {
       switch (block.type) {
         case 'heading_1': {
-          const subBlockText: SubBlock[] = block['heading_1'].text;
-          const result = parseSubBlockExLink(subBlockText);
+          const subBlockText = block['heading_1'].text;
+          const result = parsingTextSubBlock(subBlockText);
           return `## ${result}\n`;
         }
         case 'heading_2': {
-          const subBlockText: SubBlock[] = block['heading_2'].text;
-          const result = parseSubBlockExLink(subBlockText);
+          const subBlockText = block['heading_2'].text;
+          const result = parsingTextSubBlock(subBlockText);
           return `### ${result}\n`;
         }
         case 'heading_3': {
-          const subBlockText: SubBlock[] = block['heading_3'].text;
-          const result = parseSubBlockExLink(subBlockText);
+          const subBlockText = block['heading_3'].text;
+          const result = parsingTextSubBlock(subBlockText);
           return `#### ${result}\n`;
         }
         case 'paragraph': {
-          const subBlockText: SubBlock[] = block['paragraph'].text;
-          const result = parseSubBlockExLink(subBlockText);
+          const subBlockText = block['paragraph'].text;
+          const result = parsingTextSubBlock(subBlockText);
           return `${result}\n`;
         }
         case 'code': {
-          const subBlockText: SubBlock[] = block['code'].text;
-          const result = parseSubBlockExLink(subBlockText);
+          const subBlockText = block['code'].text;
+          const result = parsingTextSubBlock(subBlockText);
           return `\`\`\`\n${result}\n\`\`\`\n`;
         }
         case 'quote': {
-          const subBlockText: SubBlock[] = block['quote'].text;
-          const result = parseSubBlockExLink(subBlockText);
+          const subBlockText = block['quote'].text;
+          const result = parsingTextSubBlock(subBlockText);
           return `> ${result}\n> \n`;
         }
         case 'numbered_list_item': {
-          const subBlockText: SubBlock[] = block['numbered_list_item'].text;
-          const result = parseSubBlockExLink(subBlockText);
+          const subBlockText = block['numbered_list_item'].text;
+          const result = parsingTextSubBlock(subBlockText);
           return `${result}\n`;
         }
         case 'bookmark': {
           const url: string = block['bookmark']?.url;
           return `[${url}](${url})\n`;
         }
-
-        // case 'image': {
-        //   const subBlockText:SubBlock[] = subBlock['image'];
-        //   const result = subBlock.file.url;
-        //   return `![image](${result || '#'})`;
-        // }
+        case 'image': {
+          const subBlock = block['image'];
+          const result = subBlock.file.url;
+          return `![image](${result || '#'})`;
+        }
 
         default:
           return null;

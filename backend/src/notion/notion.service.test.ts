@@ -4,14 +4,11 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import * as faker from 'faker';
 import { Repository } from 'typeorm';
 
-import { PostModule } from '@src/post/post.module';
 import { PostRepository } from '@src/post/post.repository';
 import { PostService } from '@src/post/post.service';
-import { NotionModule } from './notion.module';
 import { NotionService } from './notion.service';
 import { Post } from '@src/post/entity/post.entity';
 import { NotionPost } from './domain/types/notion-post';
-import { NotionBlock } from './domain/types/notion-block';
 
 type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>;
 

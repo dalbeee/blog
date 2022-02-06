@@ -10,7 +10,6 @@ import { NotionService } from './notion.service';
 import { NotionCronService } from './notion.cron.service';
 import { UsersModule } from '@src/user/user.module';
 import { NotionConfigService } from './notion.config.service';
-import { NotionUseCase } from './notion.usecase';
 import { NotionRepository } from './notion.repository';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigModule } from '@src/config/config.module';
@@ -39,7 +38,6 @@ import { ConfigService } from '@src/config/config.service';
         };
       },
     }),
-
     PostModule,
     UsersModule,
     ConfigModule,
@@ -50,7 +48,6 @@ import { ConfigService } from '@src/config/config.service';
     NotionConfigService,
     NotionSync,
     NotionCronService,
-    NotionUseCase,
     NotionRepository,
   ],
   exports: [NotionService],

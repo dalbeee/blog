@@ -1,4 +1,4 @@
-import { BlockItem } from './block-item';
+import { TextSubBlock } from './sub-block';
 
 export type BlockType =
   | 'heading_1'
@@ -12,6 +12,7 @@ export type BlockType =
   | 'code'
   | 'image'
   | 'bookmark'
+  | 'divider'
   | null;
 
 export interface Block {
@@ -24,10 +25,24 @@ export interface Block {
   type: BlockType;
 
   //   optional
-  heading_1?: BlockItem;
-  heading_2?: BlockItem;
-  heading_3?: BlockItem;
-  paragraph?: BlockItem;
-  image?: BlockItem;
-  numbered_list_item: BlockItem;
+  heading_1?: { text?: TextSubBlock[] };
+  heading_2?: { text?: TextSubBlock[] };
+  heading_3?: { text?: TextSubBlock[] };
+  paragraph?: { text?: TextSubBlock[] };
+  quote?: { text?: TextSubBlock[] };
+  numbered_list_item?: { text?: TextSubBlock[] };
+  code?: {
+    caption?: [];
+    text?: TextSubBlock[];
+    language?: 'javascript' | string;
+  };
+  image?: {
+    caption?: [];
+    type?: string;
+    file?: { url: string; expiry_time: string };
+  };
+  divider?: {};
+  bookmark?: { caption?: []; url?: string };
+
+  [key: string]: unknown;
 }

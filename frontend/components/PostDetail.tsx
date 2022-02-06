@@ -9,9 +9,6 @@ import { Post } from "../core/domain";
 
 const PostDetail = ({ post }: { post: Post }) => {
   const router = useRouter();
-  if (router.isFallback) return <div>loading...</div>;
-
-  if (!post) return null;
 
   const renderers: Components = {
     img: (image: any) => {

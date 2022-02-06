@@ -24,10 +24,9 @@ export class NotionSync {
   }
 
   @Process('syncNotionPosts')
-  async getDBService(job: Job) {
+  async syncNotionPosts(job: Job) {
     try {
       await this.notionConfigService.isValidConfiguration();
-
       const notYetSavedPosts =
         await this.notionService.findPostsNotYetSavedLocal();
 

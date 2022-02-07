@@ -35,7 +35,7 @@ jobs:
     - run: yarn build
       working-directory: ${{ env.working-directory }}
     
-    - run: yarn test
+    - run: yarn test:unit
       working-directory: ${{ env.working-directory }}
    # - run: yarn test:e2e
    #   working-directory: ${{ env.working-directory }}
@@ -62,8 +62,8 @@ jobs:
     - run: yarn install
       working-directory: ${{ env.working-directory }}
       
-    - run: yarn build
-      working-directory: ${{ env.working-directory }}
+   # - run: yarn build
+   #   working-directory: ${{ env.working-directory }}
     
     - run: yarn test:unit
       working-directory: ${{ env.working-directory }}

@@ -17,7 +17,7 @@ describe("configService with ENV", () => {
 
 describe("configService with ENV", () => {
   let config: ConfigService;
-  let configPath = "./data/tempConfig.env";
+  let configPath = "./tempConfig.env";
   beforeEach(async () => {
     config = new ConfigService({ configPath, exportType: "ENV" });
   });

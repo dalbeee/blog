@@ -8,7 +8,7 @@ interface Props {
   exportType?: ExportType | null;
 }
 
-class ConfigService {
+export class ConfigService {
   private configPath: string;
   private exportType: ExportType;
 

@@ -27,6 +27,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+        cache-dependency-path: ${{ env.working-directory }}
     
     - run: yarn install
       working-directory: ${{ env.working-directory }}

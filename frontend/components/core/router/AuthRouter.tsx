@@ -2,10 +2,10 @@ import { useRouter } from "next/router";
 import { FC, useEffect, useState } from "react";
 
 import { useUser } from "../../../hooks/useUser";
-import Http403 from "../../core/pages/Http403";
 import SuspensePage from "../pages/SuspensePage";
 import { coreAPI } from "../../../core/coreAPI";
 import { User } from "../../../core/domain";
+import ErrorPage from "../pages/ErrorPage";
 
 const AuthRouter: FC<{ role?: string }> = ({ children, role }) => {
   const userAPI = useUser();
@@ -34,7 +34,7 @@ const AuthRouter: FC<{ role?: string }> = ({ children, role }) => {
 
   if (!isFetched) return <SuspensePage />;
 
-  if (role && !user?.roles?.includes(role)) return <Http403 />;
+  if (role && !user?.roles?.includes(role)) return <ErrorPage status={403} />;
 
   return <>{children}</>;
 };

@@ -1,10 +1,10 @@
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { GetStaticProps, GetStaticPropsContext } from "next";
 
 import { HttpException } from "../../core/share/error";
 
-export const WithServerSideHttpHandler =
-  (fn: GetServerSideProps): GetServerSideProps =>
-  async (ctx: GetServerSidePropsContext) => {
+export const WithGetStaticPropsHttpHandler =
+  (fn: GetStaticProps): GetStaticProps =>
+  async (ctx: GetStaticPropsContext) => {
     try {
       return await fn(ctx);
     } catch (error) {

@@ -1,4 +1,3 @@
-import { useRouter } from "next/router";
 import React from "react";
 import ReactMarkdown from "react-markdown";
 import { Components } from "react-markdown/lib/ast-to-react";
@@ -8,7 +7,7 @@ import ImageProvider from "./core/providers/ImageProvider";
 import { Post } from "../core/domain";
 
 const PostDetail = ({ post }: { post: Post }) => {
-  const router = useRouter();
+  // if (!post) return null;
 
   const renderers: Components = {
     img: (image: any) => {

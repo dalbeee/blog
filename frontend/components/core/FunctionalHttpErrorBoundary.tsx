@@ -1,8 +1,8 @@
-import NextError from "next/error";
 import { useRouter } from "next/router";
 import { FC, useCallback, useEffect, useState } from "react";
 
 import { HttpException } from "../../core/share/error";
+import ErrorPage from "./pages/ErrorPage";
 
 const FunctionalHttpErrorBoundary: FC<any> = ({ children }) => {
   const [error, setError] = useState<HttpException | null>(null);
@@ -37,7 +37,7 @@ const FunctionalHttpErrorBoundary: FC<any> = ({ children }) => {
   useEffect(() => {}, [error]);
 
   if (error instanceof HttpException)
-    return <NextError statusCode={error.status} />;
+    return <ErrorPage status={error.status} />;
 
   return <div>{children}</div>;
 };

@@ -5,6 +5,7 @@ import {
   BadRequestException,
   ConflictException,
   ForbiddenException,
+  InternalServerErrorException,
   NotFoundException,
   ServiceUnavailableException,
   UnauthorizedException,
@@ -14,6 +15,13 @@ export const responseErrorMiddleware = (axios: AxiosInstance) => {
   axios.interceptors.response.use(
     (res) => res,
     (err) => {
+      // if (!Axios.isAxiosError(error)) return;
+      if (err.code === "ECONNREFUSED" || err.message === "Network Error")
+        throw new ServiceUnavailableException(
+          "connection error from http layer"
+        );
+      if (!err.response) throw new InternalServerErrorException();
+
       if (err?.response?.status === 400) throw new BadRequestException();
       if (err?.response?.status === 401) throw new UnauthorizedException();
       if (err?.response?.status === 403) throw new ForbiddenException();

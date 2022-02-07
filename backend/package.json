@@ -14,8 +14,8 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "test": "jest --config ./jest.config.unit.ts",
-    "test:w": "yarn test --watch",
+    "test:unit": "jest --config ./jest.config.unit.ts",
+    "test:watch": "yarn test:unit --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./jest.config.e2e.ts --watchAll --runInBand"

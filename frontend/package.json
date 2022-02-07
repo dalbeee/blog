@@ -7,7 +7,8 @@
     "rimraf": "rm -rf .next",
     "build": "yarn rimraf && next build",
     "start": "next start",
-    "test": "jest --watch"
+    "test:unit": "jest --config ./jest.config.ts",
+    "test:watch": "yarn jest:unit --watch"
   },
   "dependencies": {
     "@emotion/react": "^11.7.1",

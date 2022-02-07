@@ -27,7 +27,7 @@ export class NotionCronService {
 
   addNotionCron() {
     const job = new CronJob(
-      `${process.env.NODE_ENV ? '*/10' : '0'} * * * * *`,
+      `${process.env.NODE_ENV === 'production' ? '0' : '*/10'} * * * * *`,
       () => {
         this.notionSync.add('syncNotionPosts');
         this.logger.log('del cron');

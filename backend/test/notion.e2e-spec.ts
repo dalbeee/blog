@@ -1,7 +1,6 @@
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { getConnection } from 'typeorm';
-import * as request from 'supertest';
 
 import { AppModule } from '@src/app.module';
 import { getUserAndJwt } from './util/getUserAndJwt';
@@ -24,56 +23,13 @@ afterAll(async () => {
 });
 
 describe('NOTION MODULE', () => {
-  let user: UserDTO;
-  let token: string;
+  let userAndJwt: { user: UserDTO; token: string };
 
   beforeAll(async () => {
-    [user, token] = await getUserAndJwt(app);
+    userAndJwt = await getUserAndJwt(app);
   });
 
-  describe('[GET] /notion/initVariables', () => {
+  describe('[GET] /notion/status', () => {
     it('', async () => {});
-  });
-
-  describe('[GET] /notion/sync', () => {
-    const items = [
-      {
-        key: 'NOTION_API_KEY',
-        value: process.env.NOTION_API_KEY,
-      },
-      {
-        key: 'NOTION_DATABASE_ID',
-        value: process.env.NOTION_DATABASE_ID,
-      },
-    ];
-
-    it('without api key return 403', async () => {
-      // with empty api key, sync return 403
-      await request(app.getHttpServer())
-        .get(`/notion/sync`)
-        .set('Authorization', `Bearer ${token}`)
-        .expect(403);
-    });
-
-    it('with valid api key return 200, true', async () => {
-      // set api key
-      await request(app.getHttpServer())
-        .patch(`/admin/config`)
-        .set('Authorization', `Bearer ${token}`)
-        .send(items)
-        .expect(200);
-
-      // apply variables
-      await request(app.getHttpServer())
-        .get(`/notion/initVariables`)
-        .set('Authorization', `Bearer ${token}`)
-        .expect(200);
-
-      // sync return true
-      await request(app.getHttpServer())
-        .get(`/notion/sync`)
-        .set('Authorization', `Bearer ${token}`)
-        .expect(200);
-    });
   });
 });

@@ -10,11 +10,11 @@ const config: Config.InitialOptions = {
 // Or async function
 export default async (): Promise<Config.InitialOptions> => {
   return {
-    verbose: true,
+    // verbose: true,
     moduleFileExtensions: ['js', 'json', 'ts'],
     roots: ['.'],
 
-    testRegex: '.[^e2e].*test.ts$',
+    testRegex: '^.+\\e2e-spec.ts$',
     transform: {
       '^.+\\.(t|j)s$': 'ts-jest',
     },
@@ -22,7 +22,7 @@ export default async (): Promise<Config.InitialOptions> => {
     moduleNameMapper: {
       '@src/(.*)': '<rootDir>/src/$1',
     },
-    transformIgnorePatterns: ['./node_modules/', './test/'],
+    transformIgnorePatterns: ['./node_modules/'],
     coverageDirectory: '../coverage',
     setupFiles: ['./jest.setup.dev.ts'],
   };

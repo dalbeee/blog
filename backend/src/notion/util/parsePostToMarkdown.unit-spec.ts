@@ -12,7 +12,7 @@ describe('markdown', () => {
 
     console.log(data);
   });
-  it.only('image', async () => {
+  it('image', async () => {
     const notionPost: NotionBlock = await JSON.parse(
       fs.readFileSync('./src/notion/util/image.json', 'utf8'),
     );

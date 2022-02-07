@@ -25,17 +25,16 @@ afterAll(async () => {
 
 describe('AUTH MODULE', () => {
   describe('@POST /auth/login', () => {
-    let user: UserDTO;
-    let token: string;
+    let user: { user: UserDTO; token: string };
 
     beforeAll(async () => {
-      [user, token] = await getUserAndJwt(app);
+      user = await getUserAndJwt(app);
     });
 
     it('with successful login will get jwt token', async () => {
       const { body } = await request(app.getHttpServer())
         .post(`/auth/login`)
-        .send({ email: user.email, password: user.password });
+        .send({ email: user.user.email, password: user.user.password });
 
       expect(body.access_token).toEqual(expect.any(String));
     });
@@ -43,27 +42,27 @@ describe('AUTH MODULE', () => {
     it('with successful login will return 200', async () => {
       await request(app.getHttpServer())
         .post(`/auth/login`)
-        .send({ email: user.email, password: user.password })
+        .send({ email: user.user.email, password: user.user.password })
         .expect(200);
     });
 
     it('with invalid password login will return 401', async () => {
       await request(app.getHttpServer())
         .post(`/auth/login`)
-        .send({ email: user.email, password: '123456' })
+        .send({ email: user.user.email, password: '123456' })
         .expect(401);
     });
 
     it('with invalid email login will return 401', async () => {
       await request(app.getHttpServer())
         .post(`/auth/login`)
-        .send({ email: 'test@gmail.com', password: user.password })
+        .send({ email: 'test@gmail.com', password: user.user.password })
         .expect(401);
     });
 
     it(`export util function 'getUserAndJwt' will valid`, async () => {
-      [user, token] = await getUserAndJwt(app);
-      expect(token).toEqual(expect.any(String));
+      const userAndJwt = await getUserAndJwt(app);
+      expect(userAndJwt.token).toEqual(expect.any(String));
     });
   });
 });

@@ -15,11 +15,16 @@ import { LoggerModule } from './logger/logger.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ConfigModule } from './config/config.module';
 
+const host =
+  process.env.NEST_ROLE === 'test'
+    ? process.env.NEST_CONFIG_DB_URL_TEST
+    : process.env.NEST_CONFIG_DB_URL;
+
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: process.env.NEST_CONFIG_DB_URL,
+      host,
       port: +process.env.NEST_CONFIG_DB_PORT,
       username: process.env.NEST_CONFIG_DB_USER,
       password: process.env.NEST_CONFIG_DB_PASSWORD,

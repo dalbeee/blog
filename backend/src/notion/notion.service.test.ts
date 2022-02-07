@@ -81,16 +81,16 @@ const mockLocalPosts: Partial<Post>[] = [
 describe('getPostToString', () => {
   it('success will return any string', async () => {
     const url = 'b640af6c-a8a9-4c78-9693-acfe84ee6661';
-    const result = await notionService.findPostFromServerToString(url);
+    const result = await notionService.findPostToMarkdownFromServer(url);
     expect(result).toEqual(expect.any(String));
   });
 
   it('fail will return not string', async () => {
     const url = 'b640af6c-a8a9-4c78-9693-acfe84ee66611';
 
-    await expect(notionService.findPostFromServerToString(url)).rejects.toThrow(
-      HttpException,
-    );
+    await expect(
+      notionService.findPostToMarkdownFromServer(url),
+    ).rejects.toThrow(HttpException);
   });
 });
 

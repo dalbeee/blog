@@ -21,6 +21,7 @@ import { NotionRepository } from './notion.repository';
 import { parseNotionPostToMarkdown } from './util';
 import { DatabaseQueryResult } from './domain/types/database-query-result';
 import { findImageUrlsFromRawContent } from './util/findImageUrlsFromRawContent';
+import { NotionBlock } from './domain/types/notion-block';
 
 @Injectable()
 export class NotionService {
@@ -38,8 +39,13 @@ export class NotionService {
     });
   }
 
-  async findPostFromServerToString(url: string): Promise<string> {
-    const result = await this.notionRepository.getPost(url);
+  async findPostToMarkdownFromServer(url: string): Promise<string> {
+    let result: NotionBlock;
+    try {
+      result = await this.notionRepository.getPost(url);
+    } catch (error) {
+      throw new Error('notion API error');
+    }
 
     const parseMarkDown = parseNotionPostToMarkdown(result);
     return parseMarkDown;
@@ -115,12 +121,7 @@ export class NotionService {
   }
 
   async syncPostToLocal(user: User, post: NotionPost) {
-    let content: string;
-    try {
-      content = await this.findPostFromServerToString(post.id);
-    } catch (error) {
-      throw new HttpException({ message: 'notion API was busy.' }, 429);
-    }
+    const content = await this.findPostToMarkdownFromServer(post.id);
 
     const postDTO: PatchPostDTO | CreatePostDTO = {
       title: post.title,

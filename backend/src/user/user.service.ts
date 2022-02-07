@@ -25,7 +25,7 @@ export class UserService {
         // { relations: ['posts', 'comments'] },
       );
     } catch (error) {
-      throw new Error();
+      throw new NotFoundException();
     }
   }
 
@@ -53,16 +53,16 @@ export class UserService {
   async patchUser(user: User, updateUserDTO: UpdateUserDTO): Promise<any> {
     if (updateUserDTO?.email) {
       try {
-        const findRow = await this.findByEmail(updateUserDTO.email);
-        if (findRow) throw new ConflictException('email not available');
-      } catch (error) {
-        this.logger.log(error);
-      }
+        const result = await this.findByEmail(updateUserDTO.email);
+        if (result) throw new ConflictException('email not available');
+      } catch (error) {}
     }
 
     if (updateUserDTO?.username) {
-      const findRow = await this.findByName(updateUserDTO.username);
-      if (findRow) throw new ConflictException('username not available');
+      try {
+        const result = await this.findByName(updateUserDTO.username);
+        if (result) throw new ConflictException('username not available');
+      } catch (error) {}
     }
 
     try {

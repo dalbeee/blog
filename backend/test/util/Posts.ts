@@ -2,9 +2,8 @@ import * as faker from 'faker';
 import * as request from 'supertest';
 import { INestApplication } from '@nestjs/common';
 
-import { CreatePostDTO } from '@blog/core/dist/domain';
-
 import { Post } from '@src/post/entity/post.entity';
+import { CreatePostDTO } from '@src/post/dto/post-create.dto';
 
 export const generatePosts = async (
   app: INestApplication,

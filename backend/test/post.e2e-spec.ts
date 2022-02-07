@@ -28,10 +28,9 @@ afterAll(async () => {
 });
 
 describe('POST MODULE', () => {
-  let user: UserDTO;
-  let token: string;
+  let userAndJwt: { user: UserDTO; token: string };
   beforeAll(async () => {
-    [user, token] = await getUserAndJwt(app);
+    userAndJwt = await getUserAndJwt(app);
   });
 
   describe('check functions', () => {
@@ -41,7 +40,7 @@ describe('POST MODULE', () => {
       await request(app.getHttpServer())
         .post(`/posts`)
         .send(post)
-        .set('Authorization', `Bearer ${token}`)
+        .set('Authorization', `Bearer ${userAndJwt.token}`)
         .expect(201);
     });
   });
@@ -60,7 +59,7 @@ describe('POST MODULE', () => {
       await request(app.getHttpServer())
         .post(`/posts`)
         .send(post)
-        .set('Authorization', `Bearer ${token}`)
+        .set('Authorization', `Bearer ${userAndJwt.token}`)
         .expect(400);
     });
 
@@ -70,7 +69,7 @@ describe('POST MODULE', () => {
       const { body } = await request(app.getHttpServer())
         .post(`/posts`)
         .send(post)
-        .set('Authorization', `Bearer ${token}`)
+        .set('Authorization', `Bearer ${userAndJwt.token}`)
         .expect(201);
 
       expect(body).toMatchObject(post);
@@ -81,7 +80,7 @@ describe('POST MODULE', () => {
     let posts: Post[];
 
     beforeAll(async () => {
-      posts = await generatePosts(app, { token, length: 1 });
+      posts = await generatePosts(app, { token: userAndJwt.token, length: 1 });
     });
 
     it('success will return 200', async () => {
@@ -94,7 +93,7 @@ describe('POST MODULE', () => {
       const { body } = await request(app.getHttpServer())
         .patch(`/posts/${posts[0].id}`)
         .send(updatePostDTO)
-        .set('Authorization', `Bearer ${token}`)
+        .set('Authorization', `Bearer ${userAndJwt.token}`)
         .expect(200);
 
       expect(body.content).toEqual(updatePostDTO.content);
@@ -105,12 +104,12 @@ describe('POST MODULE', () => {
 
       await request(app.getHttpServer())
         .patch(`/posts/${posts[0].id}`)
-        .set('Authorization', `Bearer ${token}`)
+        .set('Authorization', `Bearer ${userAndJwt.token}`)
         .send(patchPostDTO)
         .expect(200);
     });
     it('wrong user attempt patch will return 403', async () => {
-      const [user2, token2] = await getUserAndJwt(app);
+      const userAndJwt = await getUserAndJwt(app);
 
       const patchPostDTO: PatchPostDTO = {
         title: faker.datatype.string(10),
@@ -119,7 +118,7 @@ describe('POST MODULE', () => {
 
       await request(app.getHttpServer())
         .patch(`/posts/${posts[0].id}`)
-        .set('Authorization', `Bearer ${token2}`)
+        .set('Authorization', `Bearer ${userAndJwt.token}`)
         .send(patchPostDTO)
         .expect(403);
     });

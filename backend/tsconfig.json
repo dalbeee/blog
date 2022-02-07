@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-use-before-define
 {
   "compilerOptions": {
     "paths": { "@src/*": ["./src/*"] },

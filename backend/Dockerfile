@@ -16,19 +16,19 @@ RUN chown -R node:node /app
 USER node
 WORKDIR /app
 COPY --chown=node:node --from=config /app .
-CMD yarn test:e2e
+CMD yarn test:unit && yarn test:e2e
 
 FROM node:lts-alpine as source
 USER node
 WORKDIR /app
 COPY . .
 
-
 FROM node:lts-alpine as build
 USER node
 WORKDIR /app
-COPY --chown=node:node --from=source /app .
+COPY --chown=node:node --from=config /app .
 RUN yarn install --frozen-lockfile
+COPY --chown=node:node --from=source /app .
 RUN yarn build
 
 FROM node:lts-alpine as node_modules_production

@@ -5,9 +5,7 @@
     "test",
     "dist",
     "**/*spec.ts",
-    "jest.config.ts",
-    "jest.setup.dev.ts",
-    "jest.config.e2e.ts",
-    "jest.config.unit.ts"
+    "jest*",
+    "tsconfig*"
   ]
 }

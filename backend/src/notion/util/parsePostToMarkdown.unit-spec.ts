@@ -9,15 +9,11 @@ describe('markdown', () => {
       fs.readFileSync('./src/notion/util/numbered.json', 'utf8'),
     );
     const data = parseNotionPostToMarkdown(notionPost);
-
-    console.log(data);
   });
   it('image', async () => {
     const notionPost: NotionBlock = await JSON.parse(
       fs.readFileSync('./src/notion/util/image.json', 'utf8'),
     );
     const data = parseNotionPostToMarkdown(notionPost);
-
-    console.log(data);
   });
 });

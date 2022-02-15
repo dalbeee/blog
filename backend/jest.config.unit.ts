@@ -10,7 +10,7 @@ export default async (): Promise<Config.InitialOptions> => {
 
     testRegex: '^.*\\.unit-spec.ts$',
     transform: {
-      '^.+\\.(t|j)s$': 'ts-jest',
+      '^.+\\.ts$': 'ts-jest',
     },
     testEnvironment: 'node',
     moduleNameMapper: {
@@ -19,6 +19,6 @@ export default async (): Promise<Config.InitialOptions> => {
     testPathIgnorePatterns: ['./test/'],
     transformIgnorePatterns: ['./node_modules/', './test/'],
     coverageDirectory: '../coverage',
-    setupFiles: ['./jest.setup.dev.ts'],
+    // setupFiles: ['./jest.setup.dev.ts'],
   };
 };

@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BullModule } from '@nestjs/bull';
-import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
+import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 
 import { UsersModule } from '@src/user/user.module';
 import { AuthModule } from '@src/auth/auth.module';
@@ -14,6 +14,8 @@ import { NotionModule } from './notion/notion.module';
 import { LoggerModule } from './logger/logger.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ConfigModule } from './config/config.module';
+import { UnhandledExceptionsFilter } from './share/filter/unhandledException.filter';
+import { HttpExceptionFilter } from './share/filter/httpException.filter';
 
 const host =
   process.env.NEST_ROLE === 'test'
@@ -50,6 +52,8 @@ const host =
     ConfigModule,
   ],
   providers: [
+    { provide: APP_FILTER, useClass: UnhandledExceptionsFilter },
+    { provide: APP_FILTER, useClass: HttpExceptionFilter },
     {
       provide: APP_INTERCEPTOR,
       useClass: ClassSerializerInterceptor,

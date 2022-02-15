@@ -33,3 +33,5 @@ services:
   db:
     command: --default-authentication-plugin=mysql_native_password
     env_file: .env.prod
+    ports:
+      - "3306"

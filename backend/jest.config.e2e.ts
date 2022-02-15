@@ -24,6 +24,6 @@ export default async (): Promise<Config.InitialOptions> => {
     },
     transformIgnorePatterns: ['./node_modules/'],
     coverageDirectory: '../coverage',
-    setupFiles: ['./jest.setup.dev.ts'],
+    setupFiles: ['./jest.setup.serial.ts'],
   };
 };

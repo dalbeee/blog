@@ -15,6 +15,12 @@ USER node
 WORKDIR /app
 COPY . .
 
+FROM cypress/browsers:node16.13.2-chrome97-ff96 as e2e
+WORKDIR /app
+COPY --from=config /app .
+RUN yarn add -D cypress
+CMD yarn test:cypress
+
 FROM node:lts-alpine as build
 ARG ANALYZE=true
 ARG NEXT_PRIVATE_SSR_API_URL
@@ -31,8 +37,9 @@ ENV NEXT_PUBLIC_ALL_IMAGE_PROVIDER=$NEXT_PUBLIC_ALL_IMAGE_PROVIDER
 ENV NEXT_PUBLIC_ALL_HTTP_SCHEMA=$NEXT_PUBLIC_ALL_HTTP_SCHEMA
 USER node
 WORKDIR /app
-COPY --chown=node:node --from=source /app .
+COPY --chown=node:node --from=config /app .
 RUN yarn install --frozen-lockfile
+COPY --chown=node:node --from=source /app .
 RUN yarn build
 
 FROM node:lts-alpine as node_modules_production

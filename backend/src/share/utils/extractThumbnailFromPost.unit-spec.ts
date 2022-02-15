@@ -65,6 +65,6 @@ Like links, Images also have a footnote style syntax
   };
 
   const result = extractThumbnailFromPost(post);
-  console.log(result);
+
   expect(result).toEqual(result);
 });

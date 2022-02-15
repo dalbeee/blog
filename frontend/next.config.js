@@ -3,7 +3,7 @@ const withPlugins = require("next-compose-plugins");
 const isDockerBuildTime = !!process.env.ANALYZE;
 const isDev = process.env.NODE_ENV !== "production";
 const isProduction = process.env.NODE_ENV === "production";
-const imageHost = process.env.NEXT_PUBLIC_CONFIG_IMAGE_HOST;
+const imageHost = process.env.NEXT_PUBLIC_CONFIG_IMAGE_HOST || "";
 
 const withBundleAnalyzerLoader = () =>
   isDockerBuildTime

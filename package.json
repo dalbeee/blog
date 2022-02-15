@@ -1,9 +1,19 @@
 {
+  "private": true,
   "scripts": {
-    "build:backend": "docker-compose -f docker-compose.yml -f docker-compose.prod.yml -f docker-compose.prod.args.yml build backend && docker tag blog_backend 10.0.0.102/library/blog-backend && docker push 10.0.0.102/library/blog-backend",
-    "build:frontend": "docker-compose -f docker-compose.yml -f docker-compose.prod.yml -f docker-compose.prod.args.yml build frontend && docker tag blog_frontend 10.0.0.102/library/blog-frontend && docker push 10.0.0.102/library/blog-frontend",
-    "build:nginx-serve-static": "docker-compose -f docker-compose.yml -f docker-compose.prod.yml -f docker-compose.prod.args.yml build nginx-serve-static && docker tag blog_backend 10.0.0.102/library/blog-nginx-serve-static && docker push 10.0.0.102/library/blog-nginx-serve-static",
-    "build": "yarn build:backend && yarn build:frontend && yarn build:nginx-serve-static",
-    "frontend:test:unit": "cd ./frontend && yarn test:unit"
+    "rename": "docker tag blog_${DOCKER_IMAGE} ${DOCKER_REPOSITORY}/blog-${DOCKER_IMAGE}",
+    "docker:config:dev": "docker-compose -f docker-compose.yml -f docker-compose.dev.yml",
+    "docker:config:backend:e2e": "docker-compose -f docker-compose.e2e.backend.yml",
+    "docker:config:frontend:e2e": "docker-compose -f docker-compose.e2e.frontend.yml",
+    "docker:config:production": "docker-compose -f docker-compose.yml -f docker-compose.prod.yml -f docker-compose.prod.args.yml",
+    "docker:test:backend:e2e": "yarn docker:config:backend:e2e build    &&     yarn docker:config:backend:e2e up --abort-on-container-exit --exit-code-from backend",
+    "docker:test:frontend:e2e": "yarn docker:config:frontend:e2e build   &&     yarn docker:config:frontend:e2e up --abort-on-container-exit --exit-code-from frontend",
+    "docker:build:backend": "export DOCKER_IMAGE=backend    &&     yarn docker:test:backend:e2e   &&    yarn docker:config:production build backend  &&    yarn rename",
+    "docker:build:frontend": "export DOCKER_IMAGE=frontend    &&     yarn docker:test:frontend:e2e   &&    yarn docker:config:production build frontend  &&    yarn rename",
+    "docker:build:nginx-serve-static": "export DOCKER_IMAGE=nginx-serve-static    &&     yarn docker:config:production build nginx-serve-static   &&    yarn rename",
+    "docker:push:backend": "yarn docker:build:backend   &&     docker push ${DOCKER_REPOSITORY}/blog-backend",
+    "docker:push:frontend": "yarn docker:build:frontend   &&     docker push ${DOCKER_REPOSITORY}/blog-frontend",
+    "docker:push:nginx-serve-static": "yarn docker:build:nginx-serve-static   &&     docker push ${DOCKER_REPOSITORY}/blog-nginx-serve-static",
+    "cypress": "cd ./frontend   &&     yarn run cypress open"
   }
 }

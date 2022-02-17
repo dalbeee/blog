@@ -15,5 +15,6 @@ describe('markdown', () => {
       fs.readFileSync('./src/notion/util/image.json', 'utf8'),
     );
     const data = parseNotionPostToMarkdown(notionPost);
+    throw new Error('');
   });
 });

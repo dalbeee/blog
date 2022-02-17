@@ -15,7 +15,8 @@ export class NotionCronService {
   ) {
     new Promise((res) =>
       setTimeout(() => {
-        this.initCronService();
+        process.env.NEST_CONFIG_CRON_STATUS === 'true' &&
+          this.initCronService();
       }, 500),
     );
   }

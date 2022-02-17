@@ -15,11 +15,12 @@ USER node
 WORKDIR /app
 COPY . .
 
-FROM cypress/browsers:node16.13.2-chrome97-ff96 as e2e
+FROM cypress/included:9.4.1 as e2e
 WORKDIR /app
-COPY --from=config /app .
-RUN yarn add -D cypress
-CMD yarn test:cypress
+RUN yarn add -D typescript
+COPY cypress.json tsconfig.json ./
+COPY cypress/ ./cypress/
+ENTRYPOINT [ "/bin/sh", "-c", "sleep 15 && npx cypress run"]
 
 FROM node:lts-alpine as build
 ARG ANALYZE=true

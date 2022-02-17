@@ -30,15 +30,16 @@ services:
       - ./storage/uploads/:/app/uploads/
     env_file: .env.dev
 
-  backend_test:
+  backend_e2e:
     build:
       target: testing
       context: ./backend
+    command: npm run start:dev
     volumes:
       - ./backend/:/app/
     env_file: .env.dev
     environment:
-      - NEST_ROLE=test
+      - NEST_CONFIG_APP_ROLE=test
 
   redis:
     image: redis:6.2.6

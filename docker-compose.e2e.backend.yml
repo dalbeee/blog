@@ -14,14 +14,6 @@ services:
     volumes:
       - ./storage/uploads/:/app/uploads/
       
-  frontend:
-    build:
-      target: development
-      context: ./frontend
-    volumes:
-      - ./frontend/:/app/
-    env_file: .env.dev
-
   backend:
     build:
       target: testing

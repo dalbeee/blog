@@ -9,7 +9,7 @@
     "start": "next start",
     "test:unit": "jest --config ./jest.config.ts",
     "test:watch": "yarn jest:unit --watch",
-    "test:cypress": "cypress run"
+    "test:cypress": "npx cypress run"
   },
   "dependencies": {
     "@emotion/react": "^11.7.1",

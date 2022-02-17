@@ -23,7 +23,7 @@ export default async (): Promise<Config.InitialOptions> => {
       "@src/(.*)": "<rootDir>/src/$1",
       // "^@blog/core$": "<rootDir>/../core/src/index.ts",
     },
-    transformIgnorePatterns: ["./node_modules/", "./test/"],
+    testPathIgnorePatterns: ["./node_modules/", "./test/", "./cypress/*"],
     coverageDirectory: "../coverage",
     // setupFiles: ['./jest.setup.dev.ts'],
   };

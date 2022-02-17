@@ -18,7 +18,7 @@ import { UnhandledExceptionsFilter } from './share/filter/unhandledException.fil
 import { HttpExceptionFilter } from './share/filter/httpException.filter';
 
 const host =
-  process.env.NEST_ROLE === 'test'
+  process.env.NEST_CONFIG_APP_ROLE === 'test'
     ? process.env.NEST_CONFIG_DB_URL_TEST
     : process.env.NEST_CONFIG_DB_URL;
 

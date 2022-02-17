@@ -13,6 +13,7 @@ jobs:
   backend-test:
     env:
       working-directory: ./backend
+      SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
     runs-on: ubuntu-latest
 
     strategy:

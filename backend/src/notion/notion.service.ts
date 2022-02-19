@@ -24,6 +24,10 @@ export class NotionService {
     private readonly notionRemoteRepository: NotionRemoteRepository,
   ) {}
 
+  async findPostById(id: string) {
+    return await this.notionRepository.findById(id);
+  }
+
   async findPosts() {
     return await this.notionRepository.findPosts();
   }

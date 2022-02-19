@@ -1,17 +1,8 @@
-import { IsNull, Not } from 'typeorm';
-import {
-  CACHE_MANAGER,
-  HttpException,
-  Inject,
-  Injectable,
-  Logger,
-} from '@nestjs/common';
+import { CACHE_MANAGER, Inject, Injectable, Logger } from '@nestjs/common';
 import { Cache } from 'cache-manager';
-
 import axios from 'axios';
 import { writeFileSync } from 'fs';
 
-import { PostRepository } from '@src/post/post.repository';
 import { User } from '@src/user/entity/user.entity';
 import { NotionPost } from './domain/types/notion-post';
 import { PatchPostDTO } from './domain/dto/patch-post.dto';
@@ -21,26 +12,26 @@ import { parseNotionPostToMarkdown } from './util';
 import { findImageUrlsFromRawContent } from './util/findImageUrlsFromRawContent';
 import { NotionBlock } from './domain/types/notion-block';
 import { getEnv } from '@src/share/utils/getEnv';
+import { NotionRemoteRepository } from './notion.remoteRepository';
 
 @Injectable()
 export class NotionService {
   private readonly logger = new Logger(NotionService.name);
+
   constructor(
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
-    private readonly postRepository: PostRepository,
     private readonly notionRepository: NotionRepository,
+    private readonly notionRemoteRepository: NotionRemoteRepository,
   ) {}
 
   async findPosts() {
-    return await this.postRepository.findAndCount({
-      where: { notionId: Not(IsNull()) },
-    });
+    return await this.notionRepository.findPosts();
   }
 
   async findPostToMarkdownFromServer(url: string): Promise<string> {
     let result: NotionBlock;
     try {
-      result = await this.notionRepository.findPost(url);
+      result = await this.notionRemoteRepository.getRawfindPostData(url);
     } catch (error) {
       throw new Error('notion API error');
     }
@@ -50,50 +41,42 @@ export class NotionService {
   }
 
   async findPostsWithOutOfSyncByUpdatedAtField(): Promise<NotionPost[]> {
-    try {
-      const result: NotionPost[] = [];
-      const serverPosts = await this.notionRepository.findPostsFromServer();
-      const localPosts = await this.notionRepository.findPostsFromLocal();
+    const result: NotionPost[] = [];
+    const serverPosts = await this.notionRemoteRepository.findPosts();
+    const localPosts = await this.notionRepository.findPosts();
 
-      serverPosts.forEach((serverPost) => {
-        const findLocalPost = localPosts.find((localPost) => {
-          return (
-            localPost.id === serverPost.id &&
-            localPost.updatedAt.toISOString() !==
-              serverPost.updatedAt.toISOString()
-          );
-        });
-        if (!findLocalPost) return;
-
-        const targetNotionPost = serverPosts.find(
-          (serverPost) => serverPost.id === findLocalPost.id,
+    serverPosts.forEach((serverPost) => {
+      const findLocalPost = localPosts.find((localPost) => {
+        return (
+          localPost.id === serverPost.id &&
+          localPost.updatedAt.toISOString() !==
+            serverPost.updatedAt.toISOString()
         );
-
-        targetNotionPost && result.push(targetNotionPost);
       });
+      if (!findLocalPost) return;
 
-      return result;
-    } catch (error) {
-      throw error || new Error('find posts failed');
-    }
+      const targetNotionPost = serverPosts.find(
+        (serverPost) => serverPost.id === findLocalPost.id,
+      );
+
+      targetNotionPost && result.push(targetNotionPost);
+    });
+
+    return result;
   }
 
   async findPostsNotYetSavedLocal(): Promise<NotionPost[]> {
-    try {
-      const serverPosts = await this.notionRepository.findPostsFromServer();
-      const localPosts = await this.findPosts().then((r) => r[0]);
+    const result: NotionPost[] = [];
+    const serverPosts = await this.notionRemoteRepository.findPosts();
+    const localPosts = await this.notionRepository.findPosts();
 
-      const result: NotionPost[] = [];
-      serverPosts.forEach((serverPost) => {
-        const isSavedPost = localPosts.some(
-          (localPost) => localPost.notionId === serverPost.id,
-        );
-        !isSavedPost && result.push(serverPost);
-      });
-      return result;
-    } catch (error) {
-      throw error || new Error();
-    }
+    serverPosts.forEach((serverPost) => {
+      const isSavedPost = localPosts.some(
+        (localPost) => localPost.id === serverPost.id,
+      );
+      !isSavedPost && result.push(serverPost);
+    });
+    return result;
   }
 
   async saveImagesFromPostString(url: string): Promise<string> {

@@ -1,36 +1,31 @@
-import { HttpService } from '@nestjs/axios';
 import { Test } from '@nestjs/testing';
+import { User } from '@src/user/entity/user.entity';
+import * as faker from 'faker';
 
-import { NotionPost } from './domain/types/notion-post';
+import { CreatePostDTO } from './domain/dto/create-post.dto';
 import { NotionConfigService } from './notion.config.service';
+import { NotionRemoteRepository } from './notion.remoteRepository';
 import { NotionRepository } from './notion.repository';
-import { getPosts, findPostsFromServer } from './test/notionRepository.assets';
-
-const httpService = () => ({});
+import { posts } from './test/notionRepository.assets';
 
 const notionConfigService = () => ({});
 
 const mockNotionRepository = () => ({
-  find: jest.fn().mockResolvedValue(findPostsFromServer),
-  findPost: jest.fn().mockImplementation(async (id: string) => {
-    const results = getPosts.results.filter((post) => post.id === id);
-    return {
-      ...getPosts,
-      results,
-    };
-  }),
-  findPosts: jest.fn().mockResolvedValue(getPosts),
-  findPostsFromLocal: jest.fn().mockResolvedValue(findPostsFromServer),
-  findPostsFromServer: jest.fn().mockResolvedValue(findPostsFromServer),
+  findById: jest
+    .fn()
+    .mockImplementation(async (id: string) =>
+      posts.filter((post) => post.id === id),
+    ),
+  findPosts: jest.fn().mockResolvedValue(posts),
 });
 
-let notionRepository: NotionRepository;
+let notionRepository: Record<keyof NotionRepository, jest.Mock>;
 
 beforeAll(async () => {
   const moduleRef = await Test.createTestingModule({
     providers: [
-      { provide: NotionRepository, useValue: mockNotionRepository() },
-      { provide: HttpService, useValue: httpService() },
+      NotionRepository,
+      { provide: NotionRemoteRepository, useValue: mockNotionRepository() },
       { provide: NotionConfigService, useValue: notionConfigService() },
     ],
   }).compile();
@@ -42,47 +37,29 @@ beforeAll(async () => {
 });
 
 describe('notionRepository', () => {
-  it('findPostsFromServer', async () => {
-    const serverPosts: NotionPost[] = findPostsFromServer;
-    // [
-    //   {
-    //     id: getPosts.results[0].id,
-    //     title: getPosts.results[0].properties['이름'].title[0].text.content,
-    //     url: getPosts.results[0].url,
-    //     createdAt: parseISO(getPosts.results[0].created_time),
-    //     updatedAt: parseISO(getPosts.results[0].last_edited_time),
-    //   },
-    // ];
-
-    const sut = notionRepository.findPostsFromServer();
-
-    await expect(sut).resolves.toEqual(serverPosts);
-  });
-
-  it('findPostsFromLocal', async () => {
-    const posts = findPostsFromServer;
-
-    const sut = notionRepository.findPostsFromLocal();
-
-    await expect(sut).resolves.toEqual(posts);
-  });
-
-  it('findPost', async () => {
-    const post = {
-      ...getPosts,
-      results: [{ ...getPosts.results[0] }],
-    };
-
-    const sut = notionRepository.findPost(post.results[0].id);
-
-    await expect(sut).resolves.toEqual(post);
-  });
-
   it('findPosts', async () => {
-    const post = getPosts;
+    notionRepository.find = jest.fn().mockResolvedValue(posts);
+    const findPosts = posts;
 
     const sut = notionRepository.findPosts();
 
-    await expect(sut).resolves.toEqual(post);
+    await expect(sut).resolves.toEqual(findPosts);
+  });
+
+  it('createPost', async () => {
+    const createPostDTO: CreatePostDTO = {
+      title: faker.datatype.string(10),
+      content: faker.datatype.string(10),
+      createdAt: faker.datatype.datetime().toISOString(),
+      updatedAt: faker.datatype.datetime().toISOString(),
+    };
+    const user: User = new User({});
+    const post = { ...createPostDTO, user: user };
+    notionRepository.create = jest.fn().mockReturnValue(post);
+    notionRepository.save = jest.fn().mockResolvedValue(post);
+
+    const sut = notionRepository.createPost(user, createPostDTO);
+
+    await expect(sut).resolves.toMatchObject(post);
   });
 });

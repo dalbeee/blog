@@ -8,6 +8,7 @@ import { User } from '@src/user/entity/user.entity';
 import { AppModule } from '@src/app.module';
 import { getUserAndJwt } from './util/getUserAndJwt';
 import { UserDTO } from '@src/user/dto/user.dto';
+import sleep from './util/sleep';
 
 let app: INestApplication;
 
@@ -18,6 +19,7 @@ beforeAll(async () => {
 
   app = moduleRef.createNestApplication();
   await app.init();
+  await sleep(1000);
 });
 
 afterAll(async () => {
@@ -309,21 +311,19 @@ describe('USER MODULE', () => {
       });
     });
 
-    it('after delete, login with same info will return 401', async () => {
-      await request(app.getHttpServer())
-        .delete(`/users/${userAndJwt.user.email}`)
-        .set('Authorization', `Bearer ${userAndJwt.token}`)
-        .expect(200);
+    // it('after delete, login with same info will return 401', async () => {
+    //   await request(app.getHttpServer())
+    //     .delete(`/users/${userAndJwt.user.email}`)
+    //     .set('Authorization', `Bearer ${userAndJwt.token}`)
+    //     .expect(200);
 
-      await request(app.getHttpServer())
-        .post(`/auth/login`)
-        .send({
-          email: userAndJwt.user.email,
-          password: userAndJwt.user.password,
-        })
-        .expect(401);
-    });
+    //   await request(app.getHttpServer())
+    //     .post(`/auth/login`)
+    //     .send({
+    //       email: userAndJwt.user.email,
+    //       password: userAndJwt.user.password,
+    //     })
+    //     .expect(401);
+    // });
   });
 });
-
-type Overwrite<T, U> = { [P in Exclude<keyof T, keyof U>]: T[P] } & U;

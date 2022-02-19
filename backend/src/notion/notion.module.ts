@@ -2,8 +2,6 @@ import { CacheModule, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BullModule } from '@nestjs/bull';
 
-import { PostModule } from '@src/post/post.module';
-import { PostRepository } from '@src/post/post.repository';
 import { NotionController } from './notion.controller';
 import { NotionSync } from './notion.sync';
 import { NotionService } from './notion.service';
@@ -14,6 +12,7 @@ import { NotionRepository } from './notion.repository';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigModule } from '@src/config/config.module';
 import { ConfigService } from '@src/config/config.service';
+import { NotionRemoteRepository } from './notion.remoteRepository';
 
 @Module({
   imports: [
@@ -23,7 +22,7 @@ import { ConfigService } from '@src/config/config.service';
     BullModule.registerQueue({
       name: 'notionSync',
     }),
-    TypeOrmModule.forFeature([PostRepository]),
+    TypeOrmModule.forFeature([NotionRepository]),
     HttpModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -38,7 +37,6 @@ import { ConfigService } from '@src/config/config.service';
         };
       },
     }),
-    PostModule,
     UsersModule,
     ConfigModule,
   ],
@@ -48,7 +46,7 @@ import { ConfigService } from '@src/config/config.service';
     NotionConfigService,
     NotionSync,
     NotionCronService,
-    NotionRepository,
+    NotionRemoteRepository,
   ],
   exports: [NotionService],
 })

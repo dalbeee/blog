@@ -47,7 +47,8 @@ it('test with not images will return null', () => {
   };
 
   const result = extractThumbnailFromPost(test);
-  expect(result).toEqual(null);
+
+  expect(result).toEqual(undefined);
 });
 
 it('test with success will return image path', () => {

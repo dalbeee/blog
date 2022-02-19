@@ -9,7 +9,6 @@ import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 
 import { UsersModule } from '@src/user/user.module';
 import { AuthModule } from '@src/auth/auth.module';
-import { PostModule } from './post/post.module';
 import { NotionModule } from './notion/notion.module';
 import { LoggerModule } from './logger/logger.module';
 import { ScheduleModule } from '@nestjs/schedule';
@@ -45,11 +44,8 @@ const host =
     ScheduleModule.forRoot(),
     UsersModule,
     AuthModule,
-    PostModule,
     NotionModule,
-    // AdminModule,
     LoggerModule,
-    // AlertModule,
     ConfigModule,
   ],
   providers: [

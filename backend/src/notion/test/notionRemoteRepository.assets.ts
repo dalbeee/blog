@@ -1,4 +1,4 @@
-module.exports.getPosts = {
+export const rawfindPostsData = {
   object: 'list',
   results: [
     {
@@ -188,7 +188,7 @@ module.exports.getPosts = {
   has_more: true,
 };
 
-module.exports.findPostsFromServer = [
+export const findPosts = [
   {
     id: '246c4c27-2997-45ea-b9bf-9ef49a69b857',
     title: '[docker] 도커 환경에서 e2e 테스팅하기',
@@ -197,3 +197,24 @@ module.exports.findPostsFromServer = [
     updatedAt: new Date('2022-02-15T01:20:00.000Z'),
   },
 ];
+
+export const rawFindPostdata = {
+  object: 'block',
+  id: '97e4a3ff-f647-4879-b552-b6ee4cf7ed60',
+  created_time: '2021-08-23T14:46:00.000Z',
+  last_edited_time: '2022-02-13T08:48:00.000Z',
+  created_by: {
+    object: 'user',
+    id: '1ec3adec-0e98-4d0f-a404-c8ab31bb00e9',
+  },
+  last_edited_by: {
+    object: 'user',
+    id: '1ec3adec-0e98-4d0f-a404-c8ab31bb00e9',
+  },
+  has_children: true,
+  archived: false,
+  type: 'child_page',
+  child_page: {
+    title: 'typescript eslint issue',
+  },
+};

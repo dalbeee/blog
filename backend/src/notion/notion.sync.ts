@@ -21,7 +21,7 @@ export class NotionSync {
 
   @OnQueueError()
   onError(err: Error) {
-    this.logger.error(err);
+    this.logger.error('queue error > ', err);
   }
 
   @Process('syncNotionPosts')
@@ -48,14 +48,17 @@ export class NotionSync {
         this.logger.log(` ${index} of ${queuePosts.length}...`);
         await this.notionService
           .syncPostToLocal(user, post)
-          .then(this.sleep.bind(null, getEnv('NOTION_API_THROTTLING') || 1000))
-          .catch((e) => {
-            this.logger.debug(e);
-          });
+          .then(
+            async () =>
+              await this.sleep(+getEnv('NOTION_API_THROTTLING', '1000')),
+          );
       }
       this.notionCronService.addNotionCron();
     } catch (error) {
-      if (error instanceof Error) this.logger.error(error.message, error.stack);
+      if (error instanceof Error)
+        this.logger.error(error, error.message, error.stack);
+      else this.logger.error(error);
+
       this.notionCronService.deactiveNotionCron();
     }
   }

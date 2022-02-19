@@ -15,16 +15,13 @@ export class Notion extends BaseEntity {
   description!: string;
 
   @Column({ default: null, length: 500 })
-  thumbnail!: string;
+  thumbnail?: string;
 
   @Column()
   slug!: string;
 
-  @Column()
-  url!: string;
-
   @Column({ default: null })
-  notionId?: string;
+  url?: string;
 
   @ManyToOne(() => User, (user) => user.posts)
   user!: User;

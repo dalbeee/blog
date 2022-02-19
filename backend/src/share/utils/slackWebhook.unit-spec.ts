@@ -37,12 +37,10 @@ describe('slackWebhook', () => {
   });
 
   it('is throw error if empty env', async () => {
-    process.env.SLACK_WEBHOOK = undefined;
+    delete process.env.SLACK_WEBHOOK;
     const sut = slackWebhook('hello');
 
-    await expect(sut).rejects.toThrowError(
-      Error('SLACK_WEBHOOK is not defined'),
-    );
+    await expect(sut).rejects.toThrowError(Error);
   });
 });
 

@@ -16,29 +16,30 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { ConfigModule } from './config/config.module';
 import { UnhandledExceptionsFilter } from './share/filter/unhandledException.filter';
 import { HttpExceptionFilter } from './share/filter/httpException.filter';
+import { getEnv } from './share/utils/getEnv';
 
 const host =
-  process.env.NEST_CONFIG_APP_ROLE === 'test'
-    ? process.env.NEST_CONFIG_DB_URL_TEST
-    : process.env.NEST_CONFIG_DB_URL;
+  getEnv('NEST_CONFIG_APP_ROLE') === 'test'
+    ? getEnv('NEST_CONFIG_DB_URL_TEST')
+    : getEnv('NEST_CONFIG_DB_URL');
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
       host,
-      port: +process.env.NEST_CONFIG_DB_PORT,
-      username: process.env.NEST_CONFIG_DB_USER,
-      password: process.env.NEST_CONFIG_DB_PASSWORD,
-      database: process.env.NEST_CONFIG_DB_DATABASE_NAME,
+      port: +getEnv('NEST_CONFIG_DB_PORT'),
+      username: getEnv('NEST_CONFIG_DB_USER'),
+      password: getEnv('NEST_CONFIG_DB_PASSWORD'),
+      database: getEnv('NEST_CONFIG_DB_DATABASE_NAME'),
       // synchronize: process.env.NODE_ENV !== 'production',
       synchronize: true,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
     }),
     BullModule.forRoot({
       redis: {
-        host: process.env.NEST_CONFIG_DB_REDIS_URL,
-        port: +process.env.NEST_CONFIG_DB_REDIS_PORT,
+        host: getEnv('NEST_CONFIG_DB_REDIS_URL'),
+        port: +getEnv('NEST_CONFIG_DB_REDIS_PORT'),
       },
     }),
     ScheduleModule.forRoot(),

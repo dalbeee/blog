@@ -9,6 +9,6 @@ export const getDescription = (string: string) => {
     data = data.substr(0, 100);
     return data;
   } catch (error) {
-    throw new Error(error.message);
+    throw error;
   }
 };

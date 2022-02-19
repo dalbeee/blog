@@ -1,9 +1,66 @@
+import { exec } from 'child_process';
 import { slackWebhook } from './slackWebhook';
+
+jest.mock('node-fetch', () => ({
+  __esModule: true,
+  default: jest.fn().mockImplementation((id: string) => {
+    return new Promise((res, rej) => {
+      res(true);
+    });
+  }),
+}));
+
+beforeEach(() => {
+  jest.resetModules();
+});
 
 describe('slackWebhook', () => {
   it('is return true when success', async () => {
-    const result = slackWebhook('hello');
+    process.env.SLACK_WEBHOOK = 'http://localhost:3000/slack';
+    const sut = slackWebhook('hello');
 
-    await expect(result).resolves.toBe(true);
+    await expect(sut).resolves.toBe(true);
+  });
+
+  it('is return false when failed', async () => {
+    process.env.SLACK_WEBHOOK = 'http://localhost:3000/slack';
+    const sut = slackWebhook('hello');
+
+    await expect(sut).resolves.toBe(true);
+  });
+
+  it('is throw error if env is not valid url ', async () => {
+    process.env.SLACK_WEBHOOK = 'wrong url';
+    const sut = slackWebhook('hello');
+
+    await expect(sut).rejects.toThrowError(TypeError('Invalid URL'));
+  });
+
+  it('is throw error if empty env', async () => {
+    process.env.SLACK_WEBHOOK = undefined;
+    const sut = slackWebhook('hello');
+
+    await expect(sut).rejects.toThrowError(
+      Error('SLACK_WEBHOOK is not defined'),
+    );
+  });
+});
+
+describe('first', () => {
+  it('', async () => {
+    const fn = jest.fn(() => ({
+      callers: jest.fn().mockResolvedValue(1),
+    }));
+
+    const sut = await fn().callers();
+
+    expect(sut).toEqual(1);
+    expect(fn).toHaveBeenCalledTimes(1);
+  });
+
+  it('', async () => {
+    const fn = () => ({ a: 1, b: 1 });
+
+    expect(fn()).toMatchObject({ a: 1 });
   });
 });

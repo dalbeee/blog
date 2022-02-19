@@ -16,12 +16,11 @@ import { User } from '@src/user/entity/user.entity';
 import { NotionPost } from './domain/types/notion-post';
 import { PatchPostDTO } from './domain/dto/patch-post.dto';
 import { CreatePostDTO } from './domain/dto/create-post.dto';
-import { NotionConfigService } from './notion.config.service';
 import { NotionRepository } from './notion.repository';
 import { parseNotionPostToMarkdown } from './util';
-import { DatabaseQueryResult } from './domain/types/database-query-result';
 import { findImageUrlsFromRawContent } from './util/findImageUrlsFromRawContent';
 import { NotionBlock } from './domain/types/notion-block';
+import { getEnv } from '@src/share/utils/getEnv';
 
 @Injectable()
 export class NotionService {
@@ -29,7 +28,6 @@ export class NotionService {
   constructor(
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private readonly postRepository: PostRepository,
-    private readonly notionConfigService: NotionConfigService,
     private readonly notionRepository: NotionRepository,
   ) {}
 
@@ -42,7 +40,7 @@ export class NotionService {
   async findPostToMarkdownFromServer(url: string): Promise<string> {
     let result: NotionBlock;
     try {
-      result = await this.notionRepository.getPost(url);
+      result = await this.notionRepository.findPost(url);
     } catch (error) {
       throw new Error('notion API error');
     }
@@ -60,22 +58,23 @@ export class NotionService {
       serverPosts.forEach((serverPost) => {
         const findLocalPost = localPosts.find((localPost) => {
           return (
-            localPost.notionId === serverPost.id &&
-            localPost.updatedAt.toISOString() !== serverPost.updatedAt
+            localPost.id === serverPost.id &&
+            localPost.updatedAt.toISOString() !==
+              serverPost.updatedAt.toISOString()
           );
         });
-        // TODO define error type in notionService / findPostsWithOutOfSyncUpdatedAtField
         if (!findLocalPost) return;
 
         const targetNotionPost = serverPosts.find(
-          (serverPost) => serverPost.id === findLocalPost.notionId,
+          (serverPost) => serverPost.id === findLocalPost.id,
         );
-        result.push(targetNotionPost);
+
+        targetNotionPost && result.push(targetNotionPost);
       });
 
       return result;
     } catch (error) {
-      throw error || new Error();
+      throw error || new Error('find posts failed');
     }
   }
 
@@ -109,7 +108,7 @@ export class NotionService {
           .replace('_secure.notion-static.com_', '');
 
         writeFileSync(
-          `${process.env.NEST_CONFIG_UPLOADS_PATH}/${originalFileName}`,
+          `${getEnv('NEST_CONFIG_UPLOADS_PATH')}/${originalFileName}`,
           r.data as any,
           'utf-8',
         );
@@ -131,11 +130,13 @@ export class NotionService {
       updatedAt: post.updatedAt as unknown as string,
     };
 
+    if (!postDTO?.content) throw Error('content is null');
+
     const imageUrls = await findImageUrlsFromRawContent(postDTO.content);
     await Promise.all(
       imageUrls.map(async (imageUrl) => {
         const savedImagePath = await this.saveImagesFromPostString(imageUrl);
-        postDTO.content = postDTO.content.replace(imageUrl, savedImagePath);
+        postDTO.content = postDTO.content!.replace(imageUrl, savedImagePath);
       }),
     );
 

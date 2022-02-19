@@ -20,5 +20,10 @@ export default async (): Promise<Config.InitialOptions> => {
     transformIgnorePatterns: ['./node_modules/', './test/'],
     coverageDirectory: '../coverage',
     // setupFiles: ['./jest.setup.dev.ts'],
+    globals: {
+      'ts-jest': {
+        isolatedModules: true,
+      },
+    },
   };
 };

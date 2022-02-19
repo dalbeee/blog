@@ -9,7 +9,6 @@ import {
 import { Exclude } from 'class-transformer';
 import * as bcrypt from 'bcrypt';
 
-import { Comment } from '@src/comments/entity/comment.entity';
 import { Post } from '@src/post/entity/post.entity';
 import { BaseEntity } from '@src/share/entity/baseEntity';
 import { Role } from '@src/auth/decorator/role';
@@ -17,23 +16,23 @@ import { Role } from '@src/auth/decorator/role';
 @Entity()
 export class User extends BaseEntity {
   @Column({ unique: true })
-  email: string;
+  email!: string;
 
   @Column({ unique: true })
-  username: string;
+  username!: string;
 
   @Exclude()
   @Column()
-  password: string;
+  password!: string;
 
   @Column({
     nullable: true,
     type: 'simple-array',
   })
-  roles: Role[];
+  roles!: Role[];
 
   @Exclude()
-  private tempPassword: string;
+  private tempPassword!: string;
 
   @AfterLoad()
   private loadTempPassword(): void {
@@ -56,7 +55,7 @@ export class User extends BaseEntity {
   }
 
   @OneToMany(() => Post, (post) => post.user, { cascade: true })
-  posts: Post[];
+  posts!: Post[];
 
   // @OneToMany(() => Comment, (comment) => comment.user, { cascade: true })
   // comments: Comment[];
@@ -64,6 +63,6 @@ export class User extends BaseEntity {
   constructor(partial: Partial<User>) {
     super();
     Object.assign(this, partial);
-    this.roles = this.roles || [];
+    this.roles = this.roles ?? [];
   }
 }

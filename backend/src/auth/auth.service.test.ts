@@ -2,6 +2,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { getEnv } from '@src/share/utils/getEnv';
 import { Post } from '../post/entity/post.entity';
 import { User } from '../user/entity/user.entity';
 import { UsersModule } from '../user/user.module';
@@ -17,11 +18,11 @@ describe('AuthService', () => {
       imports: [
         TypeOrmModule.forRoot({
           type: 'mysql',
-          host: process.env.DB_HOST,
+          host: getEnv('DB_HOST'),
           port: 3306,
-          username: process.env.USER,
-          password: process.env.PASSWORD,
-          database: process.env.DATABASE,
+          username: getEnv('USER'),
+          password: getEnv('PASSWORD'),
+          database: getEnv('DATABASE'),
           entities: [User, Post],
           // entities: ['dist/**/*.entity{.ts,.js}'],
           synchronize: true,
@@ -31,7 +32,7 @@ describe('AuthService', () => {
         UsersModule,
         PassportModule,
         JwtModule.register({
-          secret: process.env.NEST_CONFIG_AUTH_SECRET_JWT,
+          secret: getEnv('NEST_CONFIG_AUTH_SECRET_JWT'),
           signOptions: { expiresIn: '90m' },
         }),
       ],

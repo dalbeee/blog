@@ -1,31 +1,49 @@
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import * as faker from 'faker';
-import { getRepositoryToken } from '@nestjs/typeorm';
 
 import { User } from '@src/user/entity/user.entity';
 import { PostService } from './post.service';
 import { Post } from './entity/post.entity';
 import { PostRepository } from './post.repository';
+import { Repository } from 'typeorm';
 
-const mockRepository = {};
+const mockRepository = {
+  find: jest.fn(),
+} as unknown as jest.MockedFunction<any>;
 
 let app: INestApplication;
 let postService: PostService;
+let postRepository: Partial<Record<keyof PostRepository, jest.Mock>>;
+
 beforeAll(async () => {
   const moduleRef = await Test.createTestingModule({
     providers: [
       PostService,
-      { provide: getRepositoryToken(PostRepository), useValue: mockRepository },
+      // { provide: getRepositoryToken(PostRepository), useValue: mockRepository },
+      { provide: PostRepository, useValue: mockRepository },
     ],
   }).compile();
 
   app = moduleRef.createNestApplication();
   await app.init();
   postService = app.get<PostService>(PostService);
+  postRepository = app.get(PostRepository);
 });
 
 describe('hasUSerCollectionPermission', () => {
+  it('getAll', async () => {
+    const users: Post[] = [
+      { title: 'title1', id: '1', content: 'content1' },
+      { title: 'title2', id: '2', content: 'content2' },
+    ] as Post[];
+    postRepository.find.mockResolvedValue(users);
+
+    const sut = await postService.getAll();
+
+    expect(sut).toEqual(users);
+  });
+
   it('success will return true', async () => {
     const user: Partial<User> = {
       id: faker.datatype.uuid(),

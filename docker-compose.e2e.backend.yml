@@ -8,6 +8,14 @@ services:
     ports:
       - "80:80"
       
+  frontend:
+    build:
+      target: development
+      context: ./frontend
+    volumes:
+      - ./frontend/:/app/
+    env_file: .env.dev
+    
   nginx-serve-static:
     build:
       context: ./nginx-serve-static/
@@ -22,6 +30,9 @@ services:
       - ./backend/:/app/
       - ./storage/uploads/:/app/uploads/
     env_file: .env.dev
+    environment:
+      - NEST_CONFIG_CRON_STATUS=true
+
 
   redis:
     image: redis:6.2.6

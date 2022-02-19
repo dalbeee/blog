@@ -9,9 +9,9 @@ const parseDataFromTextSubBlock = (subBlock: TextSubBlock) => {
   }
 
   const annotations = subBlock.annotations;
-  if (annotations.bold) return `**${subBlock.plain_text}**`;
-  if (annotations.italic) return `_${subBlock.plain_text}_`;
-  if (annotations.code) return `\`${subBlock.plain_text}\``;
+  if (annotations?.bold) return `**${subBlock.plain_text}**`;
+  if (annotations?.italic) return `_${subBlock.plain_text}_`;
+  if (annotations?.code) return `\`${subBlock.plain_text}\``;
 
   return subBlock.plain_text;
 };
@@ -29,57 +29,66 @@ const parsingBlock = (blocks: Block[]) => {
   return blocks
     .map((block, index) => {
       if (block.type === 'numbered_list_item') {
+        if (!block.numbered_list_item?.text) return;
+
         block.numbered_list_item.text[0].plain_text = `${index + 1}. ${
-          block.numbered_list_item.text[0].plain_text
+          block.numbered_list_item?.text?.[0]?.plain_text
         }`;
       }
       return block;
     })
 
     .map((block) => {
-      switch (block.type) {
+      switch (block!.type) {
         case 'heading_1': {
-          const subBlockText = block['heading_1'].text;
+          const subBlockText = block?.['heading_1']?.text;
+          if (!subBlockText) return;
           const result = parsingTextSubBlock(subBlockText);
           return `## ${result}\n`;
         }
         case 'heading_2': {
-          const subBlockText = block['heading_2'].text;
+          const subBlockText = block?.['heading_2']?.text;
+          if (!subBlockText) return;
           const result = parsingTextSubBlock(subBlockText);
           return `### ${result}\n`;
         }
         case 'heading_3': {
-          const subBlockText = block['heading_3'].text;
+          const subBlockText = block?.['heading_3']?.text;
+          if (!subBlockText) return;
           const result = parsingTextSubBlock(subBlockText);
           return `#### ${result}\n`;
         }
         case 'paragraph': {
-          const subBlockText = block['paragraph'].text;
+          const subBlockText = block?.['paragraph']?.text;
+          if (!subBlockText) return;
           const result = parsingTextSubBlock(subBlockText);
           return `${result}\n`;
         }
         case 'code': {
-          const subBlockText = block['code'].text;
+          const subBlockText = block?.['code']?.text;
+          if (!subBlockText) return;
           const result = parsingTextSubBlock(subBlockText);
           return `\`\`\`\n${result}\n\`\`\`\n`;
         }
         case 'quote': {
-          const subBlockText = block['quote'].text;
+          const subBlockText = block?.['quote']?.text;
+          if (!subBlockText) return;
           const result = parsingTextSubBlock(subBlockText);
           return `> ${result}\n> \n`;
         }
         case 'numbered_list_item': {
-          const subBlockText = block['numbered_list_item'].text;
+          const subBlockText = block?.['numbered_list_item']?.text;
+          if (!subBlockText) return;
           const result = parsingTextSubBlock(subBlockText);
           return `${result}\n`;
         }
         case 'bookmark': {
-          const url: string = block['bookmark']?.url;
+          const url = block?.['bookmark']?.url;
           return `[${url}](${url})\n`;
         }
         case 'image': {
-          const subBlock = block['image'];
-          const result = subBlock.file.url;
+          const subBlock = block?.['image'];
+          const result = subBlock?.file?.url;
           return `![image](${result || '#'})`;
         }
 

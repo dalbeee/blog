@@ -1,12 +1,13 @@
 import fetch from 'node-fetch';
+import { getEnv } from './getEnv';
 
 export const slackWebhook = async (text: string) => {
-  const url = process.env.SLACK_WEBHOOK;
-  if (!url) throw Error('SLACK_WEBHOOK is not defined');
+  const url: URL = new URL(getEnv('SLACK_WEBHOOK'));
+
+  try {
+  } catch (error) {}
 
   const body = JSON.stringify({ text });
-  // return await import('node-fetch').then(
-  // async ({ default: fetch }) =>
 
   return await fetch(url, {
     method: 'POST',
@@ -14,5 +15,7 @@ export const slackWebhook = async (text: string) => {
     body,
   })
     .then(() => true)
-    .catch(() => false);
+    .catch((e) => {
+      throw e;
+    });
 };

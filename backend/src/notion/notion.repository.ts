@@ -1,79 +1,70 @@
-import { HttpService } from '@nestjs/axios';
-import { Injectable, Logger } from '@nestjs/common';
-import { map } from 'rxjs';
-import { IsNull, Not } from 'typeorm';
+import { ForbiddenException, Logger, NotFoundException } from '@nestjs/common';
+import { EntityRepository, Repository } from 'typeorm';
+import { Lexer } from 'marked';
 
-import { Post } from '@src/post/entity/post.entity';
-import { PostRepository } from '@src/post/post.repository';
-import { PostService } from '@src/post/post.service';
+import * as helper from '@src/share/utils';
 import { User } from '@src/user/entity/user.entity';
 import { CreatePostDTO } from './domain/dto/create-post.dto';
 import { PatchPostDTO } from './domain/dto/patch-post.dto';
-import { DatabaseQueryResult } from './domain/types/database-query-result';
-import { NotionBlock } from './domain/types/notion-block';
+import { Notion } from './domain/entity/notion.entity';
+import { extractThumbnailFromPost } from '@src/share/utils/extractThumbnailFromPost';
 import { NotionPost } from './domain/types/notion-post';
-import { NotionConfigService } from './notion.config.service';
 
-@Injectable()
-export class NotionRepository {
-  private readonly logger: Logger = new Logger(NotionRepository.name);
-  constructor(
-    private readonly httpService: HttpService,
-    private readonly notionConfigService: NotionConfigService,
-    private readonly postService: PostService,
-    private readonly postRepository: PostRepository,
-  ) {}
+@EntityRepository(Notion)
+export class NotionRepository extends Repository<Notion> {
+  private logger: Logger = new Logger('NotionRepository');
 
-  async findPostsFromServer() {
-    const result: DatabaseQueryResult = await this.getPosts();
-
-    const parseQueryResult = (query: DatabaseQueryResult): NotionPost[] => {
-      const result = query.results.filter((item) => {
-        return item.properties?.publishToBlog?.select?.name === '배포';
-      });
-
-      return result.map((result) => ({
-        id: result.id,
-        title: result.properties.이름.title?.[0]?.plain_text,
-        url: result.url,
-        createdAt: result.created_time,
-        updatedAt: result.last_edited_time,
-        publishToBlog: result.properties?.publishToBlog.select.name,
-      }));
-    };
-
-    const parsed: NotionPost[] = parseQueryResult(result);
-    return parsed;
+  async findPosts(): Promise<NotionPost[]> {
+    return await this.find();
   }
 
-  async findPostsFromLocal() {
-    return await this.postRepository.find({
-      where: { notionId: Not(IsNull()) },
-    });
+  parseContent(content: string, length?: number) {
+    const markdownAst = new Lexer().lex(content);
+    const parsedParagraph = markdownAst
+      .filter((block: any) => block?.type === 'paragraph')
+      .filter((block: any) => block?.tokens?.[0].type === 'text');
+
+    const convertString = parsedParagraph.map((block: any) => block?.text);
+
+    return length
+      ? convertString.join(' ').substr(0, length)
+      : convertString.join(' ');
   }
 
-  async getPost(url: string): Promise<NotionBlock> {
-    const res = await this.httpService
-      .get(`/blocks/${url}/children`)
-      .pipe(map((r) => r.data))
-      .toPromise();
-    return res;
+  async findById(id: string): Promise<Notion> {
+    try {
+      return await this.findOneOrFail({ id }, { relations: ['user'] });
+    } catch (error) {
+      throw new NotFoundException();
+    }
   }
 
-  async getPosts(): Promise<DatabaseQueryResult> {
-    const databaseId = await this.notionConfigService.getNotionConfigByKey(
-      'NOTION_DATABASE_ID',
-    );
-
-    const res = await this.httpService
-      .post(`/databases/${databaseId}/query`, {})
-      .pipe(map((r) => r.data))
-      .toPromise();
-    return res;
+  async createPost(user: User, post: CreatePostDTO): Promise<Notion> {
+    const newPost = this.create(post);
+    newPost.id = post.notionId!;
+    newPost.user = user;
+    newPost.thumbnail = extractThumbnailFromPost(post)!;
+    newPost.description = this.parseContent(post.content, 100);
+    newPost.slug = helper.slugify(post.title);
+    return await this.save(newPost);
   }
 
-  async findByNotionId(notionId: string): Promise<Post> {
-    return await this.postService.getById(notionId);
+  hasUserCollectPermission(user: User, post: Notion): boolean {
+    return post.user.id === user.id;
+  }
+
+  async patchPost(
+    user: User,
+    postId: string,
+    updateDTO: PatchPostDTO,
+  ): Promise<Notion> {
+    const findPost = await this.findById(postId);
+
+    if (!this.hasUserCollectPermission(user, findPost)) {
+      throw new ForbiddenException();
+    }
+    const updatePost: Notion = Object.assign(findPost, updateDTO);
+    return await this.save(updatePost);
   }
 
   async syncPost(
@@ -81,39 +72,30 @@ export class NotionRepository {
     postDto: PatchPostDTO | CreatePostDTO,
     postId: string,
   ) {
-    let existPostAtLocal: Post;
+    let existPostAtLocal: Notion | null;
+
     try {
-      existPostAtLocal = await this.findByNotionId(postId);
-    } catch (error) {}
+      existPostAtLocal = await this.findById(postId);
+    } catch (error) {
+      existPostAtLocal = null;
+    }
 
     if (existPostAtLocal) {
-      try {
-        await this.postService.patchPost(
-          user,
-          existPostAtLocal.id,
-          postDto as PatchPostDTO,
-        );
+      await this.patchPost(user, existPostAtLocal.id, postDto as PatchPostDTO);
 
-        return {
-          operation: 'patch',
-          notionId: postId,
-          message: `exist post ${postId}. patched OK`,
-        };
-      } catch (error) {
-        this.logger.error(error.message, error.stack);
-      }
+      return {
+        operation: 'patch',
+        id: postId,
+        message: `exist post ${postId}. patched OK`,
+      };
     } else {
-      try {
-        await this.postService.createPost(user, postDto as CreatePostDTO);
+      await this.createPost(user, postDto as CreatePostDTO);
 
-        return {
-          operation: 'create',
-          notionId: postId,
-          message: `post ${postId}. created OK`,
-        };
-      } catch (error) {
-        this.logger.error(error.message, error.stack);
-      }
+      return {
+        operation: 'create',
+        id: postId,
+        message: `post ${postId}. created OK`,
+      };
     }
   }
 }

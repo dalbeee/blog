@@ -11,7 +11,9 @@ export class NotionConfigService {
   constructor(
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private readonly configService: ConfigService,
-  ) {}
+  ) {
+    this.repository = {};
+  }
 
   async isValidConfiguration() {
     const keys = ['NOTION_API_KEY', 'NOTION_DATABASE_ID', 'ADMIN_USER_EMAIL'];

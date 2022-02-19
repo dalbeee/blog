@@ -26,7 +26,7 @@ export class PostRepository extends Repository<Post> {
     const newPost = this.create(post);
 
     newPost.user = user;
-    newPost.thumbnail = extractThumbnailFromPost(post) || null;
+    newPost.thumbnail = extractThumbnailFromPost(post);
     newPost.description = this.parseContent(post.content, 100);
     newPost.slug = helper.slugify(post.title);
     return newPost;

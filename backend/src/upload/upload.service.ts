@@ -14,14 +14,11 @@ export class UploadService {
     try {
       return await this.uploadRepository.find();
     } catch (error) {
-      console.log(error.message);
-      return Error(error.message);
+      throw error;
     }
   }
 
   async saveFileDataToDB(file: Multer.File): Promise<any> {
-    console.log('upload service>', file);
-
     try {
       const row = this.uploadRepository.create();
 
@@ -31,8 +28,7 @@ export class UploadService {
       row.path = file.path;
       return await this.uploadRepository.save(row);
     } catch (error) {
-      console.log(error.message);
-      return Error(error.message);
+      throw error;
     }
   }
 }

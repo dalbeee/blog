@@ -1,3 +1,4 @@
+import { getEnv } from '@src/share/utils/getEnv';
 import { createConnection } from 'typeorm';
 
 export const databaseProviders = [
@@ -6,11 +7,11 @@ export const databaseProviders = [
     useFactory: async () =>
       await createConnection({
         type: 'mysql',
-        host: process.env.DB_HOST,
-        port: parseInt(process.env.NEST_CONFIG_DB_PORT) || 3306,
-        username: process.env.USER,
-        password: process.env.PASSWORD,
-        database: process.env.DATABASE,
+        host: getEnv('DB_HOST'),
+        port: parseInt(getEnv('NEST_CONFIG_DB_PORT')),
+        username: getEnv('USER'),
+        password: getEnv('PASSWORD'),
+        database: getEnv('DATABASE'),
         synchronize: true,
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
       }),

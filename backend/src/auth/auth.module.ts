@@ -7,13 +7,14 @@ import { AuthService } from '@src/auth/auth.service';
 import { AuthController } from '@src/auth/auth.controller';
 import { JwtStrategy } from '@src/auth/strategy/jwt.strategy';
 import { LocalStrategy } from '@src/auth/strategy/local.strategy';
+import { getEnv } from '@src/share/utils/getEnv';
 
 @Module({
   imports: [
     UsersModule,
     PassportModule,
     JwtModule.register({
-      secret: process.env.NEST_CONFIG_AUTH_SECRET_JWT,
+      secret: getEnv('NEST_CONFIG_AUTH_SECRET_JWT'),
       signOptions: { expiresIn: '90m' },
     }),
   ],

@@ -8,12 +8,12 @@ export enum LoggerType {
 
 export class LoggerDTO {
   @IsNotEmpty()
-  message: string;
+  message!: string;
 
   @IsNotEmpty()
   @IsEnum(LoggerType)
-  type: LoggerType;
+  type!: LoggerType;
 
   @IsNotEmpty()
-  from: string;
+  from!: string;
 }

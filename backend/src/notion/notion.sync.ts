@@ -6,6 +6,7 @@ import { NotionService } from './notion.service';
 import { NotionCronService } from './notion.cron.service';
 import { NotionConfigService } from './notion.config.service';
 import { UserService } from '@src/user/user.service';
+import { getEnv } from '@src/share/utils/getEnv';
 
 @Processor('notionSync')
 export class NotionSync {
@@ -20,7 +21,7 @@ export class NotionSync {
 
   @OnQueueError()
   onError(err: Error) {
-    this.logger.error(err);
+    this.logger.error('queue error > ', err);
   }
 
   @Process('syncNotionPosts')
@@ -40,6 +41,7 @@ export class NotionSync {
       const userString = await this.notionConfigService.getNotionConfigByKey(
         'ADMIN_USER_EMAIL',
       );
+
       const user = await this.userService.findByEmail(userString);
 
       for (const [index, post] of queuePosts.entries()) {
@@ -47,15 +49,16 @@ export class NotionSync {
         await this.notionService
           .syncPostToLocal(user, post)
           .then(
-            this.sleep.bind(null, process.env.NOTION_API_THROTTLING || 1000),
-          )
-          .catch((e) => {
-            this.logger.debug(e);
-          });
+            async () =>
+              await this.sleep(+getEnv('NOTION_API_THROTTLING', '1000')),
+          );
       }
       this.notionCronService.addNotionCron();
     } catch (error) {
-      this.logger.error(error.message, error.stack);
+      if (error instanceof Error)
+        this.logger.error(error, error.message, error.stack);
+      else this.logger.error(error);
+
       this.notionCronService.deactiveNotionCron();
     }
   }

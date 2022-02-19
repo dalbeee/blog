@@ -1,7 +1,7 @@
 export interface NotionPost {
   id: string;
   title: string;
-  url: string;
-  createdAt: string;
-  updatedAt: string;
+  url?: string | null;
+  createdAt: Date;
+  updatedAt: Date;
 }

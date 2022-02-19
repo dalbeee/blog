@@ -4,7 +4,7 @@ import { User } from '@src/user/entity/user.entity';
 import { Column, Entity, ManyToOne } from 'typeorm';
 
 @Entity()
-export class Post extends BaseEntity {
+export class Notion extends BaseEntity {
   @Column()
   title!: string;
 
@@ -21,7 +21,7 @@ export class Post extends BaseEntity {
   slug!: string;
 
   @Column({ default: null })
-  notionId?: string;
+  url?: string;
 
   @ManyToOne(() => User, (user) => user.posts)
   user!: User;

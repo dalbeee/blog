@@ -12,17 +12,17 @@ import { Role } from './user-roles';
 export class UserDTO {
   @IsEmail()
   @Length(6, 30)
-  email: string;
+  email!: string;
 
   @IsString()
   @Length(4, 20)
   @Matches(/^\S*$/, { message: 'space not allow' })
-  username: string;
+  username!: string;
 
   @IsString()
   @Length(6, 20)
   @Matches(/^\S*$/, { message: 'space not allow' })
-  password: string;
+  password!: string;
 
   @IsArray()
   @IsOptional()

@@ -1,25 +1,11 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { BaseEntity } from '@src/share/entity/baseEntity';
+import { Column, Entity } from 'typeorm';
 
 @Entity()
-export class Upload {
-  @PrimaryGeneratedColumn()
-  id: number;
+export class Upload extends BaseEntity {
+  @Column()
+  fileName!: string;
 
   @Column()
-  fileName: string;
-
-  @Column()
-  path: string;
-
-  @CreateDateColumn({ name: 'createdAt', type: 'datetime' })
-  createdAt: string;
-
-  @UpdateDateColumn({ name: 'updatedAt', type: 'datetime' })
-  updatedAt: Date;
+  path!: string;
 }

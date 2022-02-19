@@ -3,11 +3,11 @@ import { IsOptional, IsString } from 'class-validator';
 export class PatchPostDTO {
   @IsString()
   @IsOptional()
-  title: string;
+  title?: string;
 
   @IsString()
   @IsOptional()
-  content: string;
+  content?: string;
 
   @IsOptional()
   notionId?: string;

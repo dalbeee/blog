@@ -1,5 +1,4 @@
 import {
-  // BeforeInsert,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
@@ -10,14 +9,14 @@ import {
 @Entity()
 export class BaseEntity {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @CreateDateColumn({ type: 'datetime' })
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn({ type: 'datetime' })
-  updatedAt: Date;
+  updatedAt!: Date;
 
   @DeleteDateColumn({ type: 'datetime' })
-  deletedAt: Date;
+  deletedAt!: Date;
 }

@@ -16,9 +16,14 @@ export default async (): Promise<Config.InitialOptions> => {
     moduleNameMapper: {
       '@src/(.*)': '<rootDir>/src/$1',
     },
-    testPathIgnorePatterns: ['./test/'],
-    transformIgnorePatterns: ['./node_modules/', './test/'],
+    // testPathIgnorePatterns: ['./test/'],
+    transformIgnorePatterns: ['./node_modules/'],
     coverageDirectory: '../coverage',
     // setupFiles: ['./jest.setup.dev.ts'],
+    globals: {
+      'ts-jest': {
+        isolatedModules: true,
+      },
+    },
   };
 };

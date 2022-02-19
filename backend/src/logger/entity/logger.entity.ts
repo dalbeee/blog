@@ -8,11 +8,11 @@ import { LoggerType } from '../dto/logger.dto';
 @Entity()
 export class Logger extends BaseEntity implements Logger {
   @Column()
-  message: string;
+  message!: string;
 
   @Column({ type: 'enum', enum: LoggerType })
-  type: LoggerType;
+  type!: LoggerType;
 
   @Column()
-  from: string;
+  from!: string;
 }

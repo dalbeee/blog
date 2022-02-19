@@ -6,6 +6,7 @@ import { getConnection } from 'typeorm';
 import { AppModule } from '@src/app.module';
 import { getUserAndJwt } from './util/getUserAndJwt';
 import { UserDTO } from '@src/user/dto/user.dto';
+import sleep from './util/sleep';
 
 let app: INestApplication;
 
@@ -16,6 +17,7 @@ beforeAll(async () => {
 
   app = moduleRef.createNestApplication();
   await app.init();
+  await sleep(1000);
 });
 
 afterAll(async () => {
@@ -60,11 +62,9 @@ describe('AUTH MODULE', () => {
         .expect(401);
     });
 
-    it(`export util function 'getUserAndJwt' will valid`, async () => {
-      const userAndJwt = await getUserAndJwt(app);
-      expect(userAndJwt.token).toEqual(expect.any(String));
-    });
+    // it(`export util function 'getUserAndJwt' will valid`, async () => {
+    //   const userAndJwt = await getUserAndJwt(app);
+    //   expect(userAndJwt.token).toEqual(expect.any(String));
+    // });
   });
 });
-
-type Overwrite<T, U> = { [P in Exclude<keyof T, keyof U>]: T[P] } & U;

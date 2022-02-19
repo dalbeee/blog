@@ -3,10 +3,7 @@ import { AlertRepository } from './alert.repository';
 
 @Injectable()
 export class AlertService {
-  constructor(private readonly alertRepository: AlertRepository) {
-    // const httpClient = new Axios(process.env.SLACK_WEBHOOK_API_KEY);
-    // const alertRepository = new AlertRepository(httpClient);
-  }
+  constructor(private readonly alertRepository: AlertRepository) {}
 
   async publishToSlack(message: string) {
     return await this.alertRepository.publishToSlack(message);

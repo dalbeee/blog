@@ -2,8 +2,8 @@ import { IsNotEmpty, IsString } from "class-validator";
 
 export class ConfigDTO {
   @IsString()
-  key: string;
+  key!: string;
 
   @IsNotEmpty()
-  value: any;
+  value!: any;
 }

@@ -1,48 +1,37 @@
-import { IsNull, Not } from 'typeorm';
-import {
-  CACHE_MANAGER,
-  HttpException,
-  Inject,
-  Injectable,
-  Logger,
-} from '@nestjs/common';
+import { CACHE_MANAGER, Inject, Injectable, Logger } from '@nestjs/common';
 import { Cache } from 'cache-manager';
-
 import axios from 'axios';
 import { writeFileSync } from 'fs';
 
-import { PostRepository } from '@src/post/post.repository';
 import { User } from '@src/user/entity/user.entity';
 import { NotionPost } from './domain/types/notion-post';
 import { PatchPostDTO } from './domain/dto/patch-post.dto';
 import { CreatePostDTO } from './domain/dto/create-post.dto';
-import { NotionConfigService } from './notion.config.service';
 import { NotionRepository } from './notion.repository';
 import { parseNotionPostToMarkdown } from './util';
-import { DatabaseQueryResult } from './domain/types/database-query-result';
 import { findImageUrlsFromRawContent } from './util/findImageUrlsFromRawContent';
 import { NotionBlock } from './domain/types/notion-block';
+import { getEnv } from '@src/share/utils/getEnv';
+import { NotionRemoteRepository } from './notion.remoteRepository';
 
 @Injectable()
 export class NotionService {
   private readonly logger = new Logger(NotionService.name);
+
   constructor(
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
-    private readonly postRepository: PostRepository,
-    private readonly notionConfigService: NotionConfigService,
     private readonly notionRepository: NotionRepository,
+    private readonly notionRemoteRepository: NotionRemoteRepository,
   ) {}
 
   async findPosts() {
-    return await this.postRepository.findAndCount({
-      where: { notionId: Not(IsNull()) },
-    });
+    return await this.notionRepository.findPosts();
   }
 
   async findPostToMarkdownFromServer(url: string): Promise<string> {
     let result: NotionBlock;
     try {
-      result = await this.notionRepository.getPost(url);
+      result = await this.notionRemoteRepository.getRawfindPostData(url);
     } catch (error) {
       throw new Error('notion API error');
     }
@@ -52,49 +41,42 @@ export class NotionService {
   }
 
   async findPostsWithOutOfSyncByUpdatedAtField(): Promise<NotionPost[]> {
-    try {
-      const result: NotionPost[] = [];
-      const serverPosts = await this.notionRepository.findPostsFromServer();
-      const localPosts = await this.notionRepository.findPostsFromLocal();
+    const result: NotionPost[] = [];
+    const serverPosts = await this.notionRemoteRepository.findPosts();
+    const localPosts = await this.notionRepository.findPosts();
 
-      serverPosts.forEach((serverPost) => {
-        const findLocalPost = localPosts.find((localPost) => {
-          return (
-            localPost.notionId === serverPost.id &&
-            localPost.updatedAt.toISOString() !== serverPost.updatedAt
-          );
-        });
-        // TODO define error type in notionService / findPostsWithOutOfSyncUpdatedAtField
-        if (!findLocalPost) return;
-
-        const targetNotionPost = serverPosts.find(
-          (serverPost) => serverPost.id === findLocalPost.notionId,
+    serverPosts.forEach((serverPost) => {
+      const findLocalPost = localPosts.find((localPost) => {
+        return (
+          localPost.id === serverPost.id &&
+          localPost.updatedAt.toISOString() !==
+            serverPost.updatedAt.toISOString()
         );
-        result.push(targetNotionPost);
       });
+      if (!findLocalPost) return;
 
-      return result;
-    } catch (error) {
-      throw error || new Error();
-    }
+      const targetNotionPost = serverPosts.find(
+        (serverPost) => serverPost.id === findLocalPost.id,
+      );
+
+      targetNotionPost && result.push(targetNotionPost);
+    });
+
+    return result;
   }
 
   async findPostsNotYetSavedLocal(): Promise<NotionPost[]> {
-    try {
-      const serverPosts = await this.notionRepository.findPostsFromServer();
-      const localPosts = await this.findPosts().then((r) => r[0]);
+    const result: NotionPost[] = [];
+    const serverPosts = await this.notionRemoteRepository.findPosts();
+    const localPosts = await this.notionRepository.findPosts();
 
-      const result: NotionPost[] = [];
-      serverPosts.forEach((serverPost) => {
-        const isSavedPost = localPosts.some(
-          (localPost) => localPost.notionId === serverPost.id,
-        );
-        !isSavedPost && result.push(serverPost);
-      });
-      return result;
-    } catch (error) {
-      throw error || new Error();
-    }
+    serverPosts.forEach((serverPost) => {
+      const isSavedPost = localPosts.some(
+        (localPost) => localPost.id === serverPost.id,
+      );
+      !isSavedPost && result.push(serverPost);
+    });
+    return result;
   }
 
   async saveImagesFromPostString(url: string): Promise<string> {
@@ -109,7 +91,7 @@ export class NotionService {
           .replace('_secure.notion-static.com_', '');
 
         writeFileSync(
-          `${process.env.NEST_CONFIG_UPLOADS_PATH}/${originalFileName}`,
+          `${getEnv('NEST_CONFIG_UPLOADS_PATH')}/${originalFileName}`,
           r.data as any,
           'utf-8',
         );
@@ -131,11 +113,13 @@ export class NotionService {
       updatedAt: post.updatedAt as unknown as string,
     };
 
+    if (!postDTO?.content) throw Error('content is null');
+
     const imageUrls = await findImageUrlsFromRawContent(postDTO.content);
     await Promise.all(
       imageUrls.map(async (imageUrl) => {
         const savedImagePath = await this.saveImagesFromPostString(imageUrl);
-        postDTO.content = postDTO.content.replace(imageUrl, savedImagePath);
+        postDTO.content = postDTO.content!.replace(imageUrl, savedImagePath);
       }),
     );
 

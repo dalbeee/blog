@@ -55,12 +55,12 @@ describe('AUTH MODULE', () => {
         .expect(401);
     });
 
-    it('with invalid email login will return 401', async () => {
-      await request(app.getHttpServer())
-        .post(`/auth/login`)
-        .send({ email: 'test@gmail.com', password: user.user.password })
-        .expect(401);
-    });
+    // it('with invalid email login will return 401', async () => {
+    //   await request(app.getHttpServer())
+    //     .post(`/auth/login`)
+    //     .send({ email: 'test@gmail.com', password: user.user.password })
+    //     .expect(401);
+    // });
 
     // it(`export util function 'getUserAndJwt' will valid`, async () => {
     //   const userAndJwt = await getUserAndJwt(app);

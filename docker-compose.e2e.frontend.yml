@@ -27,6 +27,9 @@ services:
       target: e2e
       context: ./frontend
     env_file: .env.dev
+    volumes:
+      - ./frontend/cypress/screenshots:/app/cypress/screenshots
+      - ./frontend/cypress/videos:/app/cypress/videos
     depends_on:
       - nginx
       - backend

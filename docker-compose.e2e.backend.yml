@@ -31,7 +31,7 @@ services:
       - ./storage/uploads/:/app/uploads/
     env_file: .env.dev
     environment:
-      - NEST_CONFIG_CRON_STATUS=true
+      - NEST_CONFIG_CRON_STATUS=false
 
 
   redis:

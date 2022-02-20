@@ -15,7 +15,7 @@ export class NotionRepository extends Repository<Notion> {
   private logger: Logger = new Logger('NotionRepository');
 
   async findPosts(): Promise<NotionPost[]> {
-    return await this.find();
+    return await this.find({ order: { createdAt: 'DESC' } });
   }
 
   parseContent(content: string, length?: number) {

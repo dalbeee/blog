@@ -1,14 +1,17 @@
 FROM node:lts-alpine as config
 WORKDIR /app
-COPY --chown=node:node package* tsconfig* ./
+COPY --chown=node:node package* tsconfig* startup.sh ./
+COPY --chown=node:node ./migration/ ./migration/
+
 
 FROM node:lts-alpine as development
 USER node
 ENV NODE_ENV development
 WORKDIR /app
+RUN mkdir /app/config
 COPY --chown=node:node --from=config /app .
 EXPOSE 3000
-CMD yarn start:dev
+CMD ./startup.sh
 
 FROM node:lts-alpine as testing
 RUN mkdir -p /app/dist
@@ -35,13 +38,16 @@ FROM node:lts-alpine as node_modules_production
 USER node
 WORKDIR /app
 COPY --chown=node:node --from=config /app .
-RUN yarn install --production --frozen-lockfile
+RUN yarn install --production --frozen-lockfile && \ 
+    yarn add tsconfig-paths
 
 FROM node:lts-alpine as production
 ENV NODE_ENV production
 USER node
 WORKDIR /app
+RUN mkdir /app/config
 COPY --chown=node:node --from=build /app/dist/ ./dist/
+COPY --chown=node:node --from=config /app .
 COPY --chown=node:node --from=node_modules_production /app/node_modules ./node_modules
 EXPOSE 3000
-CMD ["node", "./dist/main.js"]
+CMD ./startup.sh

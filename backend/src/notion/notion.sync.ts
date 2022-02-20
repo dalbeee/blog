@@ -39,7 +39,7 @@ export class NotionSync {
       );
       const queuePosts = notYetSavedPosts.concat(notYetUpdatedPosts);
       const userString = await this.notionConfigService.getNotionConfigByKey(
-        'ADMIN_USER_EMAIL',
+        'NEST_ADMIN_USER_EMAIL',
       );
 
       const user = await this.userService.findByEmail(userString);

@@ -28,7 +28,11 @@ services:
     volumes:
       - ./backend/:/app/
       - ./storage/uploads/:/app/uploads/
+      - backend_config:/app/config/
     env_file: .env.dev
+    # command: /bin/sh -c "./startup.sh && yarn start:dev"
+    depends_on:
+      - db
 
   backend_e2e:
     build:
@@ -63,3 +67,6 @@ services:
     env_file: .env.dev
     cap_add:
       - SYS_NICE
+      
+volumes:
+  backend_config: {}

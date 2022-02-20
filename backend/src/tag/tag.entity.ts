@@ -1,4 +1,3 @@
-import { Post } from '@src/post/entity/post.entity';
 import {
   Column,
   Entity,
@@ -14,8 +13,4 @@ export class Tag {
 
   @Column()
   name!: string;
-
-  @ManyToMany(() => Post, { nullable: true })
-  @JoinTable()
-  posts!: Post[];
 }

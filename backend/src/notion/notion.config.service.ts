@@ -16,7 +16,11 @@ export class NotionConfigService {
   }
 
   async isValidConfiguration() {
-    const keys = ['NOTION_API_KEY', 'NOTION_DATABASE_ID', 'ADMIN_USER_EMAIL'];
+    const keys = [
+      'NOTION_API_KEY',
+      'NOTION_DATABASE_ID',
+      'NEST_ADMIN_USER_EMAIL',
+    ];
     const values = await Promise.all(
       keys.map((key) => this.configService.getKeyValue(key)),
     );

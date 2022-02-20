@@ -25,14 +25,13 @@ const host =
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'mysql',
+      type: getEnv('NEST_CONFIG_DB_TYPE') as unknown as any,
       host,
       port: +getEnv('NEST_CONFIG_DB_PORT'),
       username: getEnv('NEST_CONFIG_DB_USER'),
       password: getEnv('NEST_CONFIG_DB_PASSWORD'),
       database: getEnv('NEST_CONFIG_DB_DATABASE_NAME'),
       // synchronize: process.env.NODE_ENV !== 'production',
-      synchronize: true,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
     }),
     BullModule.forRoot({

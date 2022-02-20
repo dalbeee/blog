@@ -9,9 +9,9 @@ import {
 import { Exclude } from 'class-transformer';
 import * as bcrypt from 'bcrypt';
 
-import { Post } from '@src/post/entity/post.entity';
 import { BaseEntity } from '@src/share/entity/baseEntity';
 import { Role } from '@src/auth/decorator/role';
+import { Notion } from '@src/notion/domain/entity/notion.entity';
 
 @Entity()
 export class User extends BaseEntity {
@@ -54,8 +54,8 @@ export class User extends BaseEntity {
     this.tempPassword !== this.password && (await this.passwordHashing());
   }
 
-  @OneToMany(() => Post, (post) => post.user, { cascade: true })
-  posts!: Post[];
+  @OneToMany(() => Notion, (notion) => notion.user, { cascade: true })
+  posts!: Notion[];
 
   // @OneToMany(() => Comment, (comment) => comment.user, { cascade: true })
   // comments: Comment[];

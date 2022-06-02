@@ -2,7 +2,6 @@ import React from "react";
 import ReactMarkdown from "react-markdown";
 import { Components } from "react-markdown/lib/ast-to-react";
 
-import PostController from "./board/PostController";
 import ImageProvider from "./core/providers/ImageProvider";
 import { Post } from "../core/domain";
 
@@ -28,7 +27,6 @@ const PostDetail = ({ post }: { post: Post }) => {
         <div className="py-4 text-4xl font-semibold text-gray-700">
           {post.title}
         </div>
-        <PostController />
         <ReactMarkdown
           className="w-full py-4 text-gray-700 break-words markdown"
           // transformImageUri={img}

@@ -1,4 +1,4 @@
-import { CreatePostDTO, Post } from "../domain";
+import { Post } from "../domain";
 import { HttpClientInterface } from "../httpClient/httpClientInterface";
 
 export class PostRepository {
@@ -10,13 +10,5 @@ export class PostRepository {
 
   async getPosts(): Promise<Post[]> {
     return await this.httpClient.get(`/notion`);
-  }
-
-  async createPost(post: CreatePostDTO): Promise<Post> {
-    return await this.httpClient.post(`/notion`, post);
-  }
-
-  async deletePost(postId: string): Promise<any> {
-    return await this.httpClient.delete(`/notion/${postId}`);
   }
 }

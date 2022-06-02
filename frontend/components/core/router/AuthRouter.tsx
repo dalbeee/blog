@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { FC, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useUser } from "../../../hooks/useUser";
 import SuspensePage from "../pages/SuspensePage";
@@ -7,7 +7,13 @@ import { coreAPI } from "../../../core/coreAPI";
 import { User } from "../../../core/domain";
 import ErrorPage from "../pages/ErrorPage";
 
-const AuthRouter: FC<{ role?: string }> = ({ children, role }) => {
+const AuthRouter = ({
+  children,
+  role,
+}: {
+  children: React.ReactNode;
+  role: any;
+}) => {
   const userAPI = useUser();
   const core = coreAPI();
   const router = useRouter();

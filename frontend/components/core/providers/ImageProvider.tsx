@@ -1,18 +1,17 @@
 import Image from "next/image";
-import { FC } from "react";
 
-const ImageByNextTag: FC<{ url: string }> = ({ url }) => {
+const ImageByNextTag = ({ url }: { url: string }) => {
   return (
     <Image
       src={url}
-      objectFit="contain"
-      layout="fill"
+      layout="fixed"
+      objectFit="cover"
       className="w-full h-full"
     />
   );
 };
 
-const ImageByNativeImageTag: FC<{ url: string }> = ({ url }) => {
+const ImageByNativeImageTag = ({ url }: { url: string }) => {
   return (
     <img
       src={url}
@@ -22,21 +21,14 @@ const ImageByNativeImageTag: FC<{ url: string }> = ({ url }) => {
   );
 };
 
-const ImageProvider: FC<{ url: string }> = ({ url }) => {
-  const host =
-    process.env.NEXT_PUBLIC_ALL_IMAGE_PROVIDER === "next"
-      ? process.env.NEXT_PUBLIC_ALL_HTTP_SCHEMA +
-        process.env.NEXT_PUBLIC_CONFIG_IMAGE_HOST
-      : "";
-  const imageUrl =
-    host + process.env.NEXT_PUBLIC_ALL_STATIC_URL + encodeURI(url);
-
+const ImageProvider = ({ url }: { url: string }) => {
+  const imageUrl = "/uploads" + encodeURI(url);
   if (process.env.NEXT_PUBLIC_ALL_IMAGE_PROVIDER === "native")
     return <ImageByNativeImageTag url={imageUrl} />;
   if (process.env.NEXT_PUBLIC_ALL_IMAGE_PROVIDER === "next")
     return <ImageByNextTag url={imageUrl} />;
 
-  throw Error("process.env.NEXT_PUBLIC_ALL_STATIC_URL is not defined");
+  throw Error("process.env.NEXT_PUBLIC_ALL_IMAGE_PROVIDER is not defined");
 };
 
 export default ImageProvider;

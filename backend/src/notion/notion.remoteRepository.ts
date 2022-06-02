@@ -25,7 +25,7 @@ export class NotionRemoteRepository {
 
   async getRawfindPostsData(): Promise<DatabaseQueryResult> {
     const databaseId = await this.notionConfigService.getNotionConfigByKey(
-      'NOTION_DATABASE_ID',
+      'NEST_NOTION_DATABASE_ID',
     );
 
     const res = await this.httpService

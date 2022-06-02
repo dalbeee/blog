@@ -27,7 +27,7 @@ import { NotionRemoteRepository } from './notion.remoteRepository';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => {
-        const token = configService.getKeyValue('NOTION_API_KEY');
+        const token = configService.getKeyValue('NEST_NOTION_API_KEY');
         return {
           baseURL: 'https://api.notion.com/v1',
           headers: {

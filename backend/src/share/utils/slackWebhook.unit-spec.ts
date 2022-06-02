@@ -16,28 +16,28 @@ beforeEach(() => {
 
 describe('slackWebhook', () => {
   it('is return true when success', async () => {
-    process.env.SLACK_WEBHOOK = 'http://localhost:3000/slack';
+    process.env.NEST_SLACK_WEBHOOK = 'http://localhost:3000/slack';
     const sut = slackWebhook('hello');
 
     await expect(sut).resolves.toBe(true);
   });
 
   it('is return false when failed', async () => {
-    process.env.SLACK_WEBHOOK = 'http://localhost:3000/slack';
+    process.env.NEST_SLACK_WEBHOOK = 'http://localhost:3000/slack';
     const sut = slackWebhook('hello');
 
     await expect(sut).resolves.toBe(true);
   });
 
   it('is throw error if env is not valid url ', async () => {
-    process.env.SLACK_WEBHOOK = 'wrong url';
+    process.env.NEST_SLACK_WEBHOOK = 'wrong url';
     const sut = slackWebhook('hello');
 
     await expect(sut).rejects.toThrowError(TypeError('Invalid URL'));
   });
 
   it('is throw error if empty env', async () => {
-    delete process.env.SLACK_WEBHOOK;
+    delete process.env.NEST_SLACK_WEBHOOK;
     const sut = slackWebhook('hello');
 
     await expect(sut).rejects.toThrowError(Error);

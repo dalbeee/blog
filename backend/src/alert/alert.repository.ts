@@ -5,7 +5,7 @@ export class AlertRepository {
   SLACK_WEBHOOK_API_KEY: string;
 
   constructor(private readonly httpClient: Axios) {
-    this.SLACK_WEBHOOK_API_KEY = getEnv('SLACK_WEBHOOK');
+    this.SLACK_WEBHOOK_API_KEY = getEnv('NEST_SLACK_WEBHOOK');
   }
 
   async publishToSlack(data: any) {

@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv';
 
 export const getEnv = (env: string, defaultValue?: string): string => {
-  dotenv.config({ path: '../.env.dev' });
+  dotenv.config({ path: '.env.dev' });
 
   const queryEnv = process.env[env];
 

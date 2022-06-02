@@ -38,6 +38,5 @@ yarn-error.log*
 .env
 .env*
 
-data/*
-
 /cypress/videos/*
+public/uploads/*

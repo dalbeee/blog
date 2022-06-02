@@ -12,10 +12,10 @@
     "docker:stage:up": "docker-compose -f docker-compose.stage.yml up -d",
     "docker:stage:down": "docker-compose -f docker-compose.stage.yml down",
     "docker:build": "yarn docker:build:backend && yarn docker:build:frontend",
-    "docker:build:backend": "docker build -t harbor.codingpalette.net/library/blog-backend -f ./backend/Dockerfile ./backend",
-    "docker:build:frontend": "docker build -t harbor.codingpalette.net/library/blog-frontend -f ./frontend/Dockerfile ./frontend",
+    "docker:build:backend": "docker build -t harbor.codingpalette.net/library/blog-backend:latest -t harbor.codingpalette.net/library/blog-backend:${DOCKER_TAG} -f ./backend/Dockerfile ./backend",
+    "docker:build:frontend": "docker build -t harbor.codingpalette.net/library/blog-frontend:latest -t harbor.codingpalette.net/library/blog-frontend:${DOCKER_TAG} -f ./frontend/Dockerfile ./frontend",
     "docker:push": "yarn docker:push:backend && yarn docker:push:frontend",
-    "docker:push:backend": "docker push harbor.codingpalette.net/library/blog-backend",
-    "docker:push:frontend": "docker push harbor.codingpalette.net/library/blog-frontend"
+    "docker:push:backend": "docker push harbor.codingpalette.net/library/blog-backend:latest && docker push harbor.codingpalette.net/library/blog-backend:${DOCKER_TAG}",
+    "docker:push:frontend": "docker push harbor.codingpalette.net/library/blog-frontend:latest && docker push harbor.codingpalette.net/library/blog-frontend:${DOCKER_TAG}"
   }
 }

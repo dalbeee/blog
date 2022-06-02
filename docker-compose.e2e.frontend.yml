@@ -1,32 +1,19 @@
 version: "3.9"
 
 services:
-  nginx:
-    image: nginx:alpine
-    volumes:
-      - ./nginx/dev.conf:/etc/nginx/conf.d/default.conf
-    ports:
-      - "80:80"
-      
-  nginx-serve-static:
-    build:
-      context: ./nginx-serve-static/
-    volumes:
-      - ./storage/uploads/:/app/uploads/
-      
   frontend:
     build:
       target: development
       context: ./frontend
     volumes:
       - ./frontend/:/app/
-    env_file: .env.dev
-      
+    env_file: ./frontend/.env.test.local
+
   frontend_test:
     build:
       target: e2e
       context: ./frontend
-    env_file: .env.dev
+    env_file: ./frontend/.env.test.local
     volumes:
       - ./frontend/cypress/screenshots:/app/cypress/screenshots
       - ./frontend/cypress/videos:/app/cypress/videos
@@ -42,20 +29,18 @@ services:
     volumes:
       - ./backend/:/app/
       - ./storage/uploads/:/app/uploads/
-    env_file: .env.dev
-    environment:
-      NEST_CONFIG_CRON_STATUS: true
+    env_file: ./backend/.env.stage
 
   redis:
     image: redis:6.2.6
     ports:
       - "6379"
-      
+
   db:
     image: mysql:8.0.23
     command: --default-authentication-plugin=mysql_native_password
     ports:
       - "3306"
-    env_file: .env.dev
+    env_file: ./db/.env.dev
     cap_add:
       - SYS_NICE

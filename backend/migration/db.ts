@@ -1,9 +1,15 @@
 import { ConnectionOptions } from 'typeorm';
 
+import * as dotenv from 'dotenv';
+
+if (process.env.NODE_ENV !== 'production') {
+  dotenv.config({ path: '../.env.dev' });
+}
+
 const host =
   process.env.NEST_CONFIG_APP_ROLE === 'test'
-    ? process.env.NEST_CONFIG_DB_URL_TEST
-    : process.env.NEST_CONFIG_DB_URL;
+    ? process.env.NEST_CONFIG_DB_HOST_TEST
+    : process.env.NEST_CONFIG_DB_HOST;
 
 const connectionOptions: ConnectionOptions = {
   type: process.env.NEST_CONFIG_DB_TYPE as any,

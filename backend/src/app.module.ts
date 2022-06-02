@@ -17,26 +17,20 @@ import { UnhandledExceptionsFilter } from './share/filter/unhandledException.fil
 import { HttpExceptionFilter } from './share/filter/httpException.filter';
 import { getEnv } from './share/utils/getEnv';
 
-const host =
-  getEnv('NEST_CONFIG_APP_ROLE') === 'test'
-    ? getEnv('NEST_CONFIG_DB_URL_TEST')
-    : getEnv('NEST_CONFIG_DB_URL');
-
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: getEnv('NEST_CONFIG_DB_TYPE') as unknown as any,
-      host,
+      host: getEnv('NEST_CONFIG_DB_HOST'),
       port: +getEnv('NEST_CONFIG_DB_PORT'),
       username: getEnv('NEST_CONFIG_DB_USER'),
       password: getEnv('NEST_CONFIG_DB_PASSWORD'),
       database: getEnv('NEST_CONFIG_DB_DATABASE_NAME'),
-      // synchronize: process.env.NODE_ENV !== 'production',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
     }),
     BullModule.forRoot({
       redis: {
-        host: getEnv('NEST_CONFIG_DB_REDIS_URL'),
+        host: getEnv('NEST_CONFIG_DB_REDIS_HOST'),
         port: +getEnv('NEST_CONFIG_DB_REDIS_PORT'),
       },
     }),

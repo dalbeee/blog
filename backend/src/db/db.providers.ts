@@ -7,11 +7,11 @@ export const databaseProviders = [
     useFactory: async () =>
       await createConnection({
         type: 'mysql',
-        host: getEnv('DB_HOST'),
+        host: getEnv('NEST_CONFIG_DB_HOST'),
         port: parseInt(getEnv('NEST_CONFIG_DB_PORT')),
-        username: getEnv('USER'),
-        password: getEnv('PASSWORD'),
-        database: getEnv('DATABASE'),
+        username: getEnv('NEST_CONFIG_DB_USER'),
+        password: getEnv('NEST_CONFIG_DB_PASSWORD'),
+        database: getEnv('NEST_CONFIG_DB_DATABASE_NAME'),
         synchronize: true,
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
       }),

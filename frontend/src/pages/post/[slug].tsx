@@ -1,16 +1,15 @@
 import { GetStaticPaths, GetStaticProps } from "next";
 import dynamic from "next/dynamic";
 
-import { usePost } from "../../hooks/usePost";
-import { Post } from "../../core/domain";
-import { WithGetStaticPropsHttpHandler } from "../../components/core/WithStaticPropsHttpHandler";
+import { WithGetStaticPropsHttpHandler } from "../../common/components/WithStaticPropsHttpHandler";
+import { getPost, getPosts } from "../../post/hooks/usePost";
+import { Post } from "../../post/types";
 
-const PostDetail = dynamic(() => import("../../components/PostDetail"));
+const PostDetail = dynamic(() => import("../../post/components/PostDetail"));
 
 export const getStaticProps: GetStaticProps = WithGetStaticPropsHttpHandler(
   async (context) => {
-    const postAPI = usePost();
-    const post = await postAPI.getPost(context.params.slug as string);
+    const post = await getPost(context.params.slug as string);
     return {
       props: { post },
       revalidate: 60,
@@ -19,9 +18,8 @@ export const getStaticProps: GetStaticProps = WithGetStaticPropsHttpHandler(
 );
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const postAPI = usePost();
   try {
-    const getPostsData = await postAPI.getPosts();
+    const getPostsData = await getPosts();
     const paths = [];
 
     getPostsData?.length &&

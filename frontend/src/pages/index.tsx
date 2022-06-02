@@ -1,16 +1,15 @@
 import { GetServerSideProps } from "next";
 import dynamic from "next/dynamic";
 
-import { WithServerSideHttpHandler } from "../components/core/WithServerSideHttpHandler";
-import { coreAPI } from "../core/coreAPI";
-import { Post } from "../core/domain";
+import { WithServerSideHttpHandler } from "../common/components/WithServerSideHttpHandler";
+import { getPosts } from "../post/hooks/usePost";
+import { Post } from "../post/types";
 
-const Board = dynamic(() => import("../components/board/Board"));
+const Board = dynamic(() => import("../board/Board"));
 
 export const getServerSideProps: GetServerSideProps = WithServerSideHttpHandler(
   async () => {
-    const core = coreAPI();
-    const posts = await core.post.getPosts();
+    const posts = await getPosts();
     return { props: { posts: posts || [] } };
   }
 );

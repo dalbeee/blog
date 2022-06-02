@@ -1,23 +1,15 @@
-import Header from "../components/Header";
-import Head from "next/head";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import "../styles/globals.css";
-import SuspenseProvider from "../components/core/providers/SuspenseProvider";
-import FunctionalHttpErrorBoundary from "../components/core/FunctionalHttpErrorBoundary";
-import HttpErrorRouter from "../components/core/HttpErrorRouter";
+import SuspenseProvider from "../common/providers/SuspenseProvider";
+import FunctionalHttpErrorBoundary from "../common/components/FunctionalHttpErrorBoundary";
+import HttpErrorRouter from "../common/components/HttpErrorRouter";
+import Header from "../layout/components/Header";
 
 function MyApp({ Component, pageProps }) {
   return (
     <>
-      <Head>
-        <link
-          href="https://fonts.googleapis.com/icon?family=Material+Icons+Round"
-          rel="stylesheet"
-        />
-      </Head>
-
       <div className="relative flex justify-center w-full min-h-content">
         <div className="flex flex-col w-full min-h-content sm:w-3/5 lg:w-4/7">
           <Header />

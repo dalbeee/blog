@@ -1,14 +1,7 @@
 import Image from "next/image";
 
 const ImageByNextTag = ({ url }: { url: string }) => {
-  return (
-    <Image
-      src={url}
-      layout="fixed"
-      objectFit="cover"
-      className="w-full h-full"
-    />
-  );
+  return <Image src={url} layout="fill" objectFit="cover" />;
 };
 
 const ImageByNativeImageTag = ({ url }: { url: string }) => {

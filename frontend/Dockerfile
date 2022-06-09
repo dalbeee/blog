@@ -2,10 +2,10 @@ FROM node:lts-alpine as config
 WORKDIR /app
 COPY package* tsconfig* yarn* ./
 
-FROM cypress/included:9.4.1 as e2e
+FROM cypress/included:10.0.2 as e2e
 WORKDIR /app
 RUN yarn add -D typescript
-COPY cypress.json tsconfig.json ./
+COPY cypress* tsconfig.json ./
 COPY cypress/ ./cypress/
 ENTRYPOINT [ "/bin/sh", "-c", "sleep 5 && npx cypress run"]
 

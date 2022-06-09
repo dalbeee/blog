@@ -19,7 +19,7 @@
     "test:unit:watch": "yarn test:unit --watchAll",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./jest.config.e2e.ts --runInBand",
+    "test:e2e": "jest --config ./jest.config.e2e.ts",
     "test:e2e:watch": "yarn test:e2e --watchAll",
     "typeorm": "node -r tsconfig-paths/register -r ts-node/register ./node_modules/typeorm/cli.js --config ./migration/db.ts",
     "migration": "yarn typeorm migration:create -n first",

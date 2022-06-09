@@ -35,13 +35,6 @@ describe('slackWebhook', () => {
 
     await expect(sut).rejects.toThrowError(TypeError('Invalid URL'));
   });
-
-  it('is throw error if empty env', async () => {
-    delete process.env.NEST_SLACK_WEBHOOK;
-    const sut = slackWebhook('hello');
-
-    await expect(sut).rejects.toThrowError(Error);
-  });
 });
 
 describe('first', () => {

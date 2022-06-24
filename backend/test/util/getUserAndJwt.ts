@@ -1,7 +1,7 @@
 import { INestApplication } from '@nestjs/common';
 import { UserDTO } from '@src/user/dto/user.dto';
 import { User } from '@src/user/entity/user.entity';
-import * as faker from 'faker';
+import * as faker from '@fakerjs/faker';
 import * as request from 'supertest';
 
 export const getUserAndJwt = async (

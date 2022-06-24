@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
 
 export const slackWebhook = async (text: string) => {
-  const url: URL = new URL(process.env.NEST_SLACK_WEBHOOK as any);
+  const url = process.env.NEST_SLACK_WEBHOOK as string;
 
   try {
   } catch (error) {}

@@ -5,25 +5,26 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+
 import { Role } from '@src/auth/decorator/role';
+import { Repository } from 'typeorm';
 import { UpdateUserDTO } from './dto/user-update.dto';
 import { UserDTO } from './dto/user.dto';
-
 import { User } from './entity/user.entity';
-import { UserRepository } from './user.repository';
 
 @Injectable()
 export class UserService {
   private readonly logger = new Logger('UserService');
 
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+  ) {}
 
   async findByName(username: string): Promise<User> {
     try {
-      return await this.userRepository.findOneOrFail(
-        { username },
-        // { relations: ['posts', 'comments'] },
-      );
+      return await this.userRepository.findOneOrFail({ where: { username } });
     } catch (error) {
       throw new NotFoundException();
     }
@@ -31,10 +32,7 @@ export class UserService {
 
   async findByEmail(email: string): Promise<User> {
     try {
-      return await this.userRepository.findOneOrFail(
-        { email },
-        // { relations: ['posts', 'comments'] },
-      );
+      return await this.userRepository.findOneOrFail({ where: { email } });
     } catch (error) {
       throw new NotFoundException();
     }

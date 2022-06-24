@@ -1,5 +1,10 @@
-import { ForbiddenException, Logger, NotFoundException } from '@nestjs/common';
-import { EntityRepository, Repository } from 'typeorm';
+import {
+  ForbiddenException,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
+import { Repository } from 'typeorm';
 import { Lexer } from 'marked';
 
 import * as helper from '@src/share/utils';
@@ -9,13 +14,18 @@ import { PatchPostDTO } from './domain/dto/patch-post.dto';
 import { Notion } from './domain/entity/notion.entity';
 import { extractThumbnailFromPost } from '@src/share/utils/extractThumbnailFromPost';
 import { NotionPost } from './domain/types/notion-post';
+import { InjectRepository } from '@nestjs/typeorm';
 
-@EntityRepository(Notion)
-export class NotionRepository extends Repository<Notion> {
+@Injectable()
+export class NotionRepository {
   private logger: Logger = new Logger('NotionRepository');
+  constructor(
+    @InjectRepository(Notion)
+    private readonly notionRepository: Repository<Notion>,
+  ) {}
 
   async findPosts(): Promise<NotionPost[]> {
-    return await this.find({ order: { createdAt: 'DESC' } });
+    return await this.notionRepository.find({ order: { createdAt: 'DESC' } });
   }
 
   parseContent(content: string, length?: number) {
@@ -33,20 +43,23 @@ export class NotionRepository extends Repository<Notion> {
 
   async findById(id: string): Promise<Notion> {
     try {
-      return await this.findOneOrFail({ id }, { relations: ['user'] });
+      return await this.notionRepository.findOneOrFail({
+        where: { id },
+        relations: ['user'],
+      });
     } catch (error) {
       throw new NotFoundException();
     }
   }
 
   async createPost(user: User, post: CreatePostDTO): Promise<Notion> {
-    const newPost = this.create(post);
+    const newPost = this.notionRepository.create(post);
     newPost.id = post.notionId!;
     newPost.user = user;
     newPost.thumbnail = extractThumbnailFromPost(post)!;
     newPost.description = this.parseContent(post.content, 100);
     newPost.slug = helper.slugify(post.title);
-    return await this.save(newPost);
+    return await this.notionRepository.save(newPost);
   }
 
   hasUserCollectPermission(user: User, post: Notion): boolean {
@@ -64,7 +77,7 @@ export class NotionRepository extends Repository<Notion> {
       throw new ForbiddenException();
     }
     const updatePost: Notion = Object.assign(findPost, updateDTO);
-    return await this.save(updatePost);
+    return await this.notionRepository.save(updatePost);
   }
 
   async syncPost(

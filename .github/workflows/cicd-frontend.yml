@@ -1,0 +1,36 @@
+name: ci/cd
+
+on:
+  push:
+    branches: main
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login to Docker Registry
+        run: echo "${{ secrets.DOCKER_REGISTRY_TOKEN }}" | docker login ${{ secrets.DOCKER_REGISTRY_HOST }} -u "${{ secrets.DOCKER_REGISTRY_USERNAME }}" --password-stdin
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          tags: ${{ secrets.DOCKER_REGISTRY_HOST}}/library/blog-frontend:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: executing remote deploy by ssh
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: ${{ secrets.SSH_PATH }}/docker/deploy_init.sh blog
+
+      - name: Logout to Docker Registry
+        run: docker logout ${{ secrets.DOCKER_REGISTRY_HOST }}

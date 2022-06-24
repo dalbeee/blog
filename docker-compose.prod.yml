@@ -65,7 +65,5 @@ services:
 
 volumes:
   blog_backend_config: {}
-  blog_uploads:
-    name: blog_uploads
-  blog_db:
-    name: blog_db
+  blog_uploads: {}
+  blog_db: {}

@@ -12,9 +12,11 @@
     "docker:stage:up": "docker-compose -f docker-compose.stage.yml up -d",
     "docker:stage:down": "docker-compose -f docker-compose.stage.yml down --remove-orphans",
     "docker:build": "yarn docker:build:backend && yarn docker:build:frontend",
+    "docker:build:storage-service": "docker build -t harbor.codingpalette.net/library/blog-storage-service -f ./storage-service/Dockerfile ./storage-service",
     "docker:build:backend": "docker build -t harbor.codingpalette.net/library/blog-backend:latest -f ./backend/Dockerfile ./backend",
     "docker:build:frontend": "docker build -t harbor.codingpalette.net/library/blog-frontend:latest -f ./frontend/Dockerfile ./frontend",
     "docker:push": "yarn docker:push:backend && yarn docker:push:frontend",
+    "docker:push:storage-service": "docker push harbor.codingpalette.net/library/blog-storage-service",
     "docker:push:backend": "docker push harbor.codingpalette.net/library/blog-backend:latest",
     "docker:push:frontend": "docker push harbor.codingpalette.net/library/blog-frontend:latest"
   }

@@ -1,25 +1,20 @@
 name: ci/cd-backend
 
 on:
-  push:
-    branches: main
-# on:
-#   workflow_run:
-#     workflows: [testing]
-#     types:
-#       - completed
+  workflow_run:
+    workflows: [testing]
+    types:
+      - completed
 
 jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Build the Docker image
-        run: ls -al
-      
       - name: Login to Docker Registry
         run: echo "${{ secrets.DOCKER_REGISTRY_TOKEN }}" | docker login ${{ secrets.DOCKER_REGISTRY_HOST }} -u "${{ secrets.DOCKER_REGISTRY_USERNAME }}" --password-stdin
+
+      - uses: actions/checkout@v3
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2

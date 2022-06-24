@@ -1,5 +1,4 @@
-import { ConnectionOptions } from 'typeorm';
-
+import { DataSource, DataSourceOptions } from 'typeorm';
 import * as dotenv from 'dotenv';
 
 if (process.env.NODE_ENV !== 'production') {
@@ -11,7 +10,7 @@ const host =
     ? process.env.NEST_CONFIG_DB_HOST_TEST
     : process.env.NEST_CONFIG_DB_HOST;
 
-const connectionOptions: ConnectionOptions = {
+const connectionOptions: DataSourceOptions = {
   type: process.env.NEST_CONFIG_DB_TYPE as any,
   host,
   port: parseInt(process.env.NEST_CONFIG_DB_PORT as any),
@@ -19,10 +18,9 @@ const connectionOptions: ConnectionOptions = {
   password: process.env.NEST_CONFIG_DB_PASSWORD,
   database: process.env.NEST_CONFIG_DB_DATABASE_NAME,
   entities: [__dirname + '/**/*.entity{.ts,.js}'],
-  migrations: ['./migration/*.ts'],
-  cli: {
-    migrationsDir: './migration',
-  },
+  migrations: ['./migration/sources/*.ts'],
 };
 
-export default connectionOptions;
+// export default connectionOptions;
+
+export default new DataSource(connectionOptions);

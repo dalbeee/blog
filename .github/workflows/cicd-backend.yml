@@ -1,10 +1,13 @@
 name: ci/cd-backend
 
 on:
-  workflow_run:
-    workflows: [testing]
-    types:
-      - completed
+  push:
+    branches: main
+# on:
+#   workflow_run:
+#     workflows: [testing]
+#     types:
+#       - completed
 
 jobs:
   build:

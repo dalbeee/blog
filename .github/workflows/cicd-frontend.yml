@@ -1,8 +1,10 @@
-name: ci/cd
+name: ci/cd-frontend
 
 on:
-  push:
-    branches: main
+  workflow_run:
+    workflows: [testing]
+    types:
+      - completed
 
 jobs:
   build:

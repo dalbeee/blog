@@ -1,14 +1,22 @@
 version: "3.9"
 
 services:
+  storage-service:
+    image: nginx
+    restart: always
+    pull_policy: always
+    ports:
+      - "8081:80"
+    volumes:
+      - blog_uploads:/app/storage
+      - ./storage-service/default.conf:/etc/nginx/conf.d/default.conf
+
   frontend:
     image: harbor.codingpalette.net/library/blog-frontend
     restart: always
     pull_policy: always
     ports:
       - "8080:3000"
-    volumes:
-      - blog_uploads:/app/public/uploads
     environment:
       - NEXT_SSR_API_URL=${NEXT_SSR_API_URL}
 

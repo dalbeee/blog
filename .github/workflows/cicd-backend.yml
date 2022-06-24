@@ -22,9 +22,10 @@ jobs:
 
       - name: Build and push
         uses: docker/build-push-action@v3
+        run: docker build . --file ./backend/Dockerfile
         with:
           push: true
-          tags: ${{ secrets.DOCKER_REGISTRY_HOST}}/library/blog-backend:latest
+          tags: ${{ secrets.DOCKER_REGISTRY_HOST}}/library/blog-backend
           cache-from: type=gha
           cache-to: type=gha,mode=max
 

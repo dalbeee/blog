@@ -14,14 +14,14 @@ CMD yarn test:unit && yarn test:e2e
 FROM node:lts-alpine as build
 WORKDIR /app
 COPY --from=config /app/ ./
-RUN yarn install --frozen-lockfile
+RUN yarn install
 COPY . .
 RUN yarn build
 
 FROM node:lts-alpine as node_modules_production
 WORKDIR /app
 COPY --from=config /app .
-RUN yarn install --production --frozen-lockfile && \ 
+RUN yarn install --production && \ 
     yarn add tsconfig-paths
 
 FROM node:lts-alpine as production

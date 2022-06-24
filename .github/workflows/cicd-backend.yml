@@ -36,7 +36,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          script: ${{ secrets.SSH_PATH }}/docker/deploy_init.sh blog
+          script: ${{ secrets.SSH_PATH }}/deploy_init.sh blog
 
       - name: Logout to Docker Registry
         run: docker logout ${{ secrets.DOCKER_REGISTRY_HOST }}

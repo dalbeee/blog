@@ -19,6 +19,7 @@ jobs:
         uses: docker/build-push-action@v3
         run: docker build . --file ./frontend/Dockerfile
         with:
+          context: ./frontend/
           push: true
           tags: ${{ secrets.DOCKER_REGISTRY_HOST}}/library/blog-frontend:latest
           cache-from: type=gha

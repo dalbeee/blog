@@ -22,8 +22,8 @@ jobs:
 
       - name: Build and push
         uses: docker/build-push-action@v3
-        run: docker build . --file ./backend/Dockerfile
         with:
+          context: ./backend/
           push: true
           tags: ${{ secrets.DOCKER_REGISTRY_HOST}}/library/blog-backend
           cache-from: type=gha

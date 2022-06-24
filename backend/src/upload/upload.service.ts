@@ -1,14 +1,11 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
-import { Upload } from './upload.entity';
+import { Injectable } from '@nestjs/common';
 import { Multer } from 'multer';
+
+import { UploadRepository } from './upload.repository';
 
 @Injectable()
 export class UploadService {
-  constructor(
-    @Inject('UPLOAD_REPOSITORY')
-    private readonly uploadRepository: Repository<Upload>,
-  ) {}
+  constructor(private readonly uploadRepository: UploadRepository) {}
 
   async getAllUploadedFiles() {
     try {

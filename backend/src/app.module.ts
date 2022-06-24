@@ -6,32 +6,39 @@ import {
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BullModule } from '@nestjs/bull';
 import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
+import { ConfigModule } from '@nestjs/config';
+import * as Joi from 'joi';
 
 import { UsersModule } from '@src/user/user.module';
 import { AuthModule } from '@src/auth/auth.module';
 import { NotionModule } from './notion/notion.module';
 import { LoggerModule } from './logger/logger.module';
 import { ScheduleModule } from '@nestjs/schedule';
-import { ConfigModule } from './config/config.module';
 import { UnhandledExceptionsFilter } from './share/filter/unhandledException.filter';
 import { HttpExceptionFilter } from './share/filter/httpException.filter';
-import { getEnv } from './share/utils/getEnv';
-
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      envFilePath: ['.env.development'],
+      isGlobal: true,
+      validationSchema: Joi.object({
+        NEST_CONFIG_DB_TYPE: Joi.string().required(),
+      }),
+    }),
+
     TypeOrmModule.forRoot({
-      type: getEnv('NEST_CONFIG_DB_TYPE') as unknown as any,
-      host: getEnv('NEST_CONFIG_DB_HOST'),
-      port: +getEnv('NEST_CONFIG_DB_PORT'),
-      username: getEnv('NEST_CONFIG_DB_USER'),
-      password: getEnv('NEST_CONFIG_DB_PASSWORD'),
-      database: getEnv('NEST_CONFIG_DB_DATABASE_NAME'),
+      type: process.env.NEST_CONFIG_DB_TYPE as any,
+      host: process.env.NEST_CONFIG_DB_HOST,
+      port: +(process.env.NEST_CONFIG_DB_PORT as any),
+      username: process.env.NEST_CONFIG_DB_USER,
+      password: process.env.NEST_CONFIG_DB_PASSWORD,
+      database: process.env.NEST_CONFIG_DB_DATABASE_NAME,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
     }),
     BullModule.forRoot({
       redis: {
-        host: getEnv('NEST_CONFIG_DB_REDIS_HOST'),
-        port: +getEnv('NEST_CONFIG_DB_REDIS_PORT'),
+        host: process.env.NEST_CONFIG_DB_REDIS_HOST,
+        port: +(process.env.NEST_CONFIG_DB_REDIS_PORT as any),
       },
     }),
     ScheduleModule.forRoot(),

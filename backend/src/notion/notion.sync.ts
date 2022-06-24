@@ -4,9 +4,7 @@ import { Logger } from '@nestjs/common';
 
 import { NotionService } from './notion.service';
 import { NotionCronService } from './notion.cron.service';
-import { NotionConfigService } from './notion.config.service';
 import { UserService } from '@src/user/user.service';
-import { getEnv } from '@src/share/utils/getEnv';
 
 @Processor('notionSync')
 export class NotionSync {
@@ -15,7 +13,6 @@ export class NotionSync {
   constructor(
     private readonly notionService: NotionService,
     private readonly notionCronService: NotionCronService,
-    private readonly notionConfigService: NotionConfigService,
     private readonly userService: UserService,
   ) {}
 
@@ -27,7 +24,6 @@ export class NotionSync {
   @Process('syncNotionPosts')
   async syncNotionPosts(job: Job) {
     try {
-      await this.notionConfigService.isValidConfiguration();
       const notYetSavedPosts =
         await this.notionService.findPostsNotYetSavedLocal();
 
@@ -38,11 +34,8 @@ export class NotionSync {
         `new-${notYetSavedPosts.length}\tnotYetSync-${notYetUpdatedPosts.length}`,
       );
       const queuePosts = notYetSavedPosts.concat(notYetUpdatedPosts);
-      const userString = await this.notionConfigService.getNotionConfigByKey(
-        'NEST_ADMIN_USER_EMAIL',
-      );
-
-      const user = await this.userService.findByEmail(userString);
+      const userString = process.env.NEST_ADMIN_USER_EMAIL;
+      const user = await this.userService.findByEmail(userString!);
 
       for (const [index, post] of queuePosts.entries()) {
         this.logger.log(` ${index} of ${queuePosts.length}...`);
@@ -50,7 +43,9 @@ export class NotionSync {
           .syncPostToLocal(user, post)
           .then(
             async () =>
-              await this.sleep(+getEnv('NOTION_API_THROTTLING', '1000')),
+              await this.sleep(
+                +(process.env.NOTION_API_THROTTLING as any) || 1000,
+              ),
           );
       }
       this.notionCronService.addNotionCron();

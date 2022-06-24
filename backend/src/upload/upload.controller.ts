@@ -34,20 +34,17 @@ export class UploadController {
         },
       }),
       limits: { fileSize: 1024 * 1024 * 5 },
-      //
       fileFilter(
         req: Express.Request,
         file: Multer.File,
         cb: (error: Error | null, acceptFile: boolean) => void,
       ) {
-        console.log(file.mimetype);
         if (file.mimetype.match(/\/(jpg|jpeg|png|gif)$/)) return cb(null, true);
         return cb(null, false);
       },
     }),
   )
   uploadFile(@UploadedFile() file: Multer.File, @Req() req) {
-    console.log(req.headers);
     if (!file) {
       throw new HttpException('not supported file', 400);
     }

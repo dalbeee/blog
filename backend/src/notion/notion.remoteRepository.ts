@@ -6,14 +6,10 @@ import { parseISO } from 'date-fns';
 import { DatabaseQueryResult } from './domain/types/database-query-result';
 import { NotionBlock } from './domain/types/notion-block';
 import { NotionPost } from './domain/types/notion-post';
-import { NotionConfigService } from './notion.config.service';
 
 @Injectable()
 export class NotionRemoteRepository {
-  constructor(
-    private readonly httpService: HttpService,
-    private readonly notionConfigService: NotionConfigService,
-  ) {}
+  constructor(private readonly httpService: HttpService) {}
 
   async getRawfindPostData(url: string): Promise<NotionBlock> {
     const res = await this.httpService
@@ -24,9 +20,7 @@ export class NotionRemoteRepository {
   }
 
   async getRawfindPostsData(): Promise<DatabaseQueryResult> {
-    const databaseId = await this.notionConfigService.getNotionConfigByKey(
-      'NEST_NOTION_DATABASE_ID',
-    );
+    const databaseId = process.env.NEST_NOTION_DATABASE_ID;
 
     const res = await this.httpService
       .post(`/databases/${databaseId}/query`, {})

@@ -1,15 +1,10 @@
 import { HttpService } from '@nestjs/axios';
 import { Test } from '@nestjs/testing';
 
-import { NotionConfigService } from './notion.config.service';
 import { NotionRemoteRepository } from './notion.remoteRepository';
 import { rawfindPostsData } from './test/notionRemoteRepository.assets';
 
 const mockHttpService = {};
-
-const mockNotionConfigService = {
-  getNotionConfigByKey: jest.fn().mockReturnValue(''),
-};
 
 let notionRemoteRepository: Record<keyof NotionRemoteRepository, jest.Mock>;
 let httpService: Record<keyof HttpService, jest.Mock>;
@@ -19,7 +14,6 @@ beforeAll(async () => {
     providers: [
       NotionRemoteRepository,
       { provide: HttpService, useValue: mockHttpService },
-      { provide: NotionConfigService, useValue: mockNotionConfigService },
     ],
   }).compile();
   const app = moduleRef.createNestApplication();

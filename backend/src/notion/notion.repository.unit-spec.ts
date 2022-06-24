@@ -3,12 +3,9 @@ import { User } from '@src/user/entity/user.entity';
 import * as faker from 'faker';
 
 import { CreatePostDTO } from './domain/dto/create-post.dto';
-import { NotionConfigService } from './notion.config.service';
 import { NotionRemoteRepository } from './notion.remoteRepository';
 import { NotionRepository } from './notion.repository';
 import { posts } from './test/notionRepository.assets';
-
-const notionConfigService = () => ({});
 
 const mockNotionRepository = () => ({
   findById: jest
@@ -26,7 +23,6 @@ beforeAll(async () => {
     providers: [
       NotionRepository,
       { provide: NotionRemoteRepository, useValue: mockNotionRepository() },
-      { provide: NotionConfigService, useValue: notionConfigService() },
     ],
   }).compile();
 

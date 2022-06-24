@@ -11,7 +11,6 @@ import { NotionRepository } from './notion.repository';
 import { parseNotionPostToMarkdown } from './util';
 import { findImageUrlsFromRawContent } from './util/findImageUrlsFromRawContent';
 import { NotionBlock } from './domain/types/notion-block';
-import { getEnv } from '@src/share/utils/getEnv';
 import { NotionRemoteRepository } from './notion.remoteRepository';
 
 @Injectable()
@@ -95,7 +94,7 @@ export class NotionService {
           .replace('_secure.notion-static.com_', '');
 
         writeFileSync(
-          `${getEnv('NEST_CONFIG_UPLOADS_PATH')}/${originalFileName}`,
+          `${process.env.NEST_CONFIG_UPLOADS_PATH}/${originalFileName}`,
           r.data as any,
           'utf-8',
         );

@@ -1,7 +1,6 @@
 import { InjectQueue } from '@nestjs/bull';
 import { Injectable, Logger } from '@nestjs/common';
 import { SchedulerRegistry } from '@nestjs/schedule';
-import { getEnv } from '@src/share/utils/getEnv';
 import { Queue } from 'bull';
 import { CronJob } from 'cron';
 
@@ -17,7 +16,8 @@ export class NotionCronService {
     this.cronActivate = false;
     new Promise((res) =>
       setTimeout(() => {
-        getEnv('NEST_CONFIG_CRON_STATUS') === 'true' && this.initCronService();
+        process.env.NEST_CONFIG_CRON_STATUS === 'true' &&
+          this.initCronService();
       }, 500),
     );
   }
@@ -29,9 +29,7 @@ export class NotionCronService {
 
   addNotionCron() {
     const job = new CronJob(
-      `${
-        getEnv('NODE_ENV', 'development') === 'production' ? '0' : '*/10'
-      } * * * * *`,
+      `${process.env.NODE_ENV === 'production' ? '0' : '*/10'} * * * * *`,
       () => {
         this.notionSync.add('syncNotionPosts');
         this.logger.log('del cron');

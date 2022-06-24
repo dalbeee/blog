@@ -3,7 +3,7 @@ import { ConnectionOptions } from 'typeorm';
 import * as dotenv from 'dotenv';
 
 if (process.env.NODE_ENV !== 'production') {
-  dotenv.config({ path: '.env.dev' });
+  dotenv.config({ path: '.env.development' });
 }
 
 const host =

@@ -1,4 +1,4 @@
-import { faker } from '@fakerjs/faker';
+import { faker } from '@faker-js/faker';
 import * as request from 'supertest';
 import { INestApplication } from '@nestjs/common';
 

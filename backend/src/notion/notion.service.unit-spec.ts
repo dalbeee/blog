@@ -1,6 +1,6 @@
 import { CacheModule } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { faker } from '@fakerjs/faker';
+import { faker } from '@faker-js/faker';
 
 import { NotionPost } from './domain/types/notion-post';
 import { NotionRepository } from './notion.repository';

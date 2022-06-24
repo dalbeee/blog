@@ -1,6 +1,6 @@
 import { Test } from '@nestjs/testing';
 import { User } from '@src/user/entity/user.entity';
-import { faker } from '@fakerjs/faker';
+import { faker } from '@faker-js/faker';
 
 import { CreatePostDTO } from './domain/dto/create-post.dto';
 import { NotionRemoteRepository } from './notion.remoteRepository';

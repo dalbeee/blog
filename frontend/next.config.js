@@ -1,9 +1,7 @@
 const withPlugins = require("next-compose-plugins");
 
 const isDockerBuildTime = !!process.env.ANALYZE;
-const isDev = process.env.NODE_ENV !== "production";
 const isProduction = process.env.NODE_ENV === "production";
-const imageHost = process.env.NEXT_PUBLIC_CONFIG_IMAGE_HOST || "";
 
 const withBundleAnalyzerLoader = () =>
   isDockerBuildTime
@@ -23,7 +21,7 @@ const securityHeaders = [
   },
   {
     key: "Permissions-Policy",
-    value: "camera=(), microphone=(), geolocation=(), interest-cohort=()",
+    value: "camera=(), microphone=(), geolocation=()",
   },
   {
     key: "X-Content-Type-Options",
@@ -45,7 +43,7 @@ const config = {
     return config;
   },
   images: {
-    domains: [imageHost],
+    domains: ["storage-service"],
   },
   async headers() {
     const applySecurity = {

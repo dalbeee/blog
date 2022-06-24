@@ -15,13 +15,10 @@ const ImageByNativeImageTag = ({ url }: { url: string }) => {
 };
 
 const ImageProvider = ({ url }: { url: string }) => {
-  const imageUrl = "/uploads" + encodeURI(url);
+  const imageUrl = process.env.NEXT_PUBLIC_CONFIG_IMAGE_HOST + encodeURI(url);
   if (process.env.NEXT_PUBLIC_ALL_IMAGE_PROVIDER === "native")
     return <ImageByNativeImageTag url={imageUrl} />;
-  if (process.env.NEXT_PUBLIC_ALL_IMAGE_PROVIDER === "next")
-    return <ImageByNextTag url={imageUrl} />;
-
-  throw Error("process.env.NEXT_PUBLIC_ALL_IMAGE_PROVIDER is not defined");
+  return <ImageByNextTag url={imageUrl} />;
 };
 
 export default ImageProvider;

@@ -28,13 +28,6 @@ describe('slackWebhook', () => {
 
     await expect(sut).resolves.toBe(true);
   });
-
-  it('is throw error if env is not valid url ', async () => {
-    process.env.NEST_SLACK_WEBHOOK = 'wrong url';
-    const sut = slackWebhook('hello');
-
-    await expect(sut).rejects.toThrowError(TypeError('Invalid URL'));
-  });
 });
 
 describe('first', () => {

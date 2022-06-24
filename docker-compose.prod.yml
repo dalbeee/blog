@@ -3,17 +3,21 @@ version: "3.9"
 services:
   frontend:
     image: harbor.codingpalette.net/library/blog-frontend
+    restart: always
+    pull_policy: always
     ports:
       - "8080:3000"
     volumes:
-      - blog_uploads/:/app/public/uploads
+      - blog_uploads:/app/public/uploads
     environment:
       - NEXT_SSR_API_URL=${NEXT_SSR_API_URL}
 
   backend:
     image: harbor.codingpalette.net/library/blog-backend
+    restart: always
+    pull_policy: always
     volumes:
-      - blog_uploads/:/app/uploads/
+      - blog_uploads:/app/uploads/
 
     environment:
       NEST_CONFIG_DB_TYPE: ${NEST_CONFIG_DB_TYPE}
@@ -37,9 +41,13 @@ services:
 
   redis:
     image: redis:6.2.6
+    restart: always
+    pull_policy: always
 
   db:
     image: mysql:8.0.23
+    restart: always
+    pull_policy: always
     command: --default-authentication-plugin=mysql_native_password
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -50,8 +58,6 @@ services:
 volumes:
   blog_backend_config: {}
   blog_uploads:
-    external:
-      name: blog_uploads
+    name: blog_uploads
   blog_db:
-    external:
-      name: blog_db
+    name: blog_db

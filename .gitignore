@@ -1,6 +1,8 @@
 /.scannerwork/*
 /.scannerwork
-storage/*
+storage/uploads/*
+!storage/uploads/.gitkeep
+
 
 **/dist
 **/.next

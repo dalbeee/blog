@@ -8,8 +8,9 @@ import { NotionSync } from './notion.sync';
 import { NotionService } from './notion.service';
 import { NotionCronService } from './notion.cron.service';
 import { UsersModule } from '@src/user/user.module';
-import { NotionRepository } from './notion.repository';
 import { NotionRemoteRepository } from './notion.remoteRepository';
+import { Notion } from './domain/entity/notion.entity';
+import { NotionRepository } from './notion.repository';
 
 @Module({
   imports: [
@@ -19,7 +20,7 @@ import { NotionRemoteRepository } from './notion.remoteRepository';
     BullModule.registerQueue({
       name: 'notionSync',
     }),
-    TypeOrmModule.forFeature([NotionRepository]),
+    TypeOrmModule.forFeature([Notion]),
     HttpModule.registerAsync({
       useFactory: async () => {
         const token = process.env.NEST_NOTION_API_KEY;
@@ -40,6 +41,7 @@ import { NotionRemoteRepository } from './notion.remoteRepository';
     NotionSync,
     NotionCronService,
     NotionRemoteRepository,
+    NotionRepository,
   ],
   exports: [NotionService],
 })

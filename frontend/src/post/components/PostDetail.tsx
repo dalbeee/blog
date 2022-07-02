@@ -22,9 +22,11 @@ const PostDetail = ({ post }: { post: Post }) => {
   return (
     <div className="flex justify-center w-full">
       <div className="w-11/12" style={{ maxWidth: "860px" }}>
-        <div className="py-4 text-4xl font-semibold text-gray-700">
-          {post.title}
-        </div>
+        <title>
+          <h1 className="py-4 text-4xl font-semibold text-gray-700">
+            {post.title}
+          </h1>
+        </title>
         <ReactMarkdown
           className="w-full py-4 text-gray-700 break-words markdown"
           components={renderers}

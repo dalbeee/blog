@@ -15,5 +15,10 @@ export const getServerSideProps: GetServerSideProps = WithServerSideHttpHandler(
 );
 
 export default function Home({ posts }: { posts: Post[] }) {
-  return <Board posts={posts} />;
+  return (
+    <>
+      <title>blog</title>
+      <Board posts={posts} />
+    </>
+  );
 }

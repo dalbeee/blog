@@ -1,5 +1,6 @@
 import { GetServerSideProps } from "next";
 import dynamic from "next/dynamic";
+import Head from "next/head";
 
 import { WithServerSideHttpHandler } from "../common/components/WithServerSideHttpHandler";
 import { getPosts } from "../post/hooks/usePost";
@@ -17,7 +18,9 @@ export const getServerSideProps: GetServerSideProps = WithServerSideHttpHandler(
 export default function Home({ posts }: { posts: Post[] }) {
   return (
     <>
-      <title>blog</title>
+      <Head>
+        <title>blog</title>
+      </Head>
       <Board posts={posts} />
     </>
   );

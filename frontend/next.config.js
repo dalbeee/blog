@@ -43,7 +43,7 @@ const config = {
     return config;
   },
   images: {
-    domains: ["storage-service"],
+    domains: ["storage-service", "localhost"],
   },
   async headers() {
     const applySecurity = {

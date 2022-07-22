@@ -9,7 +9,8 @@
     "start": "next start",
     "test:unit": "jest --config ./jest.config.ts",
     "test:watch": "yarn jest:unit --watch",
-    "test:e2e": "npx cypress run"
+    "test:e2e": "npx cypress run",
+    "export": "next build && next export && next-export-optimize-images"
   },
   "dependencies": {
     "axios": "^0.27.2",
@@ -37,6 +38,7 @@
     "eslint-plugin-cypress": "^2.12.1",
     "jest": "^28.1.0",
     "jest-environment-jsdom": "^28.1.0",
+    "next-export-optimize-images": "^1.5.3",
     "postcss": "^8.4.14",
     "tailwindcss": "^3.0.24",
     "ts-jest": "^28.0.4",

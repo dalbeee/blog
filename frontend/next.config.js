@@ -1,4 +1,5 @@
 const withPlugins = require("next-compose-plugins");
+const withExportImages = require("next-export-optimize-images");
 
 const isDockerBuildTime = !!process.env.ANALYZE;
 const isProduction = process.env.NODE_ENV === "production";
@@ -55,4 +56,6 @@ const config = {
   },
 };
 
-module.exports = withPlugins([withBundleAnalyzerLoader()], { ...config });
+module.exports = withPlugins([withBundleAnalyzerLoader(), withExportImages], {
+  ...config,
+});

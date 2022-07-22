@@ -86,11 +86,10 @@ export class NotionService {
     return axios
       .get(url, { responseType: 'arraybuffer' })
       .then(async (r) => {
-        let originalFileName: string =
-          r.request?._redirectable?._options?.pathname;
-
-        originalFileName = originalFileName
-          .replaceAll('/', '_')
+        const originalFileName = (
+          r.request?._redirectable?._options?.pathname as string
+        )
+          .replace('/', '_')
           .replace('_secure.notion-static.com_', '');
 
         writeFileSync(

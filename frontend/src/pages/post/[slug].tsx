@@ -9,7 +9,8 @@ const PostDetail = dynamic(() => import("../../post/components/PostDetail"));
 
 export const getStaticProps: GetStaticProps = WithGetStaticPropsHttpHandler(
   async (context) => {
-    const post = await getPost(context.params.slug as string);
+    const post: Post = await getPost(context.params.slug as string);
+
     return {
       props: { post },
       revalidate: 60,

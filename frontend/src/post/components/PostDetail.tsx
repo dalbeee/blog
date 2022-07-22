@@ -13,7 +13,7 @@ const renderers: Components = {
         className="relative overflow-hidden "
         style={{ width: "100%", maxHeight: "100%", minHeight: 400 }}
       >
-        <ImageProvider url={`/${image?.src}`} />
+        <ImageProvider url={image?.src} />
       </div>
     );
   },

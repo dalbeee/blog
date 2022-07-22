@@ -13,7 +13,7 @@ const Board = ({ posts }: { posts: Post[] }) => {
 
   return (
     <>
-      <div className="w-full px-2 min-h-content grid grid-cols-1 xl:grid-cols-2 gap-4">
+      <div className="w-full px-2 grid grid-cols-1 xl:grid-cols-2 gap-4">
         {posts.map((post, index) => (
           <Card post={post} key={index} />
         ))}

@@ -1,19 +1,16 @@
-import { GetServerSideProps } from "next";
+import { GetStaticProps } from "next";
 import dynamic from "next/dynamic";
 import Head from "next/head";
 
-import { WithServerSideHttpHandler } from "../common/components/WithServerSideHttpHandler";
 import { getPosts } from "../post/hooks/usePost";
 import { Post } from "../post/types";
 
 const Board = dynamic(() => import("../board/Board"));
 
-export const getServerSideProps: GetServerSideProps = WithServerSideHttpHandler(
-  async () => {
-    const posts = await getPosts();
-    return { props: { posts: posts || [] } };
-  }
-);
+export const getStaticProps: GetStaticProps = async () => {
+  const posts = await getPosts();
+  return { props: { posts }, revalidate: 60 };
+};
 
 export default function Home({ posts }: { posts: Post[] }) {
   return (

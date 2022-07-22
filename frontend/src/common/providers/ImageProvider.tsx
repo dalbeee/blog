@@ -15,10 +15,7 @@ const ImageByNativeImageTag = ({ url }: { url: string }) => {
 };
 
 const ImageProvider = ({ url }: { url: string }) => {
-  const imageUrl =
-    (process.env.NODE_ENV !== "production"
-      ? "http://localhost"
-      : "http://storage-service") + encodeURI(url);
+  const imageUrl = `/uploads/${encodeURI(url)}`;
   if (process.env.NEXT_PUBLIC_ALL_IMAGE_PROVIDER === "native")
     return <ImageByNativeImageTag url={imageUrl} />;
   return <ImageByNextTag url={imageUrl} />;

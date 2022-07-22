@@ -5,6 +5,9 @@ on:
     workflows: [testing]
     types:
       - completed
+  repository_dispatch:
+    types:
+      - webhook
 
 jobs:
   build:

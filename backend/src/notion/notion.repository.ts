@@ -45,10 +45,7 @@ export class NotionRepository {
 
   async findById(id: string): Promise<Notion> {
     try {
-      return await this.notionRepository.findOneOrFail({
-        where: { id },
-        relations: ['user'],
-      });
+      return await this.notionRepository.findOneOrFail({ where: { id } });
     } catch (error) {
       throw new NotFoundException();
     }

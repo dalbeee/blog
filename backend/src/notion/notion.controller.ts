@@ -24,10 +24,4 @@ export class NotionController {
   async getSyncStatus() {
     return this.notionCronService.getCronActivate();
   }
-
-  @Get('/sync/trigger')
-  async crawler() {
-    this.notionCronService.addNotionCron();
-    return true;
-  }
 }

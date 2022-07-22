@@ -9,8 +9,6 @@ import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 
-import { UsersModule } from '@src/user/user.module';
-import { AuthModule } from '@src/auth/auth.module';
 import { NotionModule } from './notion/notion.module';
 import { LoggerModule } from './logger/logger.module';
 import { ScheduleModule } from '@nestjs/schedule';
@@ -25,7 +23,6 @@ import { HttpExceptionFilter } from './share/filter/httpException.filter';
         NEST_CONFIG_DB_TYPE: Joi.string().required(),
       }),
     }),
-
     TypeOrmModule.forRoot({
       type: process.env.NEST_CONFIG_DB_TYPE as any,
       host: process.env.NEST_CONFIG_DB_HOST,
@@ -42,8 +39,6 @@ import { HttpExceptionFilter } from './share/filter/httpException.filter';
       },
     }),
     ScheduleModule.forRoot(),
-    UsersModule,
-    AuthModule,
     NotionModule,
     LoggerModule,
     ConfigModule,

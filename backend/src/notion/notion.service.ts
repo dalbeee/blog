@@ -89,14 +89,16 @@ export class NotionService {
         const originalFileName = (
           r.request?._redirectable?._options?.pathname as string
         )
-          .replace('/', '_')
+          .split('/')
+          .join('_')
           .replace('_secure.notion-static.com_', '');
-
-        writeFileSync(
-          `${process.env.NEST_CONFIG_UPLOADS_PATH}/${originalFileName}`,
-          r.data as any,
-          'utf-8',
+        const filePath = `${process.env.NEST_CONFIG_UPLOADS_PATH}/${originalFileName}`;
+        console.log(
+          'original name >>>>>>>>>',
+          r.request?._redirectable?._options?.pathname,
         );
+        console.log('filePath>>>>>>>>>>>>>>>>>>>', filePath);
+        writeFileSync(filePath, r.data as any, 'utf-8');
         return originalFileName;
       })
       .catch((e) => {

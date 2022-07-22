@@ -1,8 +1,7 @@
 import { Column, Entity } from 'typeorm';
 
-// import { Logger as LoggerEntity, LoggerType } from '@blog/core/dist/domain';
+import { BaseEntity } from '../../share/entity/base.entity';
 
-import { BaseEntity } from '@src/share/entity/baseEntity';
 import { LoggerType } from '../dto/logger.dto';
 
 @Entity()

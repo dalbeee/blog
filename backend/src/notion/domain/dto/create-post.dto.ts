@@ -1,24 +1,28 @@
-// import { PartialType } from "@nestjs/mapped-types";
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 export class CreatePostDTO {
   @IsString()
-  @IsNotEmpty()
   title!: string;
 
   @IsString()
-  @IsNotEmpty()
   content!: string;
 
+  @IsString()
+  author!: string;
+
+  @IsString()
   @IsOptional()
   notionId?: string;
 
+  @IsString()
   @IsOptional()
   description?: string;
 
+  @IsString()
   @IsOptional()
   createdAt?: string;
 
+  @IsString()
   @IsOptional()
   updatedAt?: string;
 }

@@ -34,16 +34,3 @@ export interface TextSubBlock {
   plain_text: string | null;
   href: null | string;
 }
-
-export interface SubBlock {
-  type: SubBlockType;
-  text?: {
-    content: null | string;
-    link: null | {
-      url: string;
-    };
-    annotations?: Annotations;
-    plain_text: string | null;
-    href: null | string;
-  }[];
-}

@@ -3,7 +3,6 @@ import { Cache } from 'cache-manager';
 import axios from 'axios';
 import { writeFileSync } from 'fs';
 
-import { User } from '@src/user/entity/user.entity';
 import { NotionPost } from './domain/types/notion-post';
 import { PatchPostDTO } from './domain/dto/patch-post.dto';
 import { CreatePostDTO } from './domain/dto/create-post.dto';
@@ -70,8 +69,12 @@ export class NotionService {
 
   async findPostsNotYetSavedLocal(): Promise<NotionPost[]> {
     const result: NotionPost[] = [];
+    console.log('ns1');
     const serverPosts = await this.notionRemoteRepository.findPosts();
+    console.log('ns2');
+
     const localPosts = await this.notionRepository.findPosts();
+    console.log('ns3');
 
     serverPosts.forEach((serverPost) => {
       const isSavedPost = localPosts.some(
@@ -79,6 +82,7 @@ export class NotionService {
       );
       !isSavedPost && result.push(serverPost);
     });
+    console.log('ns4', result);
     return result;
   }
 
@@ -93,11 +97,6 @@ export class NotionService {
           .join('_')
           .replace('_secure.notion-static.com_', '');
         const filePath = `${process.env.NEST_CONFIG_UPLOADS_PATH}/${originalFileName}`;
-        console.log(
-          'original name >>>>>>>>>',
-          r.request?._redirectable?._options?.pathname,
-        );
-        console.log('filePath>>>>>>>>>>>>>>>>>>>', filePath);
         writeFileSync(filePath, r.data as any, 'utf-8');
         return originalFileName;
       })
@@ -106,12 +105,14 @@ export class NotionService {
       });
   }
 
-  async syncPostToLocal(user: User, post: NotionPost) {
+  async syncPostToLocal(post: NotionPost) {
+    console.log('first');
     const content = await this.findPostToMarkdownFromServer(post.id);
-
+    console.log('sec');
     const postDTO: PatchPostDTO | CreatePostDTO = {
       title: post.title,
       content: content,
+      author: post.author,
       notionId: post.id,
       createdAt: post.createdAt as unknown as string,
       updatedAt: post.updatedAt as unknown as string,
@@ -126,7 +127,6 @@ export class NotionService {
         postDTO.content = postDTO.content!.replace(imageUrl, savedImagePath);
       }),
     );
-
-    return this.notionRepository.syncPost(user, postDTO, post.id);
+    return this.notionRepository.syncPost(postDTO, post.id);
   }
 }

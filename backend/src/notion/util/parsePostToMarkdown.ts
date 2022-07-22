@@ -1,5 +1,5 @@
 import { NotionBlock } from '../domain/types/notion-block';
-import { SubBlock, TextSubBlock } from '../domain/types/sub-block';
+import { TextSubBlock } from '../domain/types/sub-block';
 import { Block } from '../domain/types/block';
 
 const parseDataFromTextSubBlock = (subBlock: TextSubBlock) => {

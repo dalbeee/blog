@@ -8,7 +8,6 @@ import { Repository } from 'typeorm';
 import { Lexer } from 'marked';
 
 import * as helper from '@src/share/utils';
-import { User } from '@src/user/entity/user.entity';
 import { CreatePostDTO } from './domain/dto/create-post.dto';
 import { PatchPostDTO } from './domain/dto/patch-post.dto';
 import { Notion } from './domain/entity/notion.entity';
@@ -25,7 +24,10 @@ export class NotionRepository {
   ) {}
 
   async findPosts(): Promise<NotionPost[]> {
-    return await this.notionRepository.find({ order: { createdAt: 'DESC' } });
+    const result = await this.notionRepository.find({
+      order: { createdAt: 'DESC' },
+    });
+    return result ?? [];
   }
 
   parseContent(content: string, length?: number) {
@@ -52,39 +54,23 @@ export class NotionRepository {
     }
   }
 
-  async createPost(user: User, post: CreatePostDTO): Promise<Notion> {
+  async createPost(post: CreatePostDTO): Promise<Notion> {
     const newPost = this.notionRepository.create(post);
     newPost.id = post.notionId!;
-    newPost.user = user;
+    newPost.author = post.author;
     newPost.thumbnail = extractThumbnailFromPost(post)!;
     newPost.description = this.parseContent(post.content, 100);
     newPost.slug = helper.slugify(post.title);
     return await this.notionRepository.save(newPost);
   }
 
-  hasUserCollectPermission(user: User, post: Notion): boolean {
-    return post.user.id === user.id;
-  }
-
-  async patchPost(
-    user: User,
-    postId: string,
-    updateDTO: PatchPostDTO,
-  ): Promise<Notion> {
+  async patchPost(postId: string, updateDTO: PatchPostDTO): Promise<Notion> {
     const findPost = await this.findById(postId);
-
-    if (!this.hasUserCollectPermission(user, findPost)) {
-      throw new ForbiddenException();
-    }
     const updatePost: Notion = Object.assign(findPost, updateDTO);
     return await this.notionRepository.save(updatePost);
   }
 
-  async syncPost(
-    user: User,
-    postDto: PatchPostDTO | CreatePostDTO,
-    postId: string,
-  ) {
+  async syncPost(postDto: PatchPostDTO | CreatePostDTO, postId: string) {
     let existPostAtLocal: Notion | null;
 
     try {
@@ -94,7 +80,7 @@ export class NotionRepository {
     }
 
     if (existPostAtLocal) {
-      await this.patchPost(user, existPostAtLocal.id, postDto as PatchPostDTO);
+      await this.patchPost(existPostAtLocal.id, postDto as PatchPostDTO);
 
       return {
         operation: 'patch',
@@ -102,7 +88,7 @@ export class NotionRepository {
         message: `exist post ${postId}. patched OK`,
       };
     } else {
-      await this.createPost(user, postDto as CreatePostDTO);
+      await this.createPost(postDto as CreatePostDTO);
 
       return {
         operation: 'create',

@@ -1,7 +1,6 @@
-import { BaseEntity } from '@src/share/entity/baseEntity';
-import { User } from '@src/user/entity/user.entity';
+import { Column, Entity } from 'typeorm';
 
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { BaseEntity } from '../../../share/entity/base.entity';
 
 @Entity()
 export class Notion extends BaseEntity {
@@ -14,6 +13,9 @@ export class Notion extends BaseEntity {
   @Column()
   description!: string;
 
+  @Column()
+  author!: string;
+
   @Column({ default: null, length: 500 })
   thumbnail?: string;
 
@@ -22,7 +24,4 @@ export class Notion extends BaseEntity {
 
   @Column({ default: null })
   url?: string;
-
-  @ManyToOne(() => User, (user) => user.posts)
-  user!: User;
 }

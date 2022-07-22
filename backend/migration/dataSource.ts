@@ -17,10 +17,8 @@ const connectionOptions: DataSourceOptions = {
   username: process.env.NEST_CONFIG_DB_USER,
   password: process.env.NEST_CONFIG_DB_PASSWORD,
   database: process.env.NEST_CONFIG_DB_DATABASE_NAME,
-  entities: [__dirname + '/**/*.entity{.ts,.js}'],
+  entities: [__dirname + '/../**/*.entity{.ts,.js}'],
   migrations: ['./migration/sources/*.ts'],
 };
-
-// export default connectionOptions;
 
 export default new DataSource(connectionOptions);

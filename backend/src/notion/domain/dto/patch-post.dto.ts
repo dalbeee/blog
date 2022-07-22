@@ -1,5 +1,4 @@
-// import { PartialType } from "@nestjs/mapped-types";
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 export class PatchPostDTO {
   @IsString()

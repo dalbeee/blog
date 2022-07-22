@@ -7,7 +7,6 @@ import { NotionController } from './notion.controller';
 import { NotionSync } from './notion.sync';
 import { NotionService } from './notion.service';
 import { NotionCronService } from './notion.cron.service';
-import { UsersModule } from '@src/user/user.module';
 import { NotionRemoteRepository } from './notion.remoteRepository';
 import { Notion } from './domain/entity/notion.entity';
 import { NotionRepository } from './notion.repository';
@@ -33,7 +32,6 @@ import { NotionRepository } from './notion.repository';
         };
       },
     }),
-    UsersModule,
   ],
   controllers: [NotionController],
   providers: [

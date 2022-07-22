@@ -1,6 +1,6 @@
 import { Column, Entity } from 'typeorm';
 
-import { BaseEntity } from '../../share/entity/base.entity';
+import { BaseEntity } from '../../share/entity/baseEntity';
 
 import { LoggerType } from '../dto/logger.dto';
 

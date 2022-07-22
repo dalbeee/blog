@@ -1,6 +1,6 @@
 import { Column, Entity } from 'typeorm';
 
-import { BaseEntity } from '../../../share/entity/base.entity';
+import { BaseEntity } from '../../../share/entity/baseEntity';
 
 @Entity()
 export class Notion extends BaseEntity {

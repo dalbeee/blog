@@ -69,20 +69,14 @@ export class NotionService {
 
   async findPostsNotYetSavedLocal(): Promise<NotionPost[]> {
     const result: NotionPost[] = [];
-    console.log('ns1');
     const serverPosts = await this.notionRemoteRepository.findPosts();
-    console.log('ns2');
-
     const localPosts = await this.notionRepository.findPosts();
-    console.log('ns3');
-
     serverPosts.forEach((serverPost) => {
       const isSavedPost = localPosts.some(
         (localPost) => localPost.id === serverPost.id,
       );
       !isSavedPost && result.push(serverPost);
     });
-    console.log('ns4', result);
     return result;
   }
 
@@ -106,9 +100,7 @@ export class NotionService {
   }
 
   async syncPostToLocal(post: NotionPost) {
-    console.log('first');
     const content = await this.findPostToMarkdownFromServer(post.id);
-    console.log('sec');
     const postDTO: PatchPostDTO | CreatePostDTO = {
       title: post.title,
       content: content,

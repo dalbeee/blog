@@ -22,22 +22,15 @@ export class NotionSync {
   @Process('syncNotionPosts')
   async syncNotionPosts(job: Job) {
     try {
-      console.log('sync1');
       const notYetSavedPosts =
         await this.notionService.findPostsNotYetSavedLocal();
-
-      console.log('sync2');
       const notYetUpdatedPosts =
         await this.notionService.findPostsWithOutOfSyncByUpdatedAtField();
 
       this.logger.log(
         `new-${notYetSavedPosts.length}\tnotYetSync-${notYetUpdatedPosts.length}`,
       );
-      console.log('sync3');
       const queuePosts = notYetSavedPosts.concat(notYetUpdatedPosts);
-
-      console.log('sync4');
-
       for (const [index, post] of queuePosts.entries()) {
         this.logger.log(` ${index} of ${queuePosts.length}...`);
         await this.notionService
